@@ -1,0 +1,179 @@
+- mr_id: CHR-SA-001
+  source_mr_id: MR-152
+  source_paper: "Jiang, Chen, Wang — IST 2022"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Negation insertion"
+  relation_type: monotonicity
+  applicable_subtasks: [SA]
+  expected_output_relation: "label flips POS↔NEG"
+  pass_fail_criterion: "score crosses 0.5 threshold in correct direction; discrete fallback requires label change"
+  formalization_strength: near-formal
+  pipeline_severity: hard-fail
+  implementation_module: "chrysalis.mrs.sa.chr_sa_001"
+  known_failure_modes:
+    - "Double negation produces ungrammatical output and must be skipped."
+    - "Negation scope can be ambiguous in syntactically complex sentences."
+  empirical_lambda: 0.27
+  notes: "Hard-fail candidate. λ=0.27 from Cho et al."
+
+- mr_id: CHR-SA-007
+  source_mr_id: MR-150
+  source_paper: "Jiang, Chen, Wang — IST 2022"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Period to exclamation mark"
+  relation_type: monotonicity
+  applicable_subtasks: [SA]
+  expected_output_relation: "sentiment strength preserved or amplified in the original direction"
+  pass_fail_criterion: "positive scores should not decrease, negative scores should not increase; discrete fallback requires unchanged label"
+  formalization_strength: near-formal
+  pipeline_severity: soft-warning
+  implementation_module: "chrysalis.mrs.sa.chr_sa_007"
+  known_failure_modes:
+    - "Sentence-final abbreviations or initials can be mistaken for terminal punctuation."
+    - "Ellipses and existing strong punctuation require skip handling."
+  empirical_lambda: 0.13
+  notes: "Soft-warning MR with abbreviation and ellipsis safeguards."
+
+- mr_id: CHR-SA-008
+  source_mr_id: MR-151
+  source_paper: "Jiang, Chen, Wang — IST 2022"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Emphasising adverb insertion"
+  relation_type: monotonicity
+  applicable_subtasks: [SA]
+  expected_output_relation: "sentiment strength preserved or amplified in the original direction"
+  pass_fail_criterion: "positive scores should not decrease, negative scores should not increase; discrete fallback requires unchanged label"
+  formalization_strength: near-formal
+  pipeline_severity: soft-warning
+  implementation_module: "chrysalis.mrs.sa.chr_sa_008"
+  known_failure_modes:
+    - "Target adjectives already modified by adverbs should be skipped to avoid pragmatic distortion."
+    - "Comparatives, superlatives, or negation scope can make insertion semantically invalid."
+  empirical_lambda: 0.14
+  notes: "Uses a constrained intensifier pool and seeded selection."
+
+- mr_id: CHR-SA-010
+  source_mr_id: MR-154
+  source_paper: "Jiang, Chen, Wang — IST 2022"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Noun and adjective uppercasing"
+  relation_type: monotonicity
+  applicable_subtasks: [SA]
+  expected_output_relation: "sentiment strength preserved or amplified in the original direction"
+  pass_fail_criterion: "positive scores should not decrease, negative scores should not increase; discrete fallback requires unchanged label"
+  formalization_strength: near-formal
+  pipeline_severity: soft-warning
+  implementation_module: "chrysalis.mrs.sa.chr_sa_010"
+  known_failure_modes:
+    - "Named entities and hyphenated compounds require span-aware uppercasing."
+    - "Inputs without eligible NN/JJ tokens should be skipped."
+  empirical_lambda: 0.21
+  notes: "Soft-warning MR targeting emphasis through case changes."
+
+- mr_id: CHR-NLI-004
+  source_mr_id: MR-74
+  source_paper: "Original source paper not specified in the locked spec"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Gendered word substitution (same gender)"
+  relation_type: invariance
+  applicable_subtasks: [NLI]
+  expected_output_relation: "label unchanged"
+  pass_fail_criterion: "predicted NLI label must remain unchanged after same-gender substitution"
+  formalization_strength: near-formal
+  pipeline_severity: soft-warning
+  implementation_module: "chrysalis.mrs.nli.chr_nli_004"
+  known_failure_modes:
+    - "Mixed-gender or gender-free inputs must be skipped."
+    - "Partial substitution across premise and hypothesis can invalidate the invariance assumption."
+  empirical_lambda: null
+  notes: "Implemented via shared gender_swap(mode='same_gender')."
+
+- mr_id: CHR-NLI-005
+  source_mr_id: MR-75
+  source_paper: "Original source paper not specified in the locked spec"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Gendered word substitution (cross gender)"
+  relation_type: fairness-invariance
+  applicable_subtasks: [NLI]
+  expected_output_relation: "label unchanged"
+  pass_fail_criterion: "predicted NLI label must remain unchanged after cross-gender substitution; failures are fairness regressions"
+  formalization_strength: near-formal
+  pipeline_severity: fairness-alert
+  implementation_module: "chrysalis.mrs.nli.chr_nli_005"
+  known_failure_modes:
+    - "Pronoun agreement violations after swapping require the pair to be skipped."
+    - "Gender-restrictive language and partial substitution invalidate the fairness test."
+  empirical_lambda: null
+  notes: "Failures route to the fairness-alert channel instead of blocking release."
+
+- mr_id: CHR-NLI-006
+  source_mr_id: MR-76
+  source_paper: "Original source paper not specified in the locked spec"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Negation insertion (hypothesis)"
+  relation_type: monotonicity
+  applicable_subtasks: [NLI]
+  expected_output_relation: "entailment↔contradiction flip"
+  pass_fail_criterion: "entailment must become contradiction and contradiction must become entailment; neutral sources are skipped"
+  formalization_strength: near-formal
+  pipeline_severity: hard-fail
+  implementation_module: "chrysalis.mrs.nli.chr_nli_006"
+  known_failure_modes:
+    - "Existing negation in the hypothesis invalidates the transformation and must be skipped."
+    - "Premise mutation is forbidden; any premise drift discards the pair."
+  empirical_lambda: null
+  notes: "Hard-fail MR that only transforms the hypothesis component."
+
+- mr_id: CHR-GEN-005
+  source_mr_id: MR-5
+  source_paper: "Original source paper not specified in the locked spec"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Space injection"
+  relation_type: invariance
+  applicable_subtasks: [SA, NLI]
+  expected_output_relation: "label unchanged within airtight whitespace-preserving equivalence"
+  pass_fail_criterion: "absolute score delta must stay below 0.05 and predicted label must remain unchanged"
+  formalization_strength: airtight
+  pipeline_severity: hard-fail
+  implementation_module: "chrysalis.mrs.generic.chr_gen_005"
+  known_failure_modes:
+    - "Injection at token boundaries breaks the airtight guarantee and must be rejected."
+    - "Numbers, URLs, emails, or punctuation splitting can invalidate the transformation."
+  empirical_lambda: 0.12
+  notes: "Mandatory post-check is x'.replace(' ', '') == x.replace(' ', '')."
+
+- mr_id: CHR-GEN-018
+  source_mr_id: MR-102
+  source_paper: "Original source paper not specified in the locked spec"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Capitalisation change"
+  relation_type: invariance
+  applicable_subtasks: [SA, NLI]
+  expected_output_relation: "label unchanged across uppercase and lowercase variants"
+  pass_fail_criterion: "absolute score delta must stay below 0.05 and predicted label must remain unchanged"
+  formalization_strength: airtight
+  pipeline_severity: hard-fail
+  implementation_module: "chrysalis.mrs.generic.chr_gen_018"
+  known_failure_modes:
+    - "Models using uncased tokenizers make this MR untestable and it must be excluded."
+    - "Already-uniform casing requires variant-level skip handling."
+  empirical_lambda: 0.10
+  notes: "Produces separate uppercase and lowercase variants per eligible input."
+
+- mr_id: CHR-GEN-019
+  source_mr_id: MR-126
+  source_paper: "Original source paper not specified in the locked spec"
+  catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
+  mr_name: "Keyboard mistake simulation"
+  relation_type: invariance
+  applicable_subtasks: [SA, NLI]
+  expected_output_relation: "label unchanged under single-character adjacent-key typos"
+  pass_fail_criterion: "absolute score delta must stay below 0.1 and predicted label must remain unchanged"
+  formalization_strength: near-formal
+  pipeline_severity: soft-warning
+  implementation_module: "chrysalis.mrs.generic.chr_gen_019"
+  known_failure_modes:
+    - "Real-word collision checks can exhaust retries and require the input to be skipped."
+    - "Selecting more than one changed character or a non-adjacent replacement invalidates the pair."
+  empirical_lambda: 0.21
+  notes: "Uses NLTK words corpus for collision prevention with bounded retry logic."
