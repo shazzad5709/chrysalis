@@ -41,18 +41,23 @@ class CHRGEN018(BaseMR):
         variant: str = "uppercase",
     ) -> str | dict | None:
         del seed
+        self.clear_skip_reason()
         if isinstance(source_input, dict):
             premise = _transform_text(source_input.get("premise", ""), variant)
             hypothesis = _transform_text(source_input.get("hypothesis", ""), variant)
             if premise is None and hypothesis is None:
+                self.set_skip_reason(f"already_{variant}")
                 return None
             return {
                 "premise": source_input.get("premise", "") if premise is None else premise,
                 "hypothesis": source_input.get("hypothesis", "") if hypothesis is None else hypothesis,
                 "variant": variant,
             }
-
-        return _transform_text(source_input, variant)
+        transformed = _transform_text(source_input, variant)
+        if transformed is None:
+            self.set_skip_reason(f"already_{variant}")
+            return None
+        return transformed
 
     def transform_both(self, source_input: str | dict) -> list[dict | str | None]:
         return [

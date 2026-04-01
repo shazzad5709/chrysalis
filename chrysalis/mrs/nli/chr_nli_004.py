@@ -330,14 +330,24 @@ def gender_swap(
     mode: str,
     seed: int = 42,
 ) -> dict | None:
+    transformed, _ = gender_swap_with_reason(premise, hypothesis, mode, seed)
+    return transformed
+
+
+def gender_swap_with_reason(
+    premise: str,
+    hypothesis: str,
+    mode: str,
+    seed: int = 42,
+) -> tuple[dict | None, str | None]:
     if mode not in {"same_gender", "cross_gender"}:
         raise ValueError(f"Unsupported gender swap mode: {mode}")
 
     if not premise.strip() or not hypothesis.strip():
-        return None
+        return None, "missing_premise_or_hypothesis"
 
     if mode == "cross_gender" and _has_gender_restrictive_language(premise, hypothesis):
-        return None
+        return None, "gender_restrictive_language"
 
     premise_component = _analyze_component(premise)
     hypothesis_component = _analyze_component(hypothesis)
@@ -345,8 +355,10 @@ def gender_swap(
 
     male_count = sum(1 for item in all_gendered if item["gender"] == "male")
     female_count = sum(1 for item in all_gendered if item["gender"] == "female")
-    if (male_count > 0 and female_count > 0) or (male_count == 0 and female_count == 0):
-        return None
+    if male_count > 0 and female_count > 0:
+        return None, "mixed_gender_input"
+    if male_count == 0 and female_count == 0:
+        return None, "no_gendered_words"
 
     rng = random.Random(seed)
     transformed_premise, premise_changes, premise_unmappable = _apply_component_substitutions(
@@ -362,35 +374,35 @@ def gender_swap(
 
     if mode == "same_gender":
         if not premise_changes or not hypothesis_changes:
-            return None
+            return None, "partial_substitution"
     else:
         if premise_unmappable or hypothesis_unmappable:
-            return None
+            return None, "unmappable_gendered_token"
         if not premise_component["gendered"] or not hypothesis_component["gendered"]:
-            return None
+            return None, "partial_substitution"
         if len(premise_changes) != len(premise_component["gendered"]):
-            return None
+            return None, "partial_substitution"
         if len(hypothesis_changes) != len(hypothesis_component["gendered"]):
-            return None
+            return None, "partial_substitution"
 
     if transformed_premise == premise and transformed_hypothesis == hypothesis:
-        return None
+        return None, "no_effective_change"
 
     if not _pronoun_agreement_ok(transformed_premise) or not _pronoun_agreement_ok(transformed_hypothesis):
-        return None
+        return None, "pronoun_agreement_violation"
 
     if mode == "same_gender":
         if not _validate_same_gender_component(premise, transformed_premise):
-            return None
+            return None, "same_gender_validation_failed"
         if not _validate_same_gender_component(hypothesis, transformed_hypothesis):
-            return None
+            return None, "same_gender_validation_failed"
     else:
         if not _validate_cross_gender_component(premise, transformed_premise):
-            return None
+            return None, "cross_gender_validation_failed"
         if not _validate_cross_gender_component(hypothesis, transformed_hypothesis):
-            return None
+            return None, "cross_gender_validation_failed"
 
-    return {"premise": transformed_premise, "hypothesis": transformed_hypothesis}
+    return {"premise": transformed_premise, "hypothesis": transformed_hypothesis}, None
 
 
 class CHRNLI004(BaseMR):
@@ -404,13 +416,18 @@ class CHRNLI004(BaseMR):
 
     def transform(self, source_input: str | dict, seed: int = 42) -> dict | None:
         if not isinstance(source_input, dict):
+            self.set_skip_reason("invalid_input_type")
             return None
-        return gender_swap(
+        self.clear_skip_reason()
+        transformed, reason = gender_swap_with_reason(
             premise=source_input.get("premise", ""),
             hypothesis=source_input.get("hypothesis", ""),
             mode="same_gender",
             seed=seed,
         )
+        if transformed is None and reason is not None:
+            self.set_skip_reason(reason)
+        return transformed
 
     def check_pass(self, source_output: dict, followup_output: dict) -> bool:
         return source_output["label"] == followup_output["label"]

@@ -115,7 +115,9 @@ class CHRNLI006(BaseMR):
 
     def transform(self, source_input: str | dict, seed: int = 42) -> dict | None:
         del seed
+        self.clear_skip_reason()
         if not isinstance(source_input, dict):
+            self.set_skip_reason("invalid_input_type")
             return None
 
         source_label = source_input.get("source_label")
@@ -123,14 +125,18 @@ class CHRNLI006(BaseMR):
         hypothesis = source_input.get("hypothesis", "")
 
         if source_label == NEUTRAL_LABEL:
+            self.set_skip_reason("neutral_label")
             return None
         if not premise or not hypothesis:
+            self.set_skip_reason("missing_premise_or_hypothesis")
             return None
         if _contains_negation(hypothesis):
+            self.set_skip_reason("existing_negation_in_hypothesis")
             return None
 
         transformed_hypothesis = _transform_hypothesis(hypothesis)
         if transformed_hypothesis is None:
+            self.set_skip_reason("no_supported_negation_insertion_case")
             return None
 
         return {"premise": premise, "hypothesis": transformed_hypothesis}

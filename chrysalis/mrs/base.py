@@ -4,6 +4,19 @@ from abc import ABC, abstractmethod
 
 
 class BaseMR(ABC):
+    def __init__(self) -> None:
+        self._last_skip_reason: str | None = None
+
+    @property
+    def last_skip_reason(self) -> str | None:
+        return self._last_skip_reason
+
+    def clear_skip_reason(self) -> None:
+        self._last_skip_reason = None
+
+    def set_skip_reason(self, reason: str) -> None:
+        self._last_skip_reason = reason
+
     @property
     @abstractmethod
     def mr_id(self) -> str:

@@ -97,18 +97,23 @@ class CHRSA007(BaseMR):
 
     def transform(self, source_input: str | dict, seed: int = 42) -> str | None:
         del seed
+        self.clear_skip_reason()
         text = _get_text(source_input)
         source_label = _get_label(source_input)
 
         if not text.strip():
+            self.set_skip_reason("empty_input")
             return None
         if _is_neutral_label(source_label):
+            self.set_skip_reason("neutral_label")
             return None
         if "..." in text or _ends_with_strong_punctuation(text):
+            self.set_skip_reason("strong_terminal_punctuation_or_ellipsis")
             return None
 
         indices = _sentence_final_period_indices(text)
         if not indices:
+            self.set_skip_reason("no_replaceable_sentence_final_period")
             return None
 
         chars = list(text)

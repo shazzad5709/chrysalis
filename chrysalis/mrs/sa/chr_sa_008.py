@@ -150,16 +150,20 @@ class CHRSA008(BaseMR):
         return ["SA"]
 
     def transform(self, source_input: str | dict, seed: int = 42) -> str | None:
+        self.clear_skip_reason()
         text = _get_text(source_input)
         source_label = _get_label(source_input)
         if not text.strip():
+            self.set_skip_reason("empty_input")
             return None
         if _is_neutral_label(source_label):
+            self.set_skip_reason("neutral_label")
             return None
 
         doc = _get_nlp()(text)
         target = _select_target(doc)
         if target is None:
+            self.set_skip_reason("no_valid_intensifier_target")
             return None
 
         rng = random.Random(seed)

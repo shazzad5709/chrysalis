@@ -134,17 +134,25 @@ class CHRSA001(BaseMR):
 
     def transform(self, source_input: str | dict, seed: int = 42) -> str | None:
         del seed
+        self.clear_skip_reason()
         text = _get_text(source_input)
         source_label = _get_label(source_input)
 
         if not text.strip():
+            self.set_skip_reason("empty_input")
             return None
         if _is_neutral_label(source_label):
+            self.set_skip_reason("neutral_label")
             return None
         if _contains_negation(text):
+            self.set_skip_reason("existing_negation")
             return None
 
-        return _transform_text(text)
+        transformed = _transform_text(text)
+        if transformed is None:
+            self.set_skip_reason("no_supported_negation_insertion_case")
+            return None
+        return transformed
 
     def check_pass(self, source_output: dict, followup_output: dict) -> bool:
         source_label = source_output["label"]

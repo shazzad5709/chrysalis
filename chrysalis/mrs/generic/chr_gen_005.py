@@ -85,16 +85,24 @@ class CHRGEN005(BaseMR):
         return str(followup).replace(" ", "") == str(source).replace(" ", "")
 
     def transform(self, source_input: str | dict, seed: int = 42) -> str | dict | None:
+        self.clear_skip_reason()
         if isinstance(source_input, dict):
             premise = source_input.get("premise", "")
             hypothesis = source_input.get("hypothesis", "")
             transformed_premise = _transform_text(premise, seed)
             transformed_hypothesis = _transform_text(hypothesis, seed)
-            if transformed_premise is None or transformed_hypothesis is None:
+            if transformed_premise is None:
+                self.set_skip_reason("no_eligible_tokens_in_premise")
+                return None
+            if transformed_hypothesis is None:
+                self.set_skip_reason("no_eligible_tokens_in_hypothesis")
                 return None
             return {"premise": transformed_premise, "hypothesis": transformed_hypothesis}
-
-        return _transform_text(source_input, seed)
+        transformed = _transform_text(source_input, seed)
+        if transformed is None:
+            self.set_skip_reason("no_eligible_tokens")
+            return None
+        return transformed
 
     def check_pass(self, source_output: dict, followup_output: dict) -> bool:
         return (

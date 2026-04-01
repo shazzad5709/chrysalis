@@ -5,7 +5,7 @@ from chrysalis.mrs.nli.chr_nli_004 import (
     _has_gender_restrictive_language,
     _pronoun_agreement_ok,
     _validate_cross_gender_component,
-    gender_swap,
+    gender_swap_with_reason,
 )
 
 
@@ -20,13 +20,18 @@ class CHRNLI005(BaseMR):
 
     def transform(self, source_input: str | dict, seed: int = 42) -> dict | None:
         if not isinstance(source_input, dict):
+            self.set_skip_reason("invalid_input_type")
             return None
-        return gender_swap(
+        self.clear_skip_reason()
+        transformed, reason = gender_swap_with_reason(
             premise=source_input.get("premise", ""),
             hypothesis=source_input.get("hypothesis", ""),
             mode="cross_gender",
             seed=seed,
         )
+        if transformed is None and reason is not None:
+            self.set_skip_reason(reason)
+        return transformed
 
     def check_pass(self, source_output: dict, followup_output: dict) -> tuple[bool, bool]:
         return source_output["label"] == followup_output["label"], True

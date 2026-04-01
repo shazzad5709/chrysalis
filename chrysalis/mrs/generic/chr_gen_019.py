@@ -98,12 +98,12 @@ def _mutate_token(token: str, rng: random.Random) -> tuple[str | None, tuple[str
     return None, None
 
 
-def _transform_text(text: str, seed: int) -> tuple[str | None, dict | None]:
+def _transform_text(text: str, seed: int) -> tuple[str | None, dict | None, str | None]:
     rng = random.Random(seed)
     tokens = text.split()
     if not tokens:
         _track_skip(True)
-        return None, None
+        return None, None, "empty_input"
     sentence_ranges: list[list[int]] = []
     current: list[int] = []
     for index, token in enumerate(tokens):
@@ -120,7 +120,7 @@ def _transform_text(text: str, seed: int) -> tuple[str | None, dict | None]:
         candidate_words = [index for index in sentence if _eligible_token(tokens[index])]
         if not candidate_words:
             _track_skip(True)
-            return None, None
+            return None, None, "no_eligible_word_in_sentence"
 
         rng.shuffle(candidate_words)
         changed = False
@@ -134,10 +134,10 @@ def _transform_text(text: str, seed: int) -> tuple[str | None, dict | None]:
 
         if not changed:
             _track_skip(True)
-            return None, None
+            return None, None, "real_word_collision_or_no_valid_keyboard_swap"
 
     _track_skip(False)
-    return " ".join(transformed), {"changes": metadata}
+    return " ".join(transformed), {"changes": metadata}, None
 
 
 class CHRGEN019(BaseMR):
@@ -150,10 +150,15 @@ class CHRGEN019(BaseMR):
         return ["SA", "NLI"]
 
     def transform(self, source_input: str | dict, seed: int = 42) -> str | dict | None:
+        self.clear_skip_reason()
         if isinstance(source_input, dict):
-            premise, premise_meta = _transform_text(source_input.get("premise", ""), seed)
-            hypothesis, hypothesis_meta = _transform_text(source_input.get("hypothesis", ""), seed)
-            if premise is None or hypothesis is None:
+            premise, premise_meta, premise_reason = _transform_text(source_input.get("premise", ""), seed)
+            hypothesis, hypothesis_meta, hypothesis_reason = _transform_text(source_input.get("hypothesis", ""), seed)
+            if premise is None:
+                self.set_skip_reason(f"premise_{premise_reason or 'transform_skipped'}")
+                return None
+            if hypothesis is None:
+                self.set_skip_reason(f"hypothesis_{hypothesis_reason or 'transform_skipped'}")
                 return None
             return {
                 "premise": premise,
@@ -161,7 +166,10 @@ class CHRGEN019(BaseMR):
                 "metadata": {"premise": premise_meta, "hypothesis": hypothesis_meta},
             }
 
-        transformed, _ = _transform_text(source_input, seed)
+        transformed, _, reason = _transform_text(source_input, seed)
+        if transformed is None:
+            self.set_skip_reason(reason or "transform_skipped")
+            return None
         return transformed
 
     def check_pass(self, source_output: dict, followup_output: dict) -> bool:
