@@ -1,1 +1,97 @@
-# to be implemented
+name: Chrysalis Behavioral Regression Check
+
+"on":
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  chrysalis-regression:
+    runs-on: ubuntu-latest
+    env:
+      PYTHON_VERSION: "3.11"
+      CORPUS_DIR: "pilot/artifacts/corpus"
+      SNAPSHOT_DIR: "pilot/artifacts/snapshots"
+      REPORT_DIR: "pilot/artifacts/regression_reports"
+      LAST_STABLE_VERSION: "v1_base"
+      NEW_MODEL_VERSION: "v2_retrain"
+      TRANSITION: "v1_base→v2_retrain"
+      MODEL_LOADER: "your_project.model_loader:load_model_bundle"
+      STANDARD_REPORT_PATH: "pilot/artifacts/regression_reports/regression_report_v1_base_to_v2_retrain.csv"
+      FAIRNESS_REPORT_PATH: "pilot/artifacts/regression_reports/fairness_regression_report_v1_base_to_v2_retrain.csv"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: uv sync --dev
+
+      - name: Install spaCy model and NLTK words
+        run: |
+          uv run python -m spacy download en_core_web_sm
+          uv run python -c "import nltk; nltk.download('words')"
+
+      - name: Run Chrysalis snapshot engine
+        run: |
+          uv run python pilot/pipeline.py \
+            --stage snapshot \
+            --model-version "${NEW_MODEL_VERSION}" \
+            --model-loader "${MODEL_LOADER}" \
+            --corpus-dir "${CORPUS_DIR}" \
+            --snapshot-dir "${SNAPSHOT_DIR}"
+
+      - name: Run Chrysalis regression differ
+        run: |
+          uv run python pilot/pipeline.py \
+            --stage diff \
+            --transition "${TRANSITION}" \
+            --old-version "${LAST_STABLE_VERSION}" \
+            --new-version "${NEW_MODEL_VERSION}" \
+            --corpus-dir "${CORPUS_DIR}" \
+            --snapshot-dir "${SNAPSHOT_DIR}" \
+            --report-dir "${REPORT_DIR}" \
+            --standard-report-path "${STANDARD_REPORT_PATH}" \
+            --fairness-report-path "${FAIRNESS_REPORT_PATH}"
+
+      - name: Enforce hard-fail regressions
+        run: |
+          uv run python - <<'PY'
+          import csv
+          import os
+          from pathlib import Path
+
+          standard_report = Path(os.environ["STANDARD_REPORT_PATH"])
+          fairness_report = Path(os.environ["FAIRNESS_REPORT_PATH"])
+
+          hard_fail_flagged = False
+          if standard_report.exists():
+              with standard_report.open("r", newline="", encoding="utf-8") as handle:
+                  rows = list(csv.DictReader(handle))
+              hard_fail_flagged = any(
+                  row["pipeline_severity"] == "hard-fail"
+                  and row["behavioral_regression_flag"].strip().lower() == "true"
+                  for row in rows
+              )
+
+          fairness_flagged = False
+          if fairness_report.exists():
+              with fairness_report.open("r", newline="", encoding="utf-8") as handle:
+                  fairness_rows = list(csv.DictReader(handle))
+              fairness_flagged = any(
+                  row["behavioral_regression_flag"].strip().lower() == "true"
+                  for row in fairness_rows
+              )
+
+          if hard_fail_flagged:
+              raise SystemExit(1)
+          if fairness_flagged:
+              print("Fairness regression report written; release remains unblocked.")
+          PY

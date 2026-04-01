@@ -1,0 +1,5 @@
+model_version,mr_id,input_id,variant,source_pred_label,source_pred_score,followup_pred_label,followup_pred_score,mr_pass,fairness_regression,timestamp
+v_mock_old,CHR-SA-001,sample-1,,1,0.95,0,0.1,True,False,2026-04-02T00:00:00Z
+v_mock_old,CHR-SA-001,sample-2,,0,0.95,1,0.9,True,False,2026-04-02T00:00:00Z
+v_mock_old,CHR-SA-001,sample-3,,1,0.88,0,0.2,True,False,2026-04-02T00:00:00Z
+v_mock_old,CHR-SA-001,sample-4,,0,0.91,1,0.85,True,False,2026-04-02T00:00:00Z

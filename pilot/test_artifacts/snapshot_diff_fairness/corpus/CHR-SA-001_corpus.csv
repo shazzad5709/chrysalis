@@ -1,0 +1,3 @@
+mr_id,input_id,subtask,source_text,source_label,followup_text,expected_output_relation,variant,skip_reason
+CHR-SA-001,sa-1,SA,good movie,1,not good movie,label_flip,,
+CHR-SA-001,sa-2,SA,bad movie,0,not bad movie,label_flip,,

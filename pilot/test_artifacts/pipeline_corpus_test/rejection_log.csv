@@ -1,0 +1,411 @@
+mr_id,input_id,subtask,variant,reason,source_text
+CHR-SA-001,1,SA,,no_supported_negation_insertion_case,unflinchingly bleak and desperate 
+CHR-SA-001,6,SA,,no_supported_negation_insertion_case,a sometimes tedious film . 
+CHR-SA-001,7,SA,,no_supported_negation_insertion_case,or doing last year 's taxes with your ex-wife . 
+CHR-SA-001,8,SA,,existing_negation,you do n't have to know about music to appreciate the film 's easygoing blend of comedy and romance . 
+CHR-SA-001,14,SA,,existing_negation,even horror fans will most likely not find what they 're seeking with trouble every day ; the movie lacks both thrills and humor . 
+CHR-SA-001,15,SA,,no_supported_negation_insertion_case,"a gorgeous , high-spirited musical from india that exquisitely blends music , dance , song , and high drama . "
+CHR-SA-001,20,SA,,existing_negation,"pumpkin takes an admirable look at the hypocrisy of political correctness , but it does so with such an uneven tone that you never know when humor ends and tragedy begins . "
+CHR-SA-001,32,SA,,no_supported_negation_insertion_case,"a gorgeous , witty , seductive movie . "
+CHR-SA-001,34,SA,,existing_negation,"it does n't believe in itself , it has no sense of humor ... it 's just plain bored . "
+CHR-SA-001,35,SA,,no_supported_negation_insertion_case,a sequence of ridiculous shoot - 'em - up scenes . 
+CHR-SA-001,38,SA,,no_supported_negation_insertion_case,"as surreal as a dream and as detailed as a photograph , as visually dexterous as it is at times imaginatively overwhelming . "
+CHR-SA-001,42,SA,,existing_negation,the subtle strength of `` elling '' is that it never loses touch with the reality of the grim situation . 
+CHR-SA-001,44,SA,,existing_negation,"the title not only describes its main characters , but the lazy people behind the camera as well . "
+CHR-SA-001,46,SA,,no_supported_negation_insertion_case,a synthesis of cliches and absurdities that seems positively decadent in its cinematic flash and emptiness . 
+CHR-SA-001,47,SA,,no_supported_negation_insertion_case,a subtle and well-crafted ( for the most part ) chiller . 
+CHR-SA-001,54,SA,,no_supported_negation_insertion_case,so devoid of any kind of intelligible story that it makes films like xxx and collateral damage seem like thoughtful treatises 
+CHR-SA-001,55,SA,,no_supported_negation_insertion_case,"a tender , heartfelt family drama . "
+CHR-SA-001,56,SA,,no_supported_negation_insertion_case,... a hollow joke told by a cinematic gymnast having too much fun embellishing the misanthropic tale to actually engage it . 
+CHR-SA-001,59,SA,,existing_negation,"it 's just disappointingly superficial -- a movie that has all the elements necessary to be a fascinating , involving character study , but never does more than scratch the surface . "
+CHR-SA-001,60,SA,,existing_negation,"this is a story of two misfits who do n't stand a chance alone , but together they are magnificent . "
+CHR-SA-001,65,SA,,existing_negation,you wonder why enough was n't just a music video rather than a full-length movie . 
+CHR-SA-001,67,SA,,no_supported_negation_insertion_case,"a fast , funny , highly enjoyable movie . "
+CHR-SA-001,70,SA,,existing_negation,"for all its impressive craftsmanship , and despite an overbearing series of third-act crescendos , lily chou-chou never really builds up a head of emotional steam . "
+CHR-SA-001,73,SA,,no_supported_negation_insertion_case,"one of creepiest , scariest movies to come along in a long , long time , easily rivaling blair witch or the others . "
+CHR-SA-001,74,SA,,no_supported_negation_insertion_case,a string of rehashed sight gags based in insipid vulgarity . 
+CHR-SA-001,75,SA,,no_supported_negation_insertion_case,among the year 's most intriguing explorations of alientation . 
+CHR-SA-001,78,SA,,existing_negation,"there is nothing outstanding about this film , but it is good enough and will likely be appreciated most by sailors and folks who know their way around a submarine . "
+CHR-SA-001,86,SA,,no_supported_negation_insertion_case,"the film flat lines when it should peak and is more missed opportunity and trifle than dark , decadent truffle . "
+CHR-SA-001,88,SA,,existing_negation,fresnadillo 's dark and jolting images have a way of plying into your subconscious like the nightmare you had a week ago that wo n't go away . 
+CHR-SA-001,91,SA,,no_supported_negation_insertion_case,"hardly a masterpiece , but it introduces viewers to a good charitable enterprise and some interesting real people . "
+CHR-SA-001,92,SA,,existing_negation,"you wo n't like roger , but you will quickly recognize him . "
+CHR-SA-001,94,SA,,existing_negation,"byler reveals his characters in a way that intrigues and even fascinates us , and he never reduces the situation to simple melodrama . "
+CHR-SA-001,95,SA,,no_supported_negation_insertion_case,this riveting world war ii moral suspense story deals with the shadow side of american culture : racial prejudice in its ugly and diverse forms . 
+CHR-SA-001,97,SA,,existing_negation,"no sophomore slump for director sam mendes , who segues from oscar winner to oscar-winning potential with a smooth sleight of hand . "
+CHR-SA-007,0,SA,,no_replaceable_sentence_final_period,it 's a charming and often affecting journey . 
+CHR-SA-007,1,SA,,no_replaceable_sentence_final_period,unflinchingly bleak and desperate 
+CHR-SA-007,2,SA,,no_replaceable_sentence_final_period,allows us to hope that nolan is poised to embark a major career as a commercial yet inventive filmmaker . 
+CHR-SA-007,3,SA,,no_replaceable_sentence_final_period,"the acting , costumes , music , cinematography and sound are all astounding given the production 's austere locales . "
+CHR-SA-007,4,SA,,no_replaceable_sentence_final_period,"it 's slow -- very , very slow . "
+CHR-SA-007,5,SA,,no_replaceable_sentence_final_period,"although laced with humor and a few fanciful touches , the film is a refreshingly serious look at young women . "
+CHR-SA-007,6,SA,,no_replaceable_sentence_final_period,a sometimes tedious film . 
+CHR-SA-007,7,SA,,no_replaceable_sentence_final_period,or doing last year 's taxes with your ex-wife . 
+CHR-SA-007,8,SA,,no_replaceable_sentence_final_period,you do n't have to know about music to appreciate the film 's easygoing blend of comedy and romance . 
+CHR-SA-007,9,SA,,no_replaceable_sentence_final_period,"in exactly 89 minutes , most of which passed as slowly as if i 'd been sitting naked on an igloo , formula 51 sank from quirky to jerky to utter turkey . "
+CHR-SA-007,10,SA,,no_replaceable_sentence_final_period,the mesmerizing performances of the leads keep the film grounded and keep the audience riveted . 
+CHR-SA-007,11,SA,,no_replaceable_sentence_final_period,"it takes a strange kind of laziness to waste the talents of robert forster , anne meara , eugene levy , and reginald veljohnson all in the same movie . "
+CHR-SA-007,12,SA,,strong_terminal_punctuation_or_ellipsis,... the film suffers from a lack of humor ( something needed to balance out the violence ) ... 
+CHR-SA-007,13,SA,,no_replaceable_sentence_final_period,"we root for ( clara and paul ) , even like them , though perhaps it 's an emotion closer to pity . "
+CHR-SA-007,14,SA,,no_replaceable_sentence_final_period,even horror fans will most likely not find what they 're seeking with trouble every day ; the movie lacks both thrills and humor . 
+CHR-SA-007,15,SA,,no_replaceable_sentence_final_period,"a gorgeous , high-spirited musical from india that exquisitely blends music , dance , song , and high drama . "
+CHR-SA-007,16,SA,,no_replaceable_sentence_final_period,the emotions are raw and will strike a nerve with anyone who 's ever had family trauma . 
+CHR-SA-007,17,SA,,no_replaceable_sentence_final_period,"audrey tatou has a knack for picking roles that magnify her outrageous charm , and in this literate french comedy , she 's as morning-glory exuberant as she was in amélie . "
+CHR-SA-007,18,SA,,strong_terminal_punctuation_or_ellipsis,... the movie is just a plain old monster . 
+CHR-SA-007,19,SA,,no_replaceable_sentence_final_period,"in its best moments , resembles a bad high school production of grease , without benefit of song . "
+CHR-SA-007,20,SA,,no_replaceable_sentence_final_period,"pumpkin takes an admirable look at the hypocrisy of political correctness , but it does so with such an uneven tone that you never know when humor ends and tragedy begins . "
+CHR-SA-007,21,SA,,no_replaceable_sentence_final_period,the iditarod lasts for days - this just felt like it did . 
+CHR-SA-007,22,SA,,no_replaceable_sentence_final_period,holden caulfield did it better . 
+CHR-SA-007,23,SA,,no_replaceable_sentence_final_period,"a delectable and intriguing thriller filled with surprises , read my lips is an original . "
+CHR-SA-007,24,SA,,no_replaceable_sentence_final_period,seldom has a movie so closely matched the spirit of a man and his work . 
+CHR-SA-007,25,SA,,no_replaceable_sentence_final_period,"nicks , seemingly uncertain what 's going to make people laugh , runs the gamut from stale parody to raunchy sex gags to formula romantic comedy . "
+CHR-SA-007,26,SA,,no_replaceable_sentence_final_period,"the action switches between past and present , but the material link is too tenuous to anchor the emotional connections that purport to span a 125-year divide . "
+CHR-SA-007,27,SA,,no_replaceable_sentence_final_period,it 's an offbeat treat that pokes fun at the democratic exercise while also examining its significance for those who take part . 
+CHR-SA-007,28,SA,,no_replaceable_sentence_final_period,"it 's a cookie-cutter movie , a cut-and-paste job . "
+CHR-SA-007,29,SA,,no_replaceable_sentence_final_period,i had to look away - this was god awful . 
+CHR-SA-007,30,SA,,no_replaceable_sentence_final_period,"thanks to scott 's charismatic roger and eisenberg 's sweet nephew , roger dodger is one of the most compelling variations on in the company of men . "
+CHR-SA-007,31,SA,,strong_terminal_punctuation_or_ellipsis,"... designed to provide a mix of smiles and tears , `` crossroads '' instead provokes a handful of unintentional howlers and numerous yawns . "
+CHR-SA-007,32,SA,,no_replaceable_sentence_final_period,"a gorgeous , witty , seductive movie . "
+CHR-SA-007,33,SA,,no_replaceable_sentence_final_period,"if the movie succeeds in instilling a wary sense of ` there but for the grace of god , ' it is far too self-conscious to draw you deeply into its world . "
+CHR-SA-007,34,SA,,strong_terminal_punctuation_or_ellipsis,"it does n't believe in itself , it has no sense of humor ... it 's just plain bored . "
+CHR-SA-007,35,SA,,no_replaceable_sentence_final_period,a sequence of ridiculous shoot - 'em - up scenes . 
+CHR-SA-007,36,SA,,no_replaceable_sentence_final_period,"the weight of the piece , the unerring professionalism of the chilly production , and the fascination embedded in the lurid topic prove recommendation enough . "
+CHR-SA-007,37,SA,,no_replaceable_sentence_final_period,"( w ) hile long on amiable monkeys and worthy environmentalism , jane goodall 's wild chimpanzees is short on the thrills the oversize medium demands . "
+CHR-SA-007,38,SA,,no_replaceable_sentence_final_period,"as surreal as a dream and as detailed as a photograph , as visually dexterous as it is at times imaginatively overwhelming . "
+CHR-SA-007,39,SA,,no_replaceable_sentence_final_period,"escaping the studio , piccoli is warmly affecting and so is this adroitly minimalist movie . "
+CHR-SA-007,40,SA,,strong_terminal_punctuation_or_ellipsis,"there 's ... tremendous energy from the cast , a sense of playfulness and excitement that seems appropriate . "
+CHR-SA-007,41,SA,,no_replaceable_sentence_final_period,"this illuminating documentary transcends our preconceived vision of the holy land and its inhabitants , revealing the human complexities beneath . "
+CHR-SA-007,42,SA,,no_replaceable_sentence_final_period,the subtle strength of `` elling '' is that it never loses touch with the reality of the grim situation . 
+CHR-SA-007,43,SA,,strong_terminal_punctuation_or_ellipsis,holm ... embodies the character with an effortlessly regal charisma . 
+CHR-SA-007,44,SA,,no_replaceable_sentence_final_period,"the title not only describes its main characters , but the lazy people behind the camera as well . "
+CHR-SA-007,45,SA,,no_replaceable_sentence_final_period,it offers little beyond the momentary joys of pretty and weightless intellectual entertainment . 
+CHR-SA-007,46,SA,,no_replaceable_sentence_final_period,a synthesis of cliches and absurdities that seems positively decadent in its cinematic flash and emptiness . 
+CHR-SA-007,47,SA,,no_replaceable_sentence_final_period,a subtle and well-crafted ( for the most part ) chiller . 
+CHR-SA-007,48,SA,,no_replaceable_sentence_final_period,has a lot of the virtues of eastwood at his best . 
+CHR-SA-007,49,SA,,no_replaceable_sentence_final_period,it 's hampered by a lifetime-channel kind of plot and a lead actress who is out of her depth . 
+CHR-SA-007,50,SA,,no_replaceable_sentence_final_period,"it feels like an after-school special gussied up with some fancy special effects , and watching its rote plot points connect is about as exciting as gazing at an egg timer for 93 minutes . "
+CHR-SA-007,51,SA,,no_replaceable_sentence_final_period,"for the most part , director anne-sophie birot 's first feature is a sensitive , extraordinarily well-acted drama . "
+CHR-SA-007,52,SA,,strong_terminal_punctuation_or_ellipsis,"mr. tsai is a very original artist in his medium , and what time is it there ? "
+CHR-SA-007,53,SA,,no_replaceable_sentence_final_period,sade is an engaging look at the controversial eponymous and fiercely atheistic hero . 
+CHR-SA-007,54,SA,,no_replaceable_sentence_final_period,so devoid of any kind of intelligible story that it makes films like xxx and collateral damage seem like thoughtful treatises 
+CHR-SA-007,55,SA,,no_replaceable_sentence_final_period,"a tender , heartfelt family drama . "
+CHR-SA-007,56,SA,,strong_terminal_punctuation_or_ellipsis,... a hollow joke told by a cinematic gymnast having too much fun embellishing the misanthropic tale to actually engage it . 
+CHR-SA-007,57,SA,,no_replaceable_sentence_final_period,the cold turkey would 've been a far better title . 
+CHR-SA-007,58,SA,,no_replaceable_sentence_final_period,manages to be both repulsively sadistic and mundane . 
+CHR-SA-007,59,SA,,no_replaceable_sentence_final_period,"it 's just disappointingly superficial -- a movie that has all the elements necessary to be a fascinating , involving character study , but never does more than scratch the surface . "
+CHR-SA-007,60,SA,,no_replaceable_sentence_final_period,"this is a story of two misfits who do n't stand a chance alone , but together they are magnificent . "
+CHR-SA-007,61,SA,,no_replaceable_sentence_final_period,"schaeffer has to find some hook on which to hang his persistently useless movies , and it might as well be the resuscitation of the middle-aged character . "
+CHR-SA-007,62,SA,,no_replaceable_sentence_final_period,the primitive force of this film seems to bubble up from the vast collective memory of the combatants . 
+CHR-SA-007,63,SA,,no_replaceable_sentence_final_period,"on this tricky topic , tadpole is very much a step in the right direction , with its blend of frankness , civility and compassion . "
+CHR-SA-007,64,SA,,no_replaceable_sentence_final_period,"the script kicks in , and mr. hartley 's distended pace and foot-dragging rhythms follow . "
+CHR-SA-007,65,SA,,no_replaceable_sentence_final_period,you wonder why enough was n't just a music video rather than a full-length movie . 
+CHR-SA-007,66,SA,,no_replaceable_sentence_final_period,"if you 're hard up for raunchy college humor , this is your ticket right here . "
+CHR-SA-007,67,SA,,no_replaceable_sentence_final_period,"a fast , funny , highly enjoyable movie . "
+CHR-SA-007,68,SA,,strong_terminal_punctuation_or_ellipsis,good old-fashioned slash-and-hack is back ! 
+CHR-SA-007,69,SA,,no_replaceable_sentence_final_period,"this one is definitely one to skip , even for horror movie fanatics . "
+CHR-SA-007,70,SA,,no_replaceable_sentence_final_period,"for all its impressive craftsmanship , and despite an overbearing series of third-act crescendos , lily chou-chou never really builds up a head of emotional steam . "
+CHR-SA-007,71,SA,,no_replaceable_sentence_final_period,"exquisitely nuanced in mood tics and dialogue , this chamber drama is superbly acted by the deeply appealing veteran bouquet and the chilling but quite human berling . "
+CHR-SA-007,72,SA,,no_replaceable_sentence_final_period,uses high comedy to evoke surprising poignance . 
+CHR-SA-007,73,SA,,no_replaceable_sentence_final_period,"one of creepiest , scariest movies to come along in a long , long time , easily rivaling blair witch or the others . "
+CHR-SA-007,74,SA,,no_replaceable_sentence_final_period,a string of rehashed sight gags based in insipid vulgarity . 
+CHR-SA-007,75,SA,,no_replaceable_sentence_final_period,among the year 's most intriguing explorations of alientation . 
+CHR-SA-007,76,SA,,no_replaceable_sentence_final_period,the movie fails to live up to the sum of its parts . 
+CHR-SA-007,77,SA,,no_replaceable_sentence_final_period,the son 's room is a triumph of gentility that earns its moments of pathos . 
+CHR-SA-007,78,SA,,no_replaceable_sentence_final_period,"there is nothing outstanding about this film , but it is good enough and will likely be appreciated most by sailors and folks who know their way around a submarine . "
+CHR-SA-007,79,SA,,no_replaceable_sentence_final_period,this is a train wreck of an action film -- a stupefying attempt by the filmmakers to force-feed james bond into the mindless xxx mold and throw 40 years of cinematic history down the toilet in favor of bright flashes and loud bangs . 
+CHR-SA-007,80,SA,,no_replaceable_sentence_final_period,the draw ( for `` big bad love '' ) is a solid performance by arliss howard . 
+CHR-SA-007,81,SA,,no_replaceable_sentence_final_period,"green might want to hang onto that ski mask , as robbery may be the only way to pay for his next project . "
+CHR-SA-007,82,SA,,no_replaceable_sentence_final_period,it 's one pussy-ass world when even killer-thrillers revolve around group therapy sessions . 
+CHR-SA-007,83,SA,,no_replaceable_sentence_final_period,"though it 's become almost redundant to say so , major kudos go to leigh for actually casting people who look working-class . "
+CHR-SA-007,84,SA,,no_replaceable_sentence_final_period,"the band 's courage in the face of official repression is inspiring , especially for aging hippies ( this one included ) . "
+CHR-SA-007,85,SA,,strong_terminal_punctuation_or_ellipsis,the movie achieves as great an impact by keeping these thoughts hidden as ... ( quills ) did by showing them . 
+CHR-SA-007,86,SA,,no_replaceable_sentence_final_period,"the film flat lines when it should peak and is more missed opportunity and trifle than dark , decadent truffle . "
+CHR-SA-007,87,SA,,strong_terminal_punctuation_or_ellipsis,jaglom ... put ( s ) the audience in the privileged position of eavesdropping on his characters 
+CHR-SA-007,88,SA,,no_replaceable_sentence_final_period,fresnadillo 's dark and jolting images have a way of plying into your subconscious like the nightmare you had a week ago that wo n't go away . 
+CHR-SA-007,89,SA,,no_replaceable_sentence_final_period,"we know the plot 's a little crazy , but it held my interest from start to finish . "
+CHR-SA-007,90,SA,,no_replaceable_sentence_final_period,"it 's a scattershot affair , but when it hits its mark it 's brilliant . "
+CHR-SA-007,91,SA,,no_replaceable_sentence_final_period,"hardly a masterpiece , but it introduces viewers to a good charitable enterprise and some interesting real people . "
+CHR-SA-007,92,SA,,no_replaceable_sentence_final_period,"you wo n't like roger , but you will quickly recognize him . "
+CHR-SA-007,93,SA,,no_replaceable_sentence_final_period,if steven soderbergh 's ` solaris ' is a failure it is a glorious failure . 
+CHR-SA-007,94,SA,,no_replaceable_sentence_final_period,"byler reveals his characters in a way that intrigues and even fascinates us , and he never reduces the situation to simple melodrama . "
+CHR-SA-007,95,SA,,no_replaceable_sentence_final_period,this riveting world war ii moral suspense story deals with the shadow side of american culture : racial prejudice in its ugly and diverse forms . 
+CHR-SA-007,96,SA,,no_replaceable_sentence_final_period,"it 's difficult to imagine the process that produced such a script , but here 's guessing that spray cheese and underarm noises played a crucial role . "
+CHR-SA-007,97,SA,,no_replaceable_sentence_final_period,"no sophomore slump for director sam mendes , who segues from oscar winner to oscar-winning potential with a smooth sleight of hand . "
+CHR-SA-007,98,SA,,no_replaceable_sentence_final_period,"on the whole , the movie lacks wit , feeling and believability to compensate for its incessant coarseness and banality . "
+CHR-SA-007,99,SA,,strong_terminal_punctuation_or_ellipsis,why make a documentary about these marginal historical figures ? 
+CHR-SA-008,6,SA,,no_valid_intensifier_target,a sometimes tedious film . 
+CHR-SA-008,12,SA,,no_valid_intensifier_target,... the film suffers from a lack of humor ( something needed to balance out the violence ) ... 
+CHR-SA-008,13,SA,,no_valid_intensifier_target,"we root for ( clara and paul ) , even like them , though perhaps it 's an emotion closer to pity . "
+CHR-SA-008,18,SA,,no_valid_intensifier_target,... the movie is just a plain old monster . 
+CHR-SA-008,22,SA,,no_valid_intensifier_target,holden caulfield did it better . 
+CHR-SA-008,28,SA,,no_valid_intensifier_target,"it 's a cookie-cutter movie , a cut-and-paste job . "
+CHR-SA-008,34,SA,,no_valid_intensifier_target,"it does n't believe in itself , it has no sense of humor ... it 's just plain bored . "
+CHR-SA-008,38,SA,,no_valid_intensifier_target,"as surreal as a dream and as detailed as a photograph , as visually dexterous as it is at times imaginatively overwhelming . "
+CHR-SA-008,43,SA,,no_valid_intensifier_target,holm ... embodies the character with an effortlessly regal charisma . 
+CHR-SA-008,48,SA,,no_valid_intensifier_target,has a lot of the virtues of eastwood at his best . 
+CHR-SA-008,49,SA,,no_valid_intensifier_target,it 's hampered by a lifetime-channel kind of plot and a lead actress who is out of her depth . 
+CHR-SA-008,52,SA,,no_valid_intensifier_target,"mr. tsai is a very original artist in his medium , and what time is it there ? "
+CHR-SA-008,64,SA,,no_valid_intensifier_target,"the script kicks in , and mr. hartley 's distended pace and foot-dragging rhythms follow . "
+CHR-SA-008,75,SA,,no_valid_intensifier_target,among the year 's most intriguing explorations of alientation . 
+CHR-SA-008,76,SA,,no_valid_intensifier_target,the movie fails to live up to the sum of its parts . 
+CHR-SA-008,77,SA,,no_valid_intensifier_target,the son 's room is a triumph of gentility that earns its moments of pathos . 
+CHR-NLI-004,nli-0,NLI,,partial_substitution,premise: Two women are embracing while holding to go packages. || hypothesis: The sisters are hugging goodbye while holding to go packages after just eating lunch.
+CHR-NLI-004,nli-2,NLI,,mixed_gender_input,premise: Two women are embracing while holding to go packages. || hypothesis: The men are fighting outside a deli.
+CHR-NLI-004,nli-3,NLI,,no_gendered_words,"premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink. || hypothesis: Two kids in numbered jerseys wash their hands."
+CHR-NLI-004,nli-4,NLI,,no_gendered_words,"premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink. || hypothesis: Two kids at a ballgame wash their hands."
+CHR-NLI-004,nli-5,NLI,,no_gendered_words,"premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink. || hypothesis: Two kids in jackets walk to school."
+CHR-NLI-004,nli-6,NLI,,mixed_gender_input,premise: A man selling donuts to a customer during a world exhibition event held in the city of Angeles || hypothesis: A woman drinks her coffee in a small cafe.
+CHR-NLI-004,nli-10,NLI,,partial_substitution,"premise: Two young boys of opposing teams play football, while wearing full protection uniforms and helmets. || hypothesis: dog eats out of bowl"
+CHR-NLI-004,nli-15,NLI,,no_gendered_words,"premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass. || hypothesis: A child is reaching to touch the propeller of a plane."
+CHR-NLI-004,nli-16,NLI,,no_gendered_words,"premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass. || hypothesis: A child is reaching to touch the propeller out of curiosity."
+CHR-NLI-004,nli-17,NLI,,no_gendered_words,"premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass. || hypothesis: A child is playing with a ball."
+CHR-NLI-004,nli-21,NLI,,partial_substitution,premise: Two men on bicycles competing in a race. || hypothesis: People are riding bikes.
+CHR-NLI-004,nli-23,NLI,,partial_substitution,premise: Two men on bicycles competing in a race. || hypothesis: A few people are catching fish.
+CHR-NLI-004,nli-26,NLI,,partial_substitution,premise: A young boy in a field of flowers carrying a ball || hypothesis: dog in pool
+CHR-NLI-004,nli-27,NLI,,no_gendered_words,premise: Families waiting in line at an amusement park for their turn to ride. || hypothesis: The restaurant is very bad.
+CHR-NLI-004,nli-28,NLI,,no_gendered_words,premise: Families waiting in line at an amusement park for their turn to ride. || hypothesis: People are waiting in line at a restaurant.
+CHR-NLI-004,nli-29,NLI,,no_gendered_words,premise: Families waiting in line at an amusement park for their turn to ride. || hypothesis: People are waiting to see a movie.
+CHR-NLI-004,nli-30,NLI,,partial_substitution,premise: A senior is waiting at the window of a restaurant that serves sandwiches. || hypothesis: A person waits to be served his food.
+CHR-NLI-004,nli-31,NLI,,partial_substitution,premise: A senior is waiting at the window of a restaurant that serves sandwiches. || hypothesis: A man is waiting in line for the bus.
+CHR-NLI-004,nli-32,NLI,,partial_substitution,premise: A senior is waiting at the window of a restaurant that serves sandwiches. || hypothesis: A man is looking to order a grilled cheese sandwich.
+CHR-NLI-004,nli-33,NLI,,partial_substitution,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: A person in a suit"
+CHR-NLI-004,nli-34,NLI,,partial_substitution,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: Nobody has a suit"
+CHR-NLI-004,nli-35,NLI,,partial_substitution,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: A tall person in a suit"
+CHR-NLI-004,nli-39,NLI,,partial_substitution,"premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera. || hypothesis: A single man is next to a camera"
+CHR-NLI-004,nli-40,NLI,,no_gendered_words,"premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera. || hypothesis: A crowd is dancing"
+CHR-NLI-004,nli-41,NLI,,no_gendered_words,"premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera. || hypothesis: A crowd is in front of a camera"
+CHR-NLI-004,nli-42,NLI,,no_gendered_words,premise: Two doctors perform surgery on patient. || hypothesis: Two surgeons are having lunch.
+CHR-NLI-004,nli-43,NLI,,no_gendered_words,premise: Two doctors perform surgery on patient. || hypothesis: Doctors are performing surgery.
+CHR-NLI-004,nli-44,NLI,,partial_substitution,premise: Two doctors perform surgery on patient. || hypothesis: Two doctors are performing surgery on a man.
+CHR-NLI-004,nli-45,NLI,,no_gendered_words,premise: A white dog with long hair jumps to catch a red and green toy. || hypothesis: A white dog with long hair is swimming underwater.
+CHR-NLI-004,nli-46,NLI,,no_gendered_words,premise: A white dog with long hair jumps to catch a red and green toy. || hypothesis: An animal is jumping to catch an object.
+CHR-NLI-004,nli-47,NLI,,no_gendered_words,premise: A white dog with long hair jumps to catch a red and green toy. || hypothesis: A white chihuahua mix with long curly hair is jumping to catch a red and green toy bone.
+CHR-NLI-004,nli-48,NLI,,no_gendered_words,premise: Kids are on a amusement ride. || hypothesis: Kids ride their favorite amusement ride.
+CHR-NLI-004,nli-49,NLI,,no_gendered_words,premise: Kids are on a amusement ride. || hypothesis: A car is broke down on the side of the road.
+CHR-NLI-004,nli-50,NLI,,no_gendered_words,premise: Kids are on a amusement ride. || hypothesis: Kids ride an amusement ride.
+CHR-NLI-004,nli-54,NLI,,partial_substitution,premise: A older gentleman finds it humorous that he is getting his picture taken while doing his laundry. || hypothesis: a blond man laughs while doing laundry
+CHR-NLI-004,nli-55,NLI,,partial_substitution,premise: A older gentleman finds it humorous that he is getting his picture taken while doing his laundry. || hypothesis: a guy laughs while doing laundry
+CHR-NLI-004,nli-56,NLI,,mixed_gender_input,premise: A older gentleman finds it humorous that he is getting his picture taken while doing his laundry. || hypothesis: two ladies pin clothes to dry
+CHR-NLI-004,nli-59,NLI,,mixed_gender_input,premise: An Indian woman is washing and cleaning dirty laundry at a lake and in the background is a kid who appears to have jumped into the lake. || hypothesis: An Indian woman is doing laundry for her son in the lake.
+CHR-NLI-004,nli-60,NLI,,partial_substitution,premise: A man in a green jersey and rollerskates stumbles as a man in a black jersey appears to collide with him. || hypothesis: They are driving cars.
+CHR-NLI-004,nli-61,NLI,,partial_substitution,premise: A man in a green jersey and rollerskates stumbles as a man in a black jersey appears to collide with him. || hypothesis: They both fall to the ground.
+CHR-NLI-004,nli-63,NLI,,mixed_gender_input,premise: A group of onlookers glance at a person doing a strange trick on her head. || hypothesis: A boy does a card trick.
+CHR-NLI-004,nli-64,NLI,,partial_substitution,premise: A group of onlookers glance at a person doing a strange trick on her head. || hypothesis: Onlookers are impressed by the trick.
+CHR-NLI-004,nli-65,NLI,,partial_substitution,premise: A group of onlookers glance at a person doing a strange trick on her head. || hypothesis: People watch another person do a trick.
+CHR-NLI-004,nli-72,NLI,,no_gendered_words,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: Nobody has a shirt on
+CHR-NLI-004,nli-73,NLI,,no_gendered_words,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: A person in a shirt
+CHR-NLI-004,nli-74,NLI,,no_gendered_words,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: A tall person in a shirt
+CHR-NLI-004,nli-78,NLI,,mixed_gender_input,premise: A shirtless man is singing into a microphone while a woman next to him plays an accordion. || hypothesis: He is Polish.
+CHR-NLI-004,nli-79,NLI,,mixed_gender_input,premise: A shirtless man is singing into a microphone while a woman next to him plays an accordion. || hypothesis: He is playing a saxophone.
+CHR-NLI-004,nli-80,NLI,,mixed_gender_input,premise: A shirtless man is singing into a microphone while a woman next to him plays an accordion. || hypothesis: A man is singing into a microphone.
+CHR-NLI-004,nli-81,NLI,,partial_substitution,premise: Women and children sitting outside in the shade while a group of younger children sitting inside in the shade. || hypothesis: It is very sunny outside.
+CHR-NLI-004,nli-84,NLI,,partial_substitution,premise: A pregnant lady singing on stage while holding a flag behind her. || hypothesis: A woman is sick in bed.
+CHR-NLI-004,nli-85,NLI,,partial_substitution,premise: A pregnant lady singing on stage while holding a flag behind her. || hypothesis: A woman is making music.
+CHR-NLI-004,nli-86,NLI,,partial_substitution,premise: A pregnant lady singing on stage while holding a flag behind her. || hypothesis: A lady is participating in a talent show.
+CHR-NLI-004,nli-87,NLI,,partial_substitution,premise: The two farmers are working on a piece of John Deere equipment. || hypothesis: Men are working on John Deere equipment
+CHR-NLI-004,nli-88,NLI,,no_gendered_words,premise: The two farmers are working on a piece of John Deere equipment. || hypothesis: John Deere equipment is being worked on by two farmers
+CHR-NLI-004,nli-89,NLI,,partial_substitution,premise: The two farmers are working on a piece of John Deere equipment. || hypothesis: 2 Men are making a pool together
+CHR-NLI-004,nli-96,NLI,,no_gendered_words,premise: A baby at the end of a slip and slide at a party || hypothesis: The baby is wet.
+CHR-NLI-004,nli-97,NLI,,partial_substitution,premise: A baby at the end of a slip and slide at a party || hypothesis: The man is at the end of the slip and slide
+CHR-NLI-004,nli-98,NLI,,no_gendered_words,premise: A baby at the end of a slip and slide at a party || hypothesis: There is a party
+CHR-NLI-005,nli-0,NLI,,partial_substitution,premise: Two women are embracing while holding to go packages. || hypothesis: The sisters are hugging goodbye while holding to go packages after just eating lunch.
+CHR-NLI-005,nli-2,NLI,,mixed_gender_input,premise: Two women are embracing while holding to go packages. || hypothesis: The men are fighting outside a deli.
+CHR-NLI-005,nli-3,NLI,,no_gendered_words,"premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink. || hypothesis: Two kids in numbered jerseys wash their hands."
+CHR-NLI-005,nli-4,NLI,,no_gendered_words,"premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink. || hypothesis: Two kids at a ballgame wash their hands."
+CHR-NLI-005,nli-5,NLI,,no_gendered_words,"premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink. || hypothesis: Two kids in jackets walk to school."
+CHR-NLI-005,nli-6,NLI,,mixed_gender_input,premise: A man selling donuts to a customer during a world exhibition event held in the city of Angeles || hypothesis: A woman drinks her coffee in a small cafe.
+CHR-NLI-005,nli-10,NLI,,partial_substitution,"premise: Two young boys of opposing teams play football, while wearing full protection uniforms and helmets. || hypothesis: dog eats out of bowl"
+CHR-NLI-005,nli-15,NLI,,no_gendered_words,"premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass. || hypothesis: A child is reaching to touch the propeller of a plane."
+CHR-NLI-005,nli-16,NLI,,no_gendered_words,"premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass. || hypothesis: A child is reaching to touch the propeller out of curiosity."
+CHR-NLI-005,nli-17,NLI,,no_gendered_words,"premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass. || hypothesis: A child is playing with a ball."
+CHR-NLI-005,nli-21,NLI,,partial_substitution,premise: Two men on bicycles competing in a race. || hypothesis: People are riding bikes.
+CHR-NLI-005,nli-23,NLI,,partial_substitution,premise: Two men on bicycles competing in a race. || hypothesis: A few people are catching fish.
+CHR-NLI-005,nli-26,NLI,,partial_substitution,premise: A young boy in a field of flowers carrying a ball || hypothesis: dog in pool
+CHR-NLI-005,nli-27,NLI,,no_gendered_words,premise: Families waiting in line at an amusement park for their turn to ride. || hypothesis: The restaurant is very bad.
+CHR-NLI-005,nli-28,NLI,,no_gendered_words,premise: Families waiting in line at an amusement park for their turn to ride. || hypothesis: People are waiting in line at a restaurant.
+CHR-NLI-005,nli-29,NLI,,no_gendered_words,premise: Families waiting in line at an amusement park for their turn to ride. || hypothesis: People are waiting to see a movie.
+CHR-NLI-005,nli-30,NLI,,partial_substitution,premise: A senior is waiting at the window of a restaurant that serves sandwiches. || hypothesis: A person waits to be served his food.
+CHR-NLI-005,nli-31,NLI,,partial_substitution,premise: A senior is waiting at the window of a restaurant that serves sandwiches. || hypothesis: A man is waiting in line for the bus.
+CHR-NLI-005,nli-32,NLI,,partial_substitution,premise: A senior is waiting at the window of a restaurant that serves sandwiches. || hypothesis: A man is looking to order a grilled cheese sandwich.
+CHR-NLI-005,nli-33,NLI,,partial_substitution,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: A person in a suit"
+CHR-NLI-005,nli-34,NLI,,partial_substitution,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: Nobody has a suit"
+CHR-NLI-005,nli-35,NLI,,partial_substitution,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: A tall person in a suit"
+CHR-NLI-005,nli-39,NLI,,partial_substitution,"premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera. || hypothesis: A single man is next to a camera"
+CHR-NLI-005,nli-40,NLI,,no_gendered_words,"premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera. || hypothesis: A crowd is dancing"
+CHR-NLI-005,nli-41,NLI,,no_gendered_words,"premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera. || hypothesis: A crowd is in front of a camera"
+CHR-NLI-005,nli-42,NLI,,no_gendered_words,premise: Two doctors perform surgery on patient. || hypothesis: Two surgeons are having lunch.
+CHR-NLI-005,nli-43,NLI,,no_gendered_words,premise: Two doctors perform surgery on patient. || hypothesis: Doctors are performing surgery.
+CHR-NLI-005,nli-44,NLI,,partial_substitution,premise: Two doctors perform surgery on patient. || hypothesis: Two doctors are performing surgery on a man.
+CHR-NLI-005,nli-45,NLI,,no_gendered_words,premise: A white dog with long hair jumps to catch a red and green toy. || hypothesis: A white dog with long hair is swimming underwater.
+CHR-NLI-005,nli-46,NLI,,no_gendered_words,premise: A white dog with long hair jumps to catch a red and green toy. || hypothesis: An animal is jumping to catch an object.
+CHR-NLI-005,nli-47,NLI,,no_gendered_words,premise: A white dog with long hair jumps to catch a red and green toy. || hypothesis: A white chihuahua mix with long curly hair is jumping to catch a red and green toy bone.
+CHR-NLI-005,nli-48,NLI,,no_gendered_words,premise: Kids are on a amusement ride. || hypothesis: Kids ride their favorite amusement ride.
+CHR-NLI-005,nli-49,NLI,,no_gendered_words,premise: Kids are on a amusement ride. || hypothesis: A car is broke down on the side of the road.
+CHR-NLI-005,nli-50,NLI,,no_gendered_words,premise: Kids are on a amusement ride. || hypothesis: Kids ride an amusement ride.
+CHR-NLI-005,nli-56,NLI,,mixed_gender_input,premise: A older gentleman finds it humorous that he is getting his picture taken while doing his laundry. || hypothesis: two ladies pin clothes to dry
+CHR-NLI-005,nli-59,NLI,,mixed_gender_input,premise: An Indian woman is washing and cleaning dirty laundry at a lake and in the background is a kid who appears to have jumped into the lake. || hypothesis: An Indian woman is doing laundry for her son in the lake.
+CHR-NLI-005,nli-60,NLI,,partial_substitution,premise: A man in a green jersey and rollerskates stumbles as a man in a black jersey appears to collide with him. || hypothesis: They are driving cars.
+CHR-NLI-005,nli-61,NLI,,partial_substitution,premise: A man in a green jersey and rollerskates stumbles as a man in a black jersey appears to collide with him. || hypothesis: They both fall to the ground.
+CHR-NLI-005,nli-63,NLI,,mixed_gender_input,premise: A group of onlookers glance at a person doing a strange trick on her head. || hypothesis: A boy does a card trick.
+CHR-NLI-005,nli-64,NLI,,partial_substitution,premise: A group of onlookers glance at a person doing a strange trick on her head. || hypothesis: Onlookers are impressed by the trick.
+CHR-NLI-005,nli-65,NLI,,partial_substitution,premise: A group of onlookers glance at a person doing a strange trick on her head. || hypothesis: People watch another person do a trick.
+CHR-NLI-005,nli-72,NLI,,no_gendered_words,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: Nobody has a shirt on
+CHR-NLI-005,nli-73,NLI,,no_gendered_words,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: A person in a shirt
+CHR-NLI-005,nli-74,NLI,,no_gendered_words,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: A tall person in a shirt
+CHR-NLI-005,nli-78,NLI,,mixed_gender_input,premise: A shirtless man is singing into a microphone while a woman next to him plays an accordion. || hypothesis: He is Polish.
+CHR-NLI-005,nli-79,NLI,,mixed_gender_input,premise: A shirtless man is singing into a microphone while a woman next to him plays an accordion. || hypothesis: He is playing a saxophone.
+CHR-NLI-005,nli-80,NLI,,mixed_gender_input,premise: A shirtless man is singing into a microphone while a woman next to him plays an accordion. || hypothesis: A man is singing into a microphone.
+CHR-NLI-005,nli-81,NLI,,partial_substitution,premise: Women and children sitting outside in the shade while a group of younger children sitting inside in the shade. || hypothesis: It is very sunny outside.
+CHR-NLI-005,nli-87,NLI,,partial_substitution,premise: The two farmers are working on a piece of John Deere equipment. || hypothesis: Men are working on John Deere equipment
+CHR-NLI-005,nli-88,NLI,,no_gendered_words,premise: The two farmers are working on a piece of John Deere equipment. || hypothesis: John Deere equipment is being worked on by two farmers
+CHR-NLI-005,nli-89,NLI,,partial_substitution,premise: The two farmers are working on a piece of John Deere equipment. || hypothesis: 2 Men are making a pool together
+CHR-NLI-005,nli-96,NLI,,no_gendered_words,premise: A baby at the end of a slip and slide at a party || hypothesis: The baby is wet.
+CHR-NLI-005,nli-97,NLI,,partial_substitution,premise: A baby at the end of a slip and slide at a party || hypothesis: The man is at the end of the slip and slide
+CHR-NLI-005,nli-98,NLI,,no_gendered_words,premise: A baby at the end of a slip and slide at a party || hypothesis: There is a party
+CHR-NLI-006,nli-0,NLI,,neutral_label,premise: Two women are embracing while holding to go packages. || hypothesis: The sisters are hugging goodbye while holding to go packages after just eating lunch.
+CHR-NLI-006,nli-4,NLI,,neutral_label,"premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink. || hypothesis: Two kids at a ballgame wash their hands."
+CHR-NLI-006,nli-7,NLI,,neutral_label,premise: A man selling donuts to a customer during a world exhibition event held in the city of Angeles || hypothesis: A man selling donuts to a customer during a world exhibition event while people wait in line behind him.
+CHR-NLI-006,nli-8,NLI,,no_supported_negation_insertion_case,premise: A man selling donuts to a customer during a world exhibition event held in the city of Angeles || hypothesis: A man selling donuts to a customer.
+CHR-NLI-006,nli-11,NLI,,neutral_label,"premise: Two young boys of opposing teams play football, while wearing full protection uniforms and helmets. || hypothesis: boys scoring a touchdown"
+CHR-NLI-006,nli-12,NLI,,neutral_label,premise: A man in a blue shirt standing in front of a garage-like structure painted with geometric designs. || hypothesis: A man is repainting a garage
+CHR-NLI-006,nli-16,NLI,,neutral_label,"premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass. || hypothesis: A child is reaching to touch the propeller out of curiosity."
+CHR-NLI-006,nli-22,NLI,,neutral_label,premise: Two men on bicycles competing in a race. || hypothesis: Men are riding bicycles on the street.
+CHR-NLI-006,nli-24,NLI,,neutral_label,premise: A young boy in a field of flowers carrying a ball || hypothesis: boy leaving baseball game
+CHR-NLI-006,nli-25,NLI,,no_supported_negation_insertion_case,premise: A young boy in a field of flowers carrying a ball || hypothesis: boy in field
+CHR-NLI-006,nli-26,NLI,,no_supported_negation_insertion_case,premise: A young boy in a field of flowers carrying a ball || hypothesis: dog in pool
+CHR-NLI-006,nli-32,NLI,,neutral_label,premise: A senior is waiting at the window of a restaurant that serves sandwiches. || hypothesis: A man is looking to order a grilled cheese sandwich.
+CHR-NLI-006,nli-33,NLI,,no_supported_negation_insertion_case,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: A person in a suit"
+CHR-NLI-006,nli-34,NLI,,existing_negation_in_hypothesis,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: Nobody has a suit"
+CHR-NLI-006,nli-35,NLI,,neutral_label,"premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him. || hypothesis: A tall person in a suit"
+CHR-NLI-006,nli-38,NLI,,neutral_label,premise: Two women having drinks and smoking cigarettes at the bar. || hypothesis: Women are celebrating at a bar.
+CHR-NLI-006,nli-40,NLI,,neutral_label,"premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera. || hypothesis: A crowd is dancing"
+CHR-NLI-006,nli-41,NLI,,neutral_label,"premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera. || hypothesis: A crowd is in front of a camera"
+CHR-NLI-006,nli-44,NLI,,neutral_label,premise: Two doctors perform surgery on patient. || hypothesis: Two doctors are performing surgery on a man.
+CHR-NLI-006,nli-47,NLI,,neutral_label,premise: A white dog with long hair jumps to catch a red and green toy. || hypothesis: A white chihuahua mix with long curly hair is jumping to catch a red and green toy bone.
+CHR-NLI-006,nli-48,NLI,,neutral_label,premise: Kids are on a amusement ride. || hypothesis: Kids ride their favorite amusement ride.
+CHR-NLI-006,nli-51,NLI,,neutral_label,premise: A man in a black shirt is playing golf outside. || hypothesis: A man plays on a golf course to relax.
+CHR-NLI-006,nli-54,NLI,,neutral_label,premise: A older gentleman finds it humorous that he is getting his picture taken while doing his laundry. || hypothesis: a blond man laughs while doing laundry
+CHR-NLI-006,nli-56,NLI,,no_supported_negation_insertion_case,premise: A older gentleman finds it humorous that he is getting his picture taken while doing his laundry. || hypothesis: two ladies pin clothes to dry
+CHR-NLI-006,nli-59,NLI,,neutral_label,premise: An Indian woman is washing and cleaning dirty laundry at a lake and in the background is a kid who appears to have jumped into the lake. || hypothesis: An Indian woman is doing laundry for her son in the lake.
+CHR-NLI-006,nli-61,NLI,,neutral_label,premise: A man in a green jersey and rollerskates stumbles as a man in a black jersey appears to collide with him. || hypothesis: They both fall to the ground.
+CHR-NLI-006,nli-64,NLI,,neutral_label,premise: A group of onlookers glance at a person doing a strange trick on her head. || hypothesis: Onlookers are impressed by the trick.
+CHR-NLI-006,nli-66,NLI,,nli_006_checks_failed,premise: The middle eastern woman wearing the pink headscarf is walking beside a woman in a purple headscarf. || hypothesis: Two women are walking together.
+CHR-NLI-006,nli-68,NLI,,neutral_label,premise: The middle eastern woman wearing the pink headscarf is walking beside a woman in a purple headscarf. || hypothesis: These two women are friends.
+CHR-NLI-006,nli-71,NLI,,neutral_label,"premise: A taxi SUV drives past an urban construction site, as a man walks down the street in the other direction. || hypothesis: A taxi SUV races to pick up some clients while a man walks peacefully in the other direction."
+CHR-NLI-006,nli-72,NLI,,existing_negation_in_hypothesis,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: Nobody has a shirt on
+CHR-NLI-006,nli-73,NLI,,no_supported_negation_insertion_case,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: A person in a shirt
+CHR-NLI-006,nli-74,NLI,,neutral_label,premise: People wearing red shirts are standing in a large pool of water as it splashes over and around them. || hypothesis: A tall person in a shirt
+CHR-NLI-006,nli-77,NLI,,neutral_label,premise: A man in a white t-shirt takes a picture in the middle of the street with two public buses in the background. || hypothesis: A man is taking photos while on tour in nyc
+CHR-NLI-006,nli-78,NLI,,neutral_label,premise: A shirtless man is singing into a microphone while a woman next to him plays an accordion. || hypothesis: He is Polish.
+CHR-NLI-006,nli-81,NLI,,neutral_label,premise: Women and children sitting outside in the shade while a group of younger children sitting inside in the shade. || hypothesis: It is very sunny outside.
+CHR-NLI-006,nli-82,NLI,,no_supported_negation_insertion_case,premise: Women and children sitting outside in the shade while a group of younger children sitting inside in the shade. || hypothesis: The woman and kids and sitting down.
+CHR-NLI-006,nli-86,NLI,,neutral_label,premise: A pregnant lady singing on stage while holding a flag behind her. || hypothesis: A lady is participating in a talent show.
+CHR-NLI-006,nli-90,NLI,,neutral_label,premise: A little boy in a blue shirt holding a toy. || hypothesis: Boy dressed in blue carrying toy to a toybox.
+CHR-NLI-006,nli-91,NLI,,no_supported_negation_insertion_case,premise: A little boy in a blue shirt holding a toy. || hypothesis: Boy dressed in red lighting things on fire.
+CHR-NLI-006,nli-93,NLI,,neutral_label,premise: A woman is writing something on a post-it note which is hanging on a bulletin board with a lot of other post-it notes. || hypothesis: The woman is writing a grocery list.
+CHR-NLI-006,nli-99,NLI,,neutral_label,premise: A girl swings high in the air. || hypothesis: A girl is gaining momentum to flip off the swing
+CHR-GEN-018,0,SA,lowercase,already_lowercase,it 's a charming and often affecting journey . 
+CHR-GEN-018,1,SA,lowercase,already_lowercase,unflinchingly bleak and desperate 
+CHR-GEN-018,2,SA,lowercase,already_lowercase,allows us to hope that nolan is poised to embark a major career as a commercial yet inventive filmmaker . 
+CHR-GEN-018,3,SA,lowercase,already_lowercase,"the acting , costumes , music , cinematography and sound are all astounding given the production 's austere locales . "
+CHR-GEN-018,4,SA,lowercase,already_lowercase,"it 's slow -- very , very slow . "
+CHR-GEN-018,5,SA,lowercase,already_lowercase,"although laced with humor and a few fanciful touches , the film is a refreshingly serious look at young women . "
+CHR-GEN-018,6,SA,lowercase,already_lowercase,a sometimes tedious film . 
+CHR-GEN-018,7,SA,lowercase,already_lowercase,or doing last year 's taxes with your ex-wife . 
+CHR-GEN-018,8,SA,lowercase,already_lowercase,you do n't have to know about music to appreciate the film 's easygoing blend of comedy and romance . 
+CHR-GEN-018,9,SA,lowercase,already_lowercase,"in exactly 89 minutes , most of which passed as slowly as if i 'd been sitting naked on an igloo , formula 51 sank from quirky to jerky to utter turkey . "
+CHR-GEN-018,10,SA,lowercase,already_lowercase,the mesmerizing performances of the leads keep the film grounded and keep the audience riveted . 
+CHR-GEN-018,11,SA,lowercase,already_lowercase,"it takes a strange kind of laziness to waste the talents of robert forster , anne meara , eugene levy , and reginald veljohnson all in the same movie . "
+CHR-GEN-018,12,SA,lowercase,already_lowercase,... the film suffers from a lack of humor ( something needed to balance out the violence ) ... 
+CHR-GEN-018,13,SA,lowercase,already_lowercase,"we root for ( clara and paul ) , even like them , though perhaps it 's an emotion closer to pity . "
+CHR-GEN-018,14,SA,lowercase,already_lowercase,even horror fans will most likely not find what they 're seeking with trouble every day ; the movie lacks both thrills and humor . 
+CHR-GEN-018,15,SA,lowercase,already_lowercase,"a gorgeous , high-spirited musical from india that exquisitely blends music , dance , song , and high drama . "
+CHR-GEN-018,16,SA,lowercase,already_lowercase,the emotions are raw and will strike a nerve with anyone who 's ever had family trauma . 
+CHR-GEN-018,17,SA,lowercase,already_lowercase,"audrey tatou has a knack for picking roles that magnify her outrageous charm , and in this literate french comedy , she 's as morning-glory exuberant as she was in amélie . "
+CHR-GEN-018,18,SA,lowercase,already_lowercase,... the movie is just a plain old monster . 
+CHR-GEN-018,19,SA,lowercase,already_lowercase,"in its best moments , resembles a bad high school production of grease , without benefit of song . "
+CHR-GEN-018,20,SA,lowercase,already_lowercase,"pumpkin takes an admirable look at the hypocrisy of political correctness , but it does so with such an uneven tone that you never know when humor ends and tragedy begins . "
+CHR-GEN-018,21,SA,lowercase,already_lowercase,the iditarod lasts for days - this just felt like it did . 
+CHR-GEN-018,22,SA,lowercase,already_lowercase,holden caulfield did it better . 
+CHR-GEN-018,23,SA,lowercase,already_lowercase,"a delectable and intriguing thriller filled with surprises , read my lips is an original . "
+CHR-GEN-018,24,SA,lowercase,already_lowercase,seldom has a movie so closely matched the spirit of a man and his work . 
+CHR-GEN-018,25,SA,lowercase,already_lowercase,"nicks , seemingly uncertain what 's going to make people laugh , runs the gamut from stale parody to raunchy sex gags to formula romantic comedy . "
+CHR-GEN-018,26,SA,lowercase,already_lowercase,"the action switches between past and present , but the material link is too tenuous to anchor the emotional connections that purport to span a 125-year divide . "
+CHR-GEN-018,27,SA,lowercase,already_lowercase,it 's an offbeat treat that pokes fun at the democratic exercise while also examining its significance for those who take part . 
+CHR-GEN-018,28,SA,lowercase,already_lowercase,"it 's a cookie-cutter movie , a cut-and-paste job . "
+CHR-GEN-018,29,SA,lowercase,already_lowercase,i had to look away - this was god awful . 
+CHR-GEN-018,30,SA,lowercase,already_lowercase,"thanks to scott 's charismatic roger and eisenberg 's sweet nephew , roger dodger is one of the most compelling variations on in the company of men . "
+CHR-GEN-018,31,SA,lowercase,already_lowercase,"... designed to provide a mix of smiles and tears , `` crossroads '' instead provokes a handful of unintentional howlers and numerous yawns . "
+CHR-GEN-018,32,SA,lowercase,already_lowercase,"a gorgeous , witty , seductive movie . "
+CHR-GEN-018,33,SA,lowercase,already_lowercase,"if the movie succeeds in instilling a wary sense of ` there but for the grace of god , ' it is far too self-conscious to draw you deeply into its world . "
+CHR-GEN-018,34,SA,lowercase,already_lowercase,"it does n't believe in itself , it has no sense of humor ... it 's just plain bored . "
+CHR-GEN-018,35,SA,lowercase,already_lowercase,a sequence of ridiculous shoot - 'em - up scenes . 
+CHR-GEN-018,36,SA,lowercase,already_lowercase,"the weight of the piece , the unerring professionalism of the chilly production , and the fascination embedded in the lurid topic prove recommendation enough . "
+CHR-GEN-018,37,SA,lowercase,already_lowercase,"( w ) hile long on amiable monkeys and worthy environmentalism , jane goodall 's wild chimpanzees is short on the thrills the oversize medium demands . "
+CHR-GEN-018,38,SA,lowercase,already_lowercase,"as surreal as a dream and as detailed as a photograph , as visually dexterous as it is at times imaginatively overwhelming . "
+CHR-GEN-018,39,SA,lowercase,already_lowercase,"escaping the studio , piccoli is warmly affecting and so is this adroitly minimalist movie . "
+CHR-GEN-018,40,SA,lowercase,already_lowercase,"there 's ... tremendous energy from the cast , a sense of playfulness and excitement that seems appropriate . "
+CHR-GEN-018,41,SA,lowercase,already_lowercase,"this illuminating documentary transcends our preconceived vision of the holy land and its inhabitants , revealing the human complexities beneath . "
+CHR-GEN-018,42,SA,lowercase,already_lowercase,the subtle strength of `` elling '' is that it never loses touch with the reality of the grim situation . 
+CHR-GEN-018,43,SA,lowercase,already_lowercase,holm ... embodies the character with an effortlessly regal charisma . 
+CHR-GEN-018,44,SA,lowercase,already_lowercase,"the title not only describes its main characters , but the lazy people behind the camera as well . "
+CHR-GEN-018,45,SA,lowercase,already_lowercase,it offers little beyond the momentary joys of pretty and weightless intellectual entertainment . 
+CHR-GEN-018,46,SA,lowercase,already_lowercase,a synthesis of cliches and absurdities that seems positively decadent in its cinematic flash and emptiness . 
+CHR-GEN-018,47,SA,lowercase,already_lowercase,a subtle and well-crafted ( for the most part ) chiller . 
+CHR-GEN-018,48,SA,lowercase,already_lowercase,has a lot of the virtues of eastwood at his best . 
+CHR-GEN-018,49,SA,lowercase,already_lowercase,it 's hampered by a lifetime-channel kind of plot and a lead actress who is out of her depth . 
+CHR-GEN-018,50,SA,lowercase,already_lowercase,"it feels like an after-school special gussied up with some fancy special effects , and watching its rote plot points connect is about as exciting as gazing at an egg timer for 93 minutes . "
+CHR-GEN-018,51,SA,lowercase,already_lowercase,"for the most part , director anne-sophie birot 's first feature is a sensitive , extraordinarily well-acted drama . "
+CHR-GEN-018,52,SA,lowercase,already_lowercase,"mr. tsai is a very original artist in his medium , and what time is it there ? "
+CHR-GEN-018,53,SA,lowercase,already_lowercase,sade is an engaging look at the controversial eponymous and fiercely atheistic hero . 
+CHR-GEN-018,54,SA,lowercase,already_lowercase,so devoid of any kind of intelligible story that it makes films like xxx and collateral damage seem like thoughtful treatises 
+CHR-GEN-018,55,SA,lowercase,already_lowercase,"a tender , heartfelt family drama . "
+CHR-GEN-018,56,SA,lowercase,already_lowercase,... a hollow joke told by a cinematic gymnast having too much fun embellishing the misanthropic tale to actually engage it . 
+CHR-GEN-018,57,SA,lowercase,already_lowercase,the cold turkey would 've been a far better title . 
+CHR-GEN-018,58,SA,lowercase,already_lowercase,manages to be both repulsively sadistic and mundane . 
+CHR-GEN-018,59,SA,lowercase,already_lowercase,"it 's just disappointingly superficial -- a movie that has all the elements necessary to be a fascinating , involving character study , but never does more than scratch the surface . "
+CHR-GEN-018,60,SA,lowercase,already_lowercase,"this is a story of two misfits who do n't stand a chance alone , but together they are magnificent . "
+CHR-GEN-018,61,SA,lowercase,already_lowercase,"schaeffer has to find some hook on which to hang his persistently useless movies , and it might as well be the resuscitation of the middle-aged character . "
+CHR-GEN-018,62,SA,lowercase,already_lowercase,the primitive force of this film seems to bubble up from the vast collective memory of the combatants . 
+CHR-GEN-018,63,SA,lowercase,already_lowercase,"on this tricky topic , tadpole is very much a step in the right direction , with its blend of frankness , civility and compassion . "
+CHR-GEN-018,64,SA,lowercase,already_lowercase,"the script kicks in , and mr. hartley 's distended pace and foot-dragging rhythms follow . "
+CHR-GEN-018,65,SA,lowercase,already_lowercase,you wonder why enough was n't just a music video rather than a full-length movie . 
+CHR-GEN-018,66,SA,lowercase,already_lowercase,"if you 're hard up for raunchy college humor , this is your ticket right here . "
+CHR-GEN-018,67,SA,lowercase,already_lowercase,"a fast , funny , highly enjoyable movie . "
+CHR-GEN-018,68,SA,lowercase,already_lowercase,good old-fashioned slash-and-hack is back ! 
+CHR-GEN-018,69,SA,lowercase,already_lowercase,"this one is definitely one to skip , even for horror movie fanatics . "
+CHR-GEN-018,70,SA,lowercase,already_lowercase,"for all its impressive craftsmanship , and despite an overbearing series of third-act crescendos , lily chou-chou never really builds up a head of emotional steam . "
+CHR-GEN-018,71,SA,lowercase,already_lowercase,"exquisitely nuanced in mood tics and dialogue , this chamber drama is superbly acted by the deeply appealing veteran bouquet and the chilling but quite human berling . "
+CHR-GEN-018,72,SA,lowercase,already_lowercase,uses high comedy to evoke surprising poignance . 
+CHR-GEN-018,73,SA,lowercase,already_lowercase,"one of creepiest , scariest movies to come along in a long , long time , easily rivaling blair witch or the others . "
+CHR-GEN-018,74,SA,lowercase,already_lowercase,a string of rehashed sight gags based in insipid vulgarity . 
+CHR-GEN-018,75,SA,lowercase,already_lowercase,among the year 's most intriguing explorations of alientation . 
+CHR-GEN-018,76,SA,lowercase,already_lowercase,the movie fails to live up to the sum of its parts . 
+CHR-GEN-018,77,SA,lowercase,already_lowercase,the son 's room is a triumph of gentility that earns its moments of pathos . 
+CHR-GEN-018,78,SA,lowercase,already_lowercase,"there is nothing outstanding about this film , but it is good enough and will likely be appreciated most by sailors and folks who know their way around a submarine . "
+CHR-GEN-018,79,SA,lowercase,already_lowercase,this is a train wreck of an action film -- a stupefying attempt by the filmmakers to force-feed james bond into the mindless xxx mold and throw 40 years of cinematic history down the toilet in favor of bright flashes and loud bangs . 
+CHR-GEN-018,80,SA,lowercase,already_lowercase,the draw ( for `` big bad love '' ) is a solid performance by arliss howard . 
+CHR-GEN-018,81,SA,lowercase,already_lowercase,"green might want to hang onto that ski mask , as robbery may be the only way to pay for his next project . "
+CHR-GEN-018,82,SA,lowercase,already_lowercase,it 's one pussy-ass world when even killer-thrillers revolve around group therapy sessions . 
+CHR-GEN-018,83,SA,lowercase,already_lowercase,"though it 's become almost redundant to say so , major kudos go to leigh for actually casting people who look working-class . "
+CHR-GEN-018,84,SA,lowercase,already_lowercase,"the band 's courage in the face of official repression is inspiring , especially for aging hippies ( this one included ) . "
+CHR-GEN-018,85,SA,lowercase,already_lowercase,the movie achieves as great an impact by keeping these thoughts hidden as ... ( quills ) did by showing them . 
+CHR-GEN-018,86,SA,lowercase,already_lowercase,"the film flat lines when it should peak and is more missed opportunity and trifle than dark , decadent truffle . "
+CHR-GEN-018,87,SA,lowercase,already_lowercase,jaglom ... put ( s ) the audience in the privileged position of eavesdropping on his characters 
+CHR-GEN-018,88,SA,lowercase,already_lowercase,fresnadillo 's dark and jolting images have a way of plying into your subconscious like the nightmare you had a week ago that wo n't go away . 
+CHR-GEN-018,89,SA,lowercase,already_lowercase,"we know the plot 's a little crazy , but it held my interest from start to finish . "
+CHR-GEN-018,90,SA,lowercase,already_lowercase,"it 's a scattershot affair , but when it hits its mark it 's brilliant . "
+CHR-GEN-018,91,SA,lowercase,already_lowercase,"hardly a masterpiece , but it introduces viewers to a good charitable enterprise and some interesting real people . "
+CHR-GEN-018,92,SA,lowercase,already_lowercase,"you wo n't like roger , but you will quickly recognize him . "
+CHR-GEN-018,93,SA,lowercase,already_lowercase,if steven soderbergh 's ` solaris ' is a failure it is a glorious failure . 
+CHR-GEN-018,94,SA,lowercase,already_lowercase,"byler reveals his characters in a way that intrigues and even fascinates us , and he never reduces the situation to simple melodrama . "
+CHR-GEN-018,95,SA,lowercase,already_lowercase,this riveting world war ii moral suspense story deals with the shadow side of american culture : racial prejudice in its ugly and diverse forms . 
+CHR-GEN-018,96,SA,lowercase,already_lowercase,"it 's difficult to imagine the process that produced such a script , but here 's guessing that spray cheese and underarm noises played a crucial role . "
+CHR-GEN-018,97,SA,lowercase,already_lowercase,"no sophomore slump for director sam mendes , who segues from oscar winner to oscar-winning potential with a smooth sleight of hand . "
+CHR-GEN-018,98,SA,lowercase,already_lowercase,"on the whole , the movie lacks wit , feeling and believability to compensate for its incessant coarseness and banality . "
+CHR-GEN-018,99,SA,lowercase,already_lowercase,why make a documentary about these marginal historical figures ? 
+CHR-GEN-019,12,SA,,no_eligible_word_in_sentence,... the film suffers from a lack of humor ( something needed to balance out the violence ) ... 
+CHR-GEN-019,18,SA,,no_eligible_word_in_sentence,... the movie is just a plain old monster . 
+CHR-GEN-019,31,SA,,no_eligible_word_in_sentence,"... designed to provide a mix of smiles and tears , `` crossroads '' instead provokes a handful of unintentional howlers and numerous yawns . "
+CHR-GEN-019,52,SA,,no_eligible_word_in_sentence,"mr. tsai is a very original artist in his medium , and what time is it there ? "
+CHR-GEN-019,56,SA,,no_eligible_word_in_sentence,... a hollow joke told by a cinematic gymnast having too much fun embellishing the misanthropic tale to actually engage it . 

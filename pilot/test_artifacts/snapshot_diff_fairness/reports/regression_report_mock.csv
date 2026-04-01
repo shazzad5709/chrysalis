@@ -1,0 +1,2 @@
+transition,mr_id,n_matched,pass_rate_old,pass_rate_new,matched_pass_rate_delta,behavioral_regression_flag,pipeline_severity,release_blocked
+v_mock_old→v_mock_new,CHR-SA-001,2,1.0,0.5,-0.5,True,hard-fail,True
