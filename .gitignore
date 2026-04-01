@@ -10,4 +10,7 @@ venv/
 
 pilot/data/
 pilot/models/
-pilot/artifacts/
+pilot/artifacts/corpus/
+pilot/artifacts/snapshots/
+pilot/artifacts/regression_reports/
+pilot/artifacts/manual_validation/manual_validation_viewer.ipynb
