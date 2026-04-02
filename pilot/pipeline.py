@@ -208,11 +208,33 @@ def _format_summary_table(reports: list[RegressionReport]) -> str:
 
 
 def run_training_stage(versions: list[str]) -> None:
+    raise RuntimeError("run_training_stage(args, versions=...) should be used.")
+
+
+def run_training_stage_with_args(args, versions: list[str]) -> None:
     for version in versions:
         script = PILOT_ROOT / "training" / f"train_{version.split('_', 1)[0]}.py"
         if not script.exists():
             raise FileNotFoundError(f"Training script not found: {script}")
-        subprocess.run([sys.executable, str(script)], check=True)
+        cmd = [
+            sys.executable,
+            str(script),
+            "--device",
+            args.device,
+            "--batch-size",
+            str(args.batch_size),
+            "--eval-batch-size",
+            str(args.eval_batch_size),
+            "--gradient-accumulation-steps",
+            str(args.gradient_accumulation_steps),
+            "--max-length",
+            str(args.max_length),
+            "--seed",
+            str(args.seed),
+        ]
+        if args.full_spec_train:
+            cmd.append("--full-spec")
+        subprocess.run(cmd, check=True)
 
 
 def run_corpus_stage(args) -> None:
@@ -282,9 +304,9 @@ def run_all_stage(args) -> None:
     if missing:
         raise ValueError(f"--model-loader-map must provide loaders for: {', '.join(missing)}")
 
-    run_training_stage(["v1_base"])
+    run_training_stage_with_args(args, ["v1_base"])
     run_corpus_stage(args)
-    run_training_stage(["v2_retrain", "v3_distilled"])
+    run_training_stage_with_args(args, ["v2_retrain", "v3_distilled"])
     for version in required_versions:
         run_snapshot_stage(args, model_version=version, model_loader=loader_map[version])
 
@@ -303,7 +325,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--sa-limit", type=int, default=None)
     parser.add_argument("--nli-limit", type=int, default=None)
     parser.add_argument("--model-version")
-    parser.add_argument("--model-loader")
+    parser.add_argument("--model-loader", default="pilot.model_loader:load_model_bundle")
     parser.add_argument("--model-loader-map")
     parser.add_argument("--transition")
     parser.add_argument("--old-version")
@@ -314,6 +336,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--manual-validation-dir", default=str(DEFAULT_MANUAL_VALIDATION_DIR))
     parser.add_argument("--standard-report-path")
     parser.add_argument("--fairness-report-path")
+    parser.add_argument("--device", default="auto", choices=["auto", "cuda", "cpu"])
+    parser.add_argument("--batch-size", type=int, default=4)
+    parser.add_argument("--eval-batch-size", type=int, default=8)
+    parser.add_argument("--gradient-accumulation-steps", type=int, default=4)
+    parser.add_argument("--max-length", type=int, default=128)
+    parser.add_argument("--full-spec-train", action="store_true")
     return parser
 
 
@@ -322,7 +350,7 @@ def main() -> None:
     args = build_parser().parse_args()
 
     if args.stage == "train":
-        run_training_stage(["v1_base", "v2_retrain", "v3_distilled"])
+        run_training_stage_with_args(args, ["v1_base", "v2_retrain", "v3_distilled"])
         return
     if args.stage == "corpus":
         run_corpus_stage(args)
