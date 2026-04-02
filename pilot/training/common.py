@@ -13,6 +13,7 @@ except ImportError as exc:  # pragma: no cover
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
+    DataCollatorWithPadding,
     Trainer,
     TrainingArguments,
 )
@@ -160,6 +161,7 @@ def _train_task(
     device: str,
 ) -> dict[str, float]:
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
+    data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
     tokenized_train = train_dataset.map(lambda batch: tokenize_fn(batch, tokenizer, max_length), batched=True)
     tokenized_eval = eval_dataset.map(lambda batch: tokenize_fn(batch, tokenizer, max_length), batched=True)
 
@@ -190,7 +192,7 @@ def _train_task(
         args=training_args,
         train_dataset=tokenized_train,
         eval_dataset=tokenized_eval,
-        tokenizer=tokenizer,
+        data_collator=data_collator,
         compute_metrics=_accuracy_metrics,
     )
     trainer.train()
