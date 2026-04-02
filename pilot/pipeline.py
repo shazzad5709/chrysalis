@@ -31,6 +31,7 @@ DEFAULT_REPORT_DIR = ARTIFACT_ROOT / "regression_reports"
 DEFAULT_MANUAL_VALIDATION_DIR = ARTIFACT_ROOT / "manual_validation"
 DEFAULT_SST2_CACHE_DIR = PILOT_ROOT / "data" / "sst2"
 DEFAULT_SNLI_CACHE_DIR = PILOT_ROOT / "data" / "snli"
+DEFAULT_IMDB_CACHE_DIR = PILOT_ROOT / "data" / "imdb"
 
 
 class SimpleCasedTokenizer:
@@ -153,6 +154,20 @@ def _load_snli_validation(limit: int | None = None) -> list[dict]:
     )
 
 
+def _load_imdb_test(limit: int | None = None) -> list[dict]:
+    fallback = Path(
+        "/Users/shazzad/.cache/huggingface/datasets/imdb/plain_text/0.0.0/"
+        "e6281661ce1c48d982bc483cf8a173c1bbeb5d31/imdb-test.arrow"
+    )
+    return _load_dataset_with_fallback(
+        primary_name="imdb",
+        split="test",
+        cache_dir=DEFAULT_IMDB_CACHE_DIR,
+        fallback_arrow_path=fallback,
+        limit=limit,
+    )
+
+
 def _sanitize_transition(transition: str) -> str:
     return transition.replace("→", "_to_").replace("->", "_to_").replace("/", "_")
 
@@ -239,6 +254,7 @@ def run_training_stage_with_args(args, versions: list[str]) -> None:
 
 def run_corpus_stage(args) -> None:
     sa_source = _load_sst2_validation(limit=args.sa_limit)
+    sa_source_overrides = {"CHR-SA-007": _load_imdb_test(limit=args.sa_limit)}
     nli_source = _load_snli_validation(limit=args.nli_limit)
     tokenizer = SimpleCasedTokenizer()
     generator = CorpusGenerator(
@@ -250,6 +266,7 @@ def run_corpus_stage(args) -> None:
         mr_ids=mr_ids,
         sa_source=sa_source,
         nli_source=nli_source,
+        sa_source_overrides=sa_source_overrides,
         output_dir=args.corpus_dir,
         seed=args.seed,
     )
@@ -325,7 +342,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--sa-limit", type=int, default=None)
     parser.add_argument("--nli-limit", type=int, default=None)
     parser.add_argument("--model-version")
-    parser.add_argument("--model-loader", default="pilot.model_loader:load_model_bundle")
+    parser.add_argument("--model-loader", default="pilot/model_loader.py:load_model_bundle")
     parser.add_argument("--model-loader-map")
     parser.add_argument("--transition")
     parser.add_argument("--old-version")

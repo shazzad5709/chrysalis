@@ -123,6 +123,7 @@ class CorpusGenerator:
         nli_source,
         output_dir: str,
         seed: int = 42,
+        sa_source_overrides: dict[str, object] | None = None,
     ) -> None:
         output_path = Path(output_dir)
         output_path.mkdir(parents=True, exist_ok=True)
@@ -130,6 +131,10 @@ class CorpusGenerator:
 
         sa_examples = _normalize_sa_examples(list(sa_source))
         nli_examples = _normalize_nli_examples(list(nli_source))
+        normalized_sa_overrides = {
+            mr_id: _normalize_sa_examples(list(source))
+            for mr_id, source in (sa_source_overrides or {}).items()
+        }
         rejection_rows: list[dict[str, str]] = []
         manifest: dict[str, str] = {}
         rng = random.Random(seed)
@@ -152,11 +157,12 @@ class CorpusGenerator:
             skips = 0
 
             if "SA" in mr.subtasks:
+                mr_sa_examples = normalized_sa_overrides.get(mr_id, sa_examples)
                 generated_records, generated_rejections, sa_attempts, sa_skips = self._generate_for_subtask(
                     mr_id=mr_id,
                     mr=mr,
                     subtask="SA",
-                    examples=sa_examples,
+                    examples=mr_sa_examples,
                     seed=seed,
                 )
                 records.extend(generated_records)
