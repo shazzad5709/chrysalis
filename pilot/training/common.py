@@ -166,7 +166,6 @@ def _train_task(
     model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=num_labels)
     training_args = TrainingArguments(
         output_dir=str(output_dir / "checkpoints"),
-        overwrite_output_dir=True,
         learning_rate=learning_rate,
         num_train_epochs=epochs,
         per_device_train_batch_size=batch_size,
