@@ -12,8 +12,26 @@ from chrysalis.mrs.base import BaseMR
 WORD_TOKEN_PATTERN = re.compile(r"\b\w+\b")
 NEGATION_SCOPE_WORDS = {"not", "n't", "never", "no", "barely", "hardly", "scarcely"}
 ADJECTIVE_TAGS = {"JJ", "JJR", "JJS"}
-ADVERB_TAGS = {"RB", "RBR", "RBS"}
 MAXIMUM_WORDS = {"best", "worst"}
+TEMPORAL_OR_DETERMINER_ADJECTIVES = {
+    "even",
+    "first",
+    "last",
+    "main",
+    "major",
+    "momentary",
+    "necessary",
+    "next",
+    "previous",
+    "same",
+}
+IDIOMATIC_TARGET_PATTERNS = {
+    ("cold", "turkey"),
+    ("god", "awful"),
+    ("hard", "up"),
+}
+SEMANTICALLY_AWKWARD_TARGETS = {"intelligible", "minimalist", "preconceived", "primitive"}
+PRETARGET_MODIFIER_WORDS = {"that", "these", "this", "those", "too"}
 
 _NLP: Any = None
 
@@ -72,8 +90,45 @@ def _is_extreme(token: Any, doc: Any) -> bool:
     return token.i > 0 and doc[token.i - 1].text.lower() == "most"
 
 
+def _is_semantically_bad_target(doc: Any, token: Any) -> bool:
+    lowered = token.text.lower()
+    if lowered in NEGATION_SCOPE_WORDS:
+        return True
+    if lowered in TEMPORAL_OR_DETERMINER_ADJECTIVES:
+        return True
+    if lowered in SEMANTICALLY_AWKWARD_TARGETS:
+        return True
+    if token.i + 1 < len(doc) and doc[token.i + 1].text in {"'s", "’s"}:
+        return True
+    if token.i > 0 and doc[token.i - 1].tag_ in {"RB", "RBR", "RBS"}:
+        return True
+    if token.i > 0 and doc[token.i - 1].text.lower() in PRETARGET_MODIFIER_WORDS:
+        return True
+    if token.i > 0 and (doc[token.i - 1].text.lower(), lowered) in IDIOMATIC_TARGET_PATTERNS:
+        return True
+    if token.i + 1 < len(doc) and (lowered, doc[token.i + 1].text.lower()) in IDIOMATIC_TARGET_PATTERNS:
+        return True
+    return False
+
+
 def _valid_token(doc: Any, token: Any) -> bool:
-    return not _already_modified(token) and not _has_negation_scope(doc, token) and not _is_extreme(token, doc)
+    return (
+        not _already_modified(token)
+        and not _has_negation_scope(doc, token)
+        and not _is_extreme(token, doc)
+        and not _is_hyphen_compound_target(doc, token)
+        and not _is_semantically_bad_target(doc, token)
+    )
+
+
+def _is_hyphen_compound_target(doc: Any, token: Any) -> bool:
+    if "-" in token.text:
+        return True
+    if token.i > 0 and doc[token.i - 1].text == "-":
+        return True
+    if token.i + 1 < len(doc) and doc[token.i + 1].text == "-":
+        return True
+    return False
 
 
 def _select_target(doc: Any) -> Any | None:
@@ -87,17 +142,18 @@ def _select_target(doc: Any) -> Any | None:
             return token
     if adjectives:
         return adjectives[0]
-    if adjective_tokens:
-        return None
-
-    adverbs = [token for token in doc if token.tag_ in ADVERB_TAGS and _valid_token(doc, token)]
-    return adverbs[0] if adverbs else None
+    return None
 
 
 def _insert_before_token(doc: Any, token_index: int, inserted_text: str) -> str:
     parts: list[str] = []
     for token in doc:
-        if token.i == token_index:
+        if token.i == token_index - 1 and token.text.lower() in {"a", "an"}:
+            article = "an" if inserted_text[0].lower() in {"a", "e", "i", "o", "u"} else "a"
+            if token.text.istitle():
+                article = article.title()
+            parts.append(f"{article}{token.whitespace_}")
+        elif token.i == token_index:
             parts.append(f"{inserted_text} {token.text}{token.whitespace_}")
         else:
             parts.append(f"{token.text}{token.whitespace_}")
@@ -114,7 +170,14 @@ def _find_inserted_intensifier(source_text: str, followup_text: str) -> str | No
     j = 0
     inserted: str | None = None
     while i < len(source_words) and j < len(followup_words):
-        if source_words[i].lower() == followup_words[j].lower():
+        source_lower = source_words[i].lower()
+        followup_lower = followup_words[j].lower()
+        if source_lower == followup_lower:
+            i += 1
+            j += 1
+            continue
+
+        if {source_lower, followup_lower} == {"a", "an"}:
             i += 1
             j += 1
             continue

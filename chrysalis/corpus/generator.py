@@ -80,6 +80,23 @@ def _normalize_sa_examples(source: Iterable[dict]) -> list[dict]:
     return normalized
 
 
+def _normalize_topic_examples(source: Iterable[dict]) -> list[dict]:
+    normalized: list[dict] = []
+    for index, raw in enumerate(source):
+        text = raw.get("text", raw.get("sentence", ""))
+        if not isinstance(text, str):
+            continue
+        source_label = _normalize_label(raw.get("source_label", raw.get("label")))
+        normalized.append(
+            {
+                "input_id": str(raw.get("input_id", raw.get("id", raw.get("idx", f"topic-{index}")))),
+                "text": text,
+                "source_label": source_label,
+            }
+        )
+    return normalized
+
+
 def _normalize_nli_examples(source: Iterable[dict]) -> list[dict]:
     normalized: list[dict] = []
     for index, raw in enumerate(source):
@@ -87,12 +104,15 @@ def _normalize_nli_examples(source: Iterable[dict]) -> list[dict]:
         hypothesis = raw.get("hypothesis", "")
         if not isinstance(premise, str) or not isinstance(hypothesis, str):
             continue
+        source_label = _normalize_label(raw.get("source_label", raw.get("label", raw.get("gold_label", -1))))
+        if source_label not in {0, 1, 2}:
+            continue
         normalized.append(
             {
                 "input_id": str(raw.get("input_id", raw.get("id", raw.get("idx", f"nli-{index}")))),
                 "premise": premise,
                 "hypothesis": hypothesis,
-                "source_label": _normalize_label(raw.get("source_label", raw.get("label", raw.get("gold_label", -1)))),
+                "source_label": source_label,
             }
         )
     return normalized
@@ -124,6 +144,9 @@ class CorpusGenerator:
         output_dir: str,
         seed: int = 42,
         sa_source_overrides: dict[str, object] | None = None,
+        nli_source_overrides: dict[str, object] | None = None,
+        topic_source=None,
+        topic_source_overrides: dict[str, object] | None = None,
     ) -> None:
         output_path = Path(output_dir)
         output_path.mkdir(parents=True, exist_ok=True)
@@ -131,9 +154,18 @@ class CorpusGenerator:
 
         sa_examples = _normalize_sa_examples(list(sa_source))
         nli_examples = _normalize_nli_examples(list(nli_source))
+        topic_examples = _normalize_topic_examples(list(topic_source or []))
         normalized_sa_overrides = {
             mr_id: _normalize_sa_examples(list(source))
             for mr_id, source in (sa_source_overrides or {}).items()
+        }
+        normalized_nli_overrides = {
+            mr_id: _normalize_nli_examples(list(source))
+            for mr_id, source in (nli_source_overrides or {}).items()
+        }
+        normalized_topic_overrides = {
+            mr_id: _normalize_topic_examples(list(source))
+            for mr_id, source in (topic_source_overrides or {}).items()
         }
         rejection_rows: list[dict[str, str]] = []
         manifest: dict[str, str] = {}
@@ -171,17 +203,32 @@ class CorpusGenerator:
                 skips += sa_skips
 
             if "NLI" in mr.subtasks:
+                mr_nli_examples = normalized_nli_overrides.get(mr_id, nli_examples)
                 generated_records, generated_rejections, nli_attempts, nli_skips = self._generate_for_subtask(
                     mr_id=mr_id,
                     mr=mr,
                     subtask="NLI",
-                    examples=nli_examples,
+                    examples=mr_nli_examples,
                     seed=seed,
                 )
                 records.extend(generated_records)
                 rejection_rows.extend(generated_rejections)
                 attempts += nli_attempts
                 skips += nli_skips
+
+            if "TOPIC" in mr.subtasks:
+                mr_topic_examples = normalized_topic_overrides.get(mr_id, topic_examples)
+                generated_records, generated_rejections, topic_attempts, topic_skips = self._generate_for_subtask(
+                    mr_id=mr_id,
+                    mr=mr,
+                    subtask="TOPIC",
+                    examples=mr_topic_examples,
+                    seed=seed,
+                )
+                records.extend(generated_records)
+                rejection_rows.extend(generated_rejections)
+                attempts += topic_attempts
+                skips += topic_skips
 
             if mr_id == "CHR-GEN-019" and attempts > 0 and skips / attempts > 0.15:
                 logger.warning("CHR-GEN-019 skip rate exceeded 15%% during corpus generation.")
@@ -271,7 +318,7 @@ class CorpusGenerator:
         if not valid:
             return reason
 
-        if subtask == "SA":
+        if subtask in {"SA", "TOPIC"}:
             source_text = example["text"]
             followup_text = str(followup_input)
         else:
@@ -292,7 +339,7 @@ class CorpusGenerator:
 
     @staticmethod
     def _build_source_input(mr_id: str, subtask: str, example: dict):
-        if subtask == "SA":
+        if subtask in {"SA", "TOPIC"}:
             if mr_id.startswith("CHR-SA-"):
                 return {"text": example["text"], "source_label": example["source_label"]}
             return example["text"]
@@ -314,7 +361,7 @@ class CorpusGenerator:
 
     @staticmethod
     def _rejection_row(mr_id: str, input_id: str, subtask: str, variant: str | None, reason: str, example: dict) -> dict[str, str]:
-        source_text = example["text"] if subtask == "SA" else _serialize_nli_input(example["premise"], example["hypothesis"])
+        source_text = example["text"] if subtask in {"SA", "TOPIC"} else _serialize_nli_input(example["premise"], example["hypothesis"])
         return {
             "mr_id": mr_id,
             "input_id": input_id,

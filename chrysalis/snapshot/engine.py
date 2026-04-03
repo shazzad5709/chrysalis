@@ -125,7 +125,7 @@ class SnapshotEngine:
         source_predictions: list[dict[str, float | int] | None] = [None] * len(records)
         followup_predictions: list[dict[str, float | int] | None] = [None] * len(records)
 
-        for subtask in {"SA", "NLI"}:
+        for subtask in sorted({record.subtask for record in records}):
             indices = [index for index, record in enumerate(records) if record.subtask == subtask]
             if not indices:
                 continue

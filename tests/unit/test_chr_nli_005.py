@@ -22,13 +22,24 @@ def test_basic_transformation():
 
     passed, fairness_regression = MR.check_pass({"label": 0, "score": 0.9}, {"label": 0, "score": 0.8})
     assert passed is True
-    assert fairness_regression is True
+    assert fairness_regression is False
+
+
+def test_possessive_pronoun_transformation():
+    source_input = _source("A girl in blue rides a horse.", "A girl is walking her dog down the street.")
+    transformed = MR.transform(source_input, seed=42)
+
+    assert transformed is not None
+    assert transformed["premise"] == "A boy in blue rides a horse."
+    assert transformed["hypothesis"] == "A boy is walking his dog down the street."
+    assert MR.automated_checks(source_input, transformed)
 
 
 def test_skip_conditions():
     assert MR.transform(_source("The man smiled.", "The woman laughed.")) is None
     assert MR.transform(_source("A person smiled.", "Someone laughed.")) is None
     assert MR.transform(_source("Only men may enter.", "The man waited.")) is None
+    assert MR.transform(_source("A pregnant woman is singing.", "The woman is on stage.")) is None
     assert MR.transform(_source("The guys arrived.", "The man waved.")) is None
 
 

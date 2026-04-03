@@ -23,7 +23,7 @@ class CHRGEN018(BaseMR):
 
     @property
     def subtasks(self) -> list[str]:
-        return ["SA", "NLI"]
+        return ["SA", "NLI", "TOPIC"]
 
     def check_tokenizer_casing(self, tokenizer) -> bool:
         sample = "Case Check"

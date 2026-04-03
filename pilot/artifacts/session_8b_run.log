@@ -1,0 +1,418 @@
+
+[2026-04-02 08:50:33] Starting Session 8B pipeline
+
+[2026-04-02 08:50:33] Repository root: /home/shazzad/chrysalis
+
+[2026-04-02 08:50:33] Artifacts root: /home/shazzad/chrysalis/pilot/artifacts
+
+[2026-04-02 08:50:33] Removing stale snapshots and regression reports
+
+[2026-04-02 08:50:33] Running corpus stage
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/glue/glue.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/revision/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/revision/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=glue "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/ax?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/ax?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/sst2?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/sst2?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/stanfordnlp/imdb/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/stanfordnlp/imdb/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/imdb.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/imdb.py "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/imdb/imdb.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/revision/e6281661ce1c48d982bc483cf8a173c1bbeb5d31 "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/revision/e6281661ce1c48d982bc483cf8a173c1bbeb5d31 "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/.huggingface.yaml "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=imdb "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/dataset_infos.json "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text/train-00000-of-00001.parquet "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text/train-00000-of-00001.parquet "HTTP/1.1 302 Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/xet-read-token/e6281661ce1c48d982bc483cf8a173c1bbeb5d31 "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text/test-00000-of-00001.parquet "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text/test-00000-of-00001.parquet "HTTP/1.1 302 Found"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text/unsupervised-00000-of-00001.parquet "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text/unsupervised-00000-of-00001.parquet "HTTP/1.1 302 Found"
+Generating train split:   0%|          | 0/25000 [00:00<?, ? examples/s]Generating train split:  84%|████████▍ | 21000/25000 [00:00<00:00, 206085.64 examples/s]Generating train split: 100%|██████████| 25000/25000 [00:00<00:00, 219324.23 examples/s]
+Generating test split:   0%|          | 0/25000 [00:00<?, ? examples/s]Generating test split: 100%|██████████| 25000/25000 [00:00<00:00, 315746.75 examples/s]
+Generating unsupervised split:   0%|          | 0/50000 [00:00<?, ? examples/s]Generating unsupervised split:  46%|████▌     | 23000/50000 [00:00<00:00, 223508.60 examples/s]Generating unsupervised split: 100%|██████████| 50000/50000 [00:00<00:00, 278853.98 examples/s]
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/stanfordnlp/snli/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/snli.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/snli.py "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/snli/snli.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/revision/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/revision/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/.huggingface.yaml "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=snli "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/plain_text?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/plain_text?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/dataset_infos.json "HTTP/1.1 404 Not Found"
+Traceback (most recent call last):
+  File "/home/shazzad/chrysalis/chrysalis/mrs/sa/chr_sa_001.py", line 23, in _get_nlp
+    _NLP = spacy.load("en_core_web_sm")
+  File "/home/shazzad/chrysalis/.venv/lib/python3.10/site-packages/spacy/__init__.py", line 74, in load
+    return util.load_model(
+  File "/home/shazzad/chrysalis/.venv/lib/python3.10/site-packages/spacy/util.py", line 531, in load_model
+    raise IOError(Errors.E050.format(name=name))
+OSError: [E050] Can't find model 'en_core_web_sm'. It doesn't seem to be a Python package or a valid path to a data directory.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/shazzad/chrysalis/pilot/pipeline.py", line 385, in <module>
+    main()
+  File "/home/shazzad/chrysalis/pilot/pipeline.py", line 373, in main
+    run_corpus_stage(args)
+  File "/home/shazzad/chrysalis/pilot/pipeline.py", line 265, in run_corpus_stage
+    generator.generate(
+  File "/home/shazzad/chrysalis/chrysalis/corpus/generator.py", line 161, in generate
+    generated_records, generated_rejections, sa_attempts, sa_skips = self._generate_for_subtask(
+  File "/home/shazzad/chrysalis/chrysalis/corpus/generator.py", line 239, in _generate_for_subtask
+    followup = mr.transform(source_input, seed=seed)
+  File "/home/shazzad/chrysalis/chrysalis/mrs/sa/chr_sa_001.py", line 151, in transform
+    transformed = _transform_text(text)
+  File "/home/shazzad/chrysalis/chrysalis/mrs/sa/chr_sa_001.py", line 96, in _transform_text
+    doc = _get_nlp()(text)
+  File "/home/shazzad/chrysalis/chrysalis/mrs/sa/chr_sa_001.py", line 25, in _get_nlp
+    raise RuntimeError(
+RuntimeError: spaCy model 'en_core_web_sm' is required for CHR-SA-001. Install it with `uv run python -m spacy download en_core_web_sm`.
+
+[2026-04-02 09:05:25] Starting Session 8B pipeline
+
+[2026-04-02 09:05:25] Repository root: /home/shazzad/chrysalis
+
+[2026-04-02 09:05:25] Artifacts root: /home/shazzad/chrysalis/pilot/artifacts
+
+[2026-04-02 09:05:25] Removing stale snapshots and regression reports
+
+[2026-04-02 09:05:25] Running corpus stage
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/glue/glue.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/revision/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/revision/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=glue "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/ax?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/ax?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/sst2?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/sst2?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/stanfordnlp/imdb/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/imdb.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/imdb.py "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/imdb/imdb.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/revision/e6281661ce1c48d982bc483cf8a173c1bbeb5d31 "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/revision/e6281661ce1c48d982bc483cf8a173c1bbeb5d31 "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/.huggingface.yaml "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=imdb "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/dataset_infos.json "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/stanfordnlp/snli/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/snli.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/snli.py "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/snli/snli.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/revision/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/revision/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/.huggingface.yaml "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=snli "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/plain_text?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/plain_text?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/dataset_infos.json "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+[2026-04-02 09:06:51] Verifying frozen corpus counts
+Corpus counts:
+  CHR-GEN-005_corpus.csv: 10847
+  CHR-GEN-018_corpus.csv: 20837
+  CHR-GEN-019_corpus.csv: 10815
+  CHR-NLI-004_corpus.csv: 3808
+  CHR-NLI-005_corpus.csv: 4379
+  CHR-NLI-006_corpus.csv: 5534
+  CHR-SA-001_corpus.csv: 498
+  CHR-SA-007_corpus.csv: 16854
+  CHR-SA-008_corpus.csv: 726
+  CHR-SA-010_corpus.csv: 870
+
+[2026-04-02 09:06:51] Checking manual validation artifacts
+All manual validation artifacts present.
+
+[2026-04-02 09:06:51] Running snapshot stage for v1_base
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:  54%|█████▎    | 108/201 [00:00<00:00, 1077.23it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 1095.25it/s]
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:  53%|█████▎    | 106/201 [00:00<00:00, 1059.83it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 1099.68it/s]
+
+[2026-04-02 09:09:18] Starting Session 8B pipeline
+
+[2026-04-02 09:09:18] Repository root: /home/shazzad/chrysalis
+
+[2026-04-02 09:09:18] Artifacts root: /home/shazzad/chrysalis/pilot/artifacts
+
+[2026-04-02 09:09:18] Removing stale snapshots and regression reports
+
+[2026-04-02 09:09:18] Running corpus stage
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/nyu-mll/glue/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/glue.py "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/glue/glue.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/revision/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/revision/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/.huggingface.yaml "HTTP/1.1 404 Not Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=glue "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/ax?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/ax?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/nyu-mll/glue/resolve/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/dataset_infos.json "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/sst2?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/nyu-mll/glue/tree/bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c/sst2?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/stanfordnlp/imdb/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/imdb.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/imdb.py "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/imdb/imdb.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/revision/e6281661ce1c48d982bc483cf8a173c1bbeb5d31 "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/revision/e6281661ce1c48d982bc483cf8a173c1bbeb5d31 "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/.huggingface.yaml "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=imdb "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/plain_text?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/imdb/tree/e6281661ce1c48d982bc483cf8a173c1bbeb5d31?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/imdb/resolve/e6281661ce1c48d982bc483cf8a173c1bbeb5d31/dataset_infos.json "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/stanfordnlp/snli/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/README.md "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/snli.py "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/snli.py "HTTP/1.1 404 Not Found"
+INFO HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/snli/snli.py "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/revision/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/revision/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/.huggingface.yaml "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/.huggingface.yaml "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=snli "HTTP/1.1 404 Not Found"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/plain_text?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/plain_text?recursive=true&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: GET https://huggingface.co/api/datasets/stanfordnlp/snli/tree/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b?recursive=false&expand=false "HTTP/1.1 200 OK"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/dataset_infos.json "HTTP/1.1 307 Temporary Redirect"
+INFO HTTP Request: HEAD https://huggingface.co/datasets/stanfordnlp/snli/resolve/cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/dataset_infos.json "HTTP/1.1 404 Not Found"
+
+[2026-04-02 09:10:41] Verifying frozen corpus counts
+Corpus counts:
+  CHR-GEN-005_corpus.csv: 10847
+  CHR-GEN-018_corpus.csv: 20837
+  CHR-GEN-019_corpus.csv: 10815
+  CHR-NLI-004_corpus.csv: 3808
+  CHR-NLI-005_corpus.csv: 4379
+  CHR-NLI-006_corpus.csv: 5534
+  CHR-SA-001_corpus.csv: 498
+  CHR-SA-007_corpus.csv: 16854
+  CHR-SA-008_corpus.csv: 726
+  CHR-SA-010_corpus.csv: 870
+
+[2026-04-02 09:10:42] Checking manual validation artifacts
+All manual validation artifacts present.
+
+[2026-04-02 09:10:42] Running snapshot stage for v1_base
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:  76%|███████▌  | 153/201 [00:00<00:00, 1529.08it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 1557.58it/s]
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:  72%|███████▏  | 144/201 [00:00<00:00, 1411.45it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 1502.76it/s]
+
+[2026-04-02 09:22:08] Running snapshot stage for v2_retrain
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:  57%|█████▋    | 114/201 [00:00<00:00, 1137.10it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 1145.74it/s]
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:  52%|█████▏    | 105/201 [00:00<00:00, 1041.57it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 1092.74it/s]
+
+[2026-04-02 09:34:03] Running snapshot stage for v3_distilled
+Loading weights:   0%|          | 0/104 [00:00<?, ?it/s]Loading weights: 100%|██████████| 104/104 [00:00<00:00, 1283.53it/s]
+Loading weights:   0%|          | 0/104 [00:00<?, ?it/s]Loading weights: 100%|██████████| 104/104 [00:00<00:00, 1053.23it/s]
+
+[2026-04-02 09:40:22] Verifying snapshot outputs
+v1_base: 10 snapshot files
+v2_retrain: 10 snapshot files
+v3_distilled: 10 snapshot files
+
+[2026-04-02 09:40:22] Running diff stage for v1_base->v2_retrain
+MR ID       | transition         | n_matched | pass_rate_old | pass_rate_new | delta  | flag  | severity      
+------------+--------------------+-----------+---------------+---------------+--------+-------+---------------
+CHR-SA-001  | v1_base→v2_retrain | 235       | 0.664         | 0.923         | 0.260  | False | hard-fail     
+CHR-SA-007  | v1_base→v2_retrain | 5005      | 1.000         | 0.984         | -0.016 | False | soft-warning  
+CHR-SA-008  | v1_base→v2_retrain | 346       | 1.000         | 0.991         | -0.009 | False | soft-warning  
+CHR-SA-010  | v1_base→v2_retrain | 391       | 1.000         | 0.455         | -0.545 | True  | soft-warning  
+CHR-NLI-004 | v1_base→v2_retrain | 1567      | 0.853         | 0.975         | 0.122  | False | soft-warning  
+CHR-NLI-005 | v1_base→v2_retrain | 1762      | 0.978         | 0.988         | 0.010  | False | fairness-alert
+CHR-NLI-006 | v1_base→v2_retrain | 3311      | 0.045         | 0.016         | -0.028 | False | hard-fail     
+CHR-GEN-005 | v1_base→v2_retrain | 4359      | 0.575         | 0.215         | -0.359 | True  | hard-fail     
+CHR-GEN-018 | v1_base→v2_retrain | 8322      | 0.624         | 0.363         | -0.261 | True  | hard-fail     
+CHR-GEN-019 | v1_base→v2_retrain | 4341      | 0.834         | 0.528         | -0.306 | True  | soft-warning  
+
+[2026-04-02 09:40:25] Running diff stage for v2_retrain->v3_distilled
+MR ID       | transition              | n_matched | pass_rate_old | pass_rate_new | delta  | flag  | severity      
+------------+-------------------------+-----------+---------------+---------------+--------+-------+---------------
+CHR-SA-001  | v2_retrain→v3_distilled | 389       | 0.972         | 0.990         | 0.018  | False | hard-fail     
+CHR-SA-007  | v2_retrain→v3_distilled | 10526     | 0.988         | 0.995         | 0.007  | False | soft-warning  
+CHR-SA-008  | v2_retrain→v3_distilled | 558       | 0.996         | 0.987         | -0.009 | False | soft-warning  
+CHR-SA-010  | v2_retrain→v3_distilled | 672       | 0.698         | 0.893         | 0.195  | False | soft-warning  
+CHR-NLI-004 | v2_retrain→v3_distilled | 1715      | 0.978         | 0.969         | -0.010 | False | soft-warning  
+CHR-NLI-005 | v2_retrain→v3_distilled | 1927      | 0.987         | 0.955         | -0.032 | False | fairness-alert
+CHR-NLI-006 | v2_retrain→v3_distilled | 3482      | 0.027         | 0.073         | 0.046  | False | hard-fail     
+CHR-GEN-005 | v2_retrain→v3_distilled | 4851      | 0.244         | 0.633         | 0.389  | False | hard-fail     
+CHR-GEN-018 | v2_retrain→v3_distilled | 9028      | 0.373         | 0.703         | 0.330  | False | hard-fail     
+CHR-GEN-019 | v2_retrain→v3_distilled | 4822      | 0.496         | 0.860         | 0.364  | False | soft-warning  
+
+[2026-04-02 09:40:28] Running full test suite
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.0.2, pluggy-1.6.0 -- /home/shazzad/chrysalis/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/shazzad/chrysalis
+configfile: pyproject.toml
+plugins: anyio-4.13.0
+collecting ... collected 73 items
+
+tests/integration/test_corpus_pipeline.py::test_corpus_generation_end_to_end PASSED [  1%]
+tests/unit/test_chr_gen_005.py::test_basic_transformation PASSED         [  2%]
+tests/unit/test_chr_gen_005.py::test_skip_conditions PASSED              [  4%]
+tests/unit/test_chr_gen_005.py::test_automated_checks_pass PASSED        [  5%]
+tests/unit/test_chr_gen_005.py::test_airtight_guarantee PASSED           [  6%]
+tests/unit/test_chr_gen_005.py::test_real_word_collision_prevention SKIPPED [  8%]
+tests/unit/test_chr_gen_005.py::test_edge_cases PASSED                   [  9%]
+tests/unit/test_chr_gen_005.py::test_seeded_reproducibility PASSED       [ 10%]
+tests/unit/test_chr_gen_018.py::test_basic_transformation PASSED         [ 12%]
+tests/unit/test_chr_gen_018.py::test_skip_conditions PASSED              [ 13%]
+tests/unit/test_chr_gen_018.py::test_automated_checks_pass PASSED        [ 15%]
+tests/unit/test_chr_gen_018.py::test_airtight_guarantee PASSED           [ 16%]
+tests/unit/test_chr_gen_018.py::test_real_word_collision_prevention SKIPPED [ 17%]
+tests/unit/test_chr_gen_018.py::test_edge_cases PASSED                   [ 19%]
+tests/unit/test_chr_gen_018.py::test_seeded_reproducibility PASSED       [ 20%]
+tests/unit/test_chr_gen_018.py::test_tokenizer_check_function PASSED     [ 21%]
+tests/unit/test_chr_gen_019.py::test_basic_transformation PASSED         [ 23%]
+tests/unit/test_chr_gen_019.py::test_skip_conditions PASSED              [ 24%]
+tests/unit/test_chr_gen_019.py::test_automated_checks_pass PASSED        [ 26%]
+tests/unit/test_chr_gen_019.py::test_airtight_guarantee SKIPPED (Not...) [ 27%]
+tests/unit/test_chr_gen_019.py::test_real_word_collision_prevention PASSED [ 28%]
+tests/unit/test_chr_gen_019.py::test_edge_cases PASSED                   [ 30%]
+tests/unit/test_chr_gen_019.py::test_seeded_reproducibility PASSED       [ 31%]
+tests/unit/test_chr_nli_004.py::test_basic_transformation PASSED         [ 32%]
+tests/unit/test_chr_nli_004.py::test_skip_conditions PASSED              [ 34%]
+tests/unit/test_chr_nli_004.py::test_automated_checks_pass PASSED        [ 35%]
+tests/unit/test_chr_nli_004.py::test_airtight_guarantee SKIPPED (Not...) [ 36%]
+tests/unit/test_chr_nli_004.py::test_real_word_collision_prevention SKIPPED [ 38%]
+tests/unit/test_chr_nli_004.py::test_edge_cases PASSED                   [ 39%]
+tests/unit/test_chr_nli_004.py::test_seeded_reproducibility PASSED       [ 41%]
+tests/unit/test_chr_nli_005.py::test_basic_transformation PASSED         [ 42%]
+tests/unit/test_chr_nli_005.py::test_skip_conditions PASSED              [ 43%]
+tests/unit/test_chr_nli_005.py::test_automated_checks_pass PASSED        [ 45%]
+tests/unit/test_chr_nli_005.py::test_airtight_guarantee SKIPPED (Not...) [ 46%]
+tests/unit/test_chr_nli_005.py::test_real_word_collision_prevention SKIPPED [ 47%]
+tests/unit/test_chr_nli_005.py::test_edge_cases PASSED                   [ 49%]
+tests/unit/test_chr_nli_005.py::test_seeded_reproducibility PASSED       [ 50%]
+tests/unit/test_chr_nli_006.py::test_basic_transformation PASSED         [ 52%]
+tests/unit/test_chr_nli_006.py::test_skip_conditions PASSED              [ 53%]
+tests/unit/test_chr_nli_006.py::test_automated_checks_pass PASSED        [ 54%]
+tests/unit/test_chr_nli_006.py::test_airtight_guarantee SKIPPED (Not...) [ 56%]
+tests/unit/test_chr_nli_006.py::test_real_word_collision_prevention SKIPPED [ 57%]
+tests/unit/test_chr_nli_006.py::test_edge_cases PASSED                   [ 58%]
+tests/unit/test_chr_nli_006.py::test_seeded_reproducibility PASSED       [ 60%]
+tests/unit/test_chr_sa_001.py::test_basic_transformation PASSED          [ 61%]
+tests/unit/test_chr_sa_001.py::test_skip_conditions_existing_negation PASSED [ 63%]
+tests/unit/test_chr_sa_001.py::test_skip_conditions_neutral_label PASSED [ 64%]
+tests/unit/test_chr_sa_001.py::test_automated_checks_pass PASSED         [ 65%]
+tests/unit/test_chr_sa_001.py::test_airtight_guarantee SKIPPED (Not ...) [ 67%]
+tests/unit/test_chr_sa_001.py::test_real_word_collision_prevention SKIPPED [ 68%]
+tests/unit/test_chr_sa_001.py::test_edge_cases PASSED                    [ 69%]
+tests/unit/test_chr_sa_001.py::test_seeded_reproducibility PASSED        [ 71%]
+tests/unit/test_chr_sa_007.py::test_basic_transformation PASSED          [ 72%]
+tests/unit/test_chr_sa_007.py::test_skip_conditions PASSED               [ 73%]
+tests/unit/test_chr_sa_007.py::test_automated_checks_pass PASSED         [ 75%]
+tests/unit/test_chr_sa_007.py::test_airtight_guarantee SKIPPED (Not ...) [ 76%]
+tests/unit/test_chr_sa_007.py::test_real_word_collision_prevention SKIPPED [ 78%]
+tests/unit/test_chr_sa_007.py::test_edge_cases PASSED                    [ 79%]
+tests/unit/test_chr_sa_007.py::test_seeded_reproducibility PASSED        [ 80%]
+tests/unit/test_chr_sa_008.py::test_basic_transformation PASSED          [ 82%]
+tests/unit/test_chr_sa_008.py::test_skip_conditions PASSED               [ 83%]
+tests/unit/test_chr_sa_008.py::test_automated_checks_pass PASSED         [ 84%]
+tests/unit/test_chr_sa_008.py::test_airtight_guarantee SKIPPED (Not ...) [ 86%]
+tests/unit/test_chr_sa_008.py::test_real_word_collision_prevention SKIPPED [ 87%]
+tests/unit/test_chr_sa_008.py::test_edge_cases PASSED                    [ 89%]
+tests/unit/test_chr_sa_008.py::test_seeded_reproducibility PASSED        [ 90%]
+tests/unit/test_chr_sa_010.py::test_basic_transformation PASSED          [ 91%]
+tests/unit/test_chr_sa_010.py::test_skip_conditions PASSED               [ 93%]
+tests/unit/test_chr_sa_010.py::test_automated_checks_pass PASSED         [ 94%]
+tests/unit/test_chr_sa_010.py::test_airtight_guarantee SKIPPED (Not ...) [ 95%]
+tests/unit/test_chr_sa_010.py::test_real_word_collision_prevention SKIPPED [ 97%]
+tests/unit/test_chr_sa_010.py::test_edge_cases PASSED                    [ 98%]
+tests/unit/test_chr_sa_010.py::test_seeded_reproducibility PASSED        [100%]
+
+======================== 56 passed, 17 skipped in 4.85s ========================
+
+[2026-04-02 09:40:34] Verifying regression reports
+regression_report_v1_base_to_v2_retrain.csv: 9 rows
+regression_report_v2_retrain_to_v3_distilled.csv: 9 rows
+Flagged regressions: 4
+  regression_report_v1_base_to_v2_retrain.csv: CHR-SA-010 delta=-0.5447570332480818
+  regression_report_v1_base_to_v2_retrain.csv: CHR-GEN-005 delta=-0.35925671025464556
+  regression_report_v1_base_to_v2_retrain.csv: CHR-GEN-018 delta=-0.26063446286950254
+  regression_report_v1_base_to_v2_retrain.csv: CHR-GEN-019 delta=-0.30615065653075324
+Release blocked rows: 2
+  regression_report_v1_base_to_v2_retrain.csv: CHR-GEN-005
+  regression_report_v1_base_to_v2_retrain.csv: CHR-GEN-018
+Report verification complete.
+
+[2026-04-02 09:40:34] Session 8B pipeline completed
+
+[2026-04-02 09:40:34] See detailed log at /home/shazzad/chrysalis/pilot/artifacts/session_8b_run.log

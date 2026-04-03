@@ -130,7 +130,7 @@
   catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
   mr_name: "Space injection"
   relation_type: invariance
-  applicable_subtasks: [SA, NLI]
+  applicable_subtasks: [SA, NLI, TOPIC]
   expected_output_relation: "label unchanged within airtight whitespace-preserving equivalence"
   pass_fail_criterion: "absolute score delta must stay below 0.05 and predicted label must remain unchanged"
   formalization_strength: airtight
@@ -148,7 +148,7 @@
   catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
   mr_name: "Capitalisation change"
   relation_type: invariance
-  applicable_subtasks: [SA, NLI]
+  applicable_subtasks: [SA, NLI, TOPIC]
   expected_output_relation: "label unchanged across uppercase and lowercase variants"
   pass_fail_criterion: "absolute score delta must stay below 0.05 and predicted label must remain unchanged"
   formalization_strength: airtight
@@ -166,7 +166,7 @@
   catalog_paper: "Cho, Ruberto, Terragni — arXiv:2511.02108, 2025"
   mr_name: "Keyboard mistake simulation"
   relation_type: invariance
-  applicable_subtasks: [SA, NLI]
+  applicable_subtasks: [SA, NLI, TOPIC]
   expected_output_relation: "label unchanged under single-character adjacent-key typos"
   pass_fail_criterion: "absolute score delta must stay below 0.1 and predicted label must remain unchanged"
   formalization_strength: near-formal

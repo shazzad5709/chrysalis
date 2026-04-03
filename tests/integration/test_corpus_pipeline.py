@@ -33,11 +33,19 @@ class FakeModel:
     POSITIVE_WORDS = {"good", "great", "excellent", "amazing", "love", "wins", "enjoyable"}
     NEGATIVE_WORDS = {"bad", "awful", "terrible", "boring", "dull", "hate"}
     INTENSIFIERS = {"very", "extremely", "incredibly", "remarkably", "exceptionally", "particularly", "truly", "genuinely"}
+    TOPIC_KEYWORDS = {
+        0: {"stocks", "market", "earnings", "company", "business"},
+        1: {"government", "election", "president", "policy", "senate", "politics"},
+        2: {"goal", "match", "team", "season", "sports", "league"},
+        3: {"software", "device", "ai", "technology", "chip", "internet"},
+    }
 
     def predict(self, payload, tokenizer=None, subtask: str | None = None) -> dict[str, float | int]:
         del tokenizer
         if subtask == "NLI":
             return self._predict_nli(payload)
+        if subtask == "TOPIC":
+            return self._predict_topic(str(payload))
         return self._predict_sa(str(payload))
 
     def _predict_sa(self, text: str) -> dict[str, float | int]:
@@ -75,6 +83,18 @@ class FakeModel:
 
         return {"label": 1, "score": 0.5}
 
+    def _predict_topic(self, text: str) -> dict[str, float | int]:
+        collapsed = " ".join(text.lower().split())
+        best_label = 0
+        best_score = 0
+        for label, keywords in self.TOPIC_KEYWORDS.items():
+            score = sum(keyword in collapsed for keyword in keywords)
+            if score > best_score:
+                best_label = label
+                best_score = score
+        confidence = 0.55 + min(best_score, 3) * 0.1
+        return {"label": best_label, "score": min(confidence, 0.95)}
+
 
 def _parse_nli_serialized(text: str) -> dict[str, str]:
     prefix = "premise: "
@@ -84,7 +104,7 @@ def _parse_nli_serialized(text: str) -> dict[str, str]:
 
 
 def _validator_payload(mr_id: str, subtask: str, text: str, label: int):
-    if subtask == "SA":
+    if subtask in {"SA", "TOPIC"}:
         if mr_id.startswith("CHR-SA-"):
             return {"text": text, "source_label": label}
         return text
@@ -118,13 +138,25 @@ def test_corpus_generation_end_to_end(tmp_path):
         {"input_id": "nli-8", "premise": "The hostess greets guests.", "hypothesis": "The hostess greets guests.", "label": 0},
         {"input_id": "nli-9", "premise": "The man thanked the woman.", "hypothesis": "The man thanked the woman.", "label": 0},
     ]
+    topic_source = [
+        {"input_id": "topic-0", "text": "The company reported strong market earnings.", "label": 0},
+        {"input_id": "topic-1", "text": "The president announced a new policy today.", "label": 1},
+        {"input_id": "topic-2", "text": "The team won the match after a long season.", "label": 2},
+        {"input_id": "topic-3", "text": "The new AI device improves internet search.", "label": 3},
+        {"input_id": "topic-4", "text": "Business stocks rose after the company update.", "label": 0},
+        {"input_id": "topic-5", "text": "Senate politics shifted after the election.", "label": 1},
+        {"input_id": "topic-6", "text": "The sports league delayed the final match.", "label": 2},
+        {"input_id": "topic-7", "text": "Technology companies launched a new chip.", "label": 3},
+        {"input_id": "topic-8", "text": "The market expects company growth next quarter.", "label": 0},
+        {"input_id": "topic-9", "text": "Internet software firms expanded AI research.", "label": 3},
+    ]
 
     corpus_dir = tmp_path / "corpus"
     manual_dir = tmp_path / "manual_validation"
     snapshot_dir = tmp_path / "snapshots"
 
     generator = CorpusGenerator(tokenizer=FakeTokenizer(), manual_validation_dir=manual_dir)
-    generator.generate(ALL_MR_IDS, sa_source, nli_source, str(corpus_dir), seed=42)
+    generator.generate(ALL_MR_IDS, sa_source, nli_source, str(corpus_dir), seed=42, topic_source=topic_source)
 
     rejection_log = corpus_dir / "rejection_log.csv"
     assert rejection_log.exists()

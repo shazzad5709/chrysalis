@@ -148,6 +148,14 @@ GENDER_RESTRICTIVE_PATTERNS = (
     "men only",
     "women only",
 )
+BIOLOGICAL_SEX_PATTERNS = (
+    "pregnant",
+    "pregnancy",
+    "breastfeeding",
+    "breast feeding",
+    "breast-feed",
+    "breast fed",
+)
 MALE_WORDS = set(GENDERED_LEXICON["male_nouns"]) | set(GENDERED_LEXICON["male_pronouns"])
 FEMALE_WORDS = set(GENDERED_LEXICON["female_nouns"]) | set(GENDERED_LEXICON["female_pronouns"])
 POSSESSIVE_OR_REFLEXIVE = {"his", "her", "hers", "himself", "herself"}
@@ -163,6 +171,13 @@ def _word_positions(tokens: list[str]) -> list[int]:
 
 def _word_tokens(text: str) -> list[str]:
     return [token for token in _tokenize_with_whitespace(text) if WORD_PATTERN.fullmatch(token)]
+
+
+def _next_word_token(tokens: list[str], start_index: int) -> str | None:
+    for index in range(start_index + 1, len(tokens)):
+        if WORD_PATTERN.fullmatch(tokens[index]):
+            return tokens[index]
+    return None
 
 
 def _gender_category(token: str) -> str | None:
@@ -198,6 +213,11 @@ def _normalize_space(text: str) -> str:
 def _has_gender_restrictive_language(premise: str, hypothesis: str) -> bool:
     combined = _normalize_space(f"{premise} {hypothesis}")
     return any(pattern in combined for pattern in GENDER_RESTRICTIVE_PATTERNS)
+
+
+def _has_biological_sex_content(premise: str, hypothesis: str) -> bool:
+    combined = _normalize_space(f"{premise} {hypothesis}")
+    return any(pattern in combined for pattern in BIOLOGICAL_SEX_PATTERNS)
 
 
 def _analyze_component(text: str) -> dict[str, Any]:
@@ -267,7 +287,7 @@ def _apply_component_substitutions(
                 continue
             replacement = rng.choice(replacements)
         else:
-            replacement = CROSS_GENDER_MAP.get(normalized)
+            replacement = _cross_gender_replacement(component["tokens"], item["token_index"], normalized)
             if replacement is None:
                 unmappable = True
                 continue
@@ -278,6 +298,16 @@ def _apply_component_substitutions(
             changed_pairs.append((normalized, rendered.lower()))
 
     return "".join(tokens), changed_pairs, unmappable
+
+
+def _cross_gender_replacement(tokens: list[str], token_index: int, normalized: str) -> str | None:
+    if normalized != "her":
+        return CROSS_GENDER_MAP.get(normalized)
+
+    next_word = _next_word_token(tokens, token_index)
+    if next_word is not None:
+        return "his"
+    return "him"
 
 
 def _validate_same_gender_component(source_text: str, followup_text: str) -> bool:
@@ -304,17 +334,21 @@ def _validate_same_gender_component(source_text: str, followup_text: str) -> boo
 
 
 def _validate_cross_gender_component(source_text: str, followup_text: str) -> bool:
-    source_words = _word_tokens(source_text)
-    followup_words = _word_tokens(followup_text)
+    source_tokens = _tokenize_with_whitespace(source_text)
+    followup_tokens = _tokenize_with_whitespace(followup_text)
+    source_words = [token for token in source_tokens if WORD_PATTERN.fullmatch(token)]
+    followup_words = [token for token in followup_tokens if WORD_PATTERN.fullmatch(token)]
     if len(source_words) != len(followup_words):
         return False
 
     changed = False
-    for source_word, followup_word in zip(source_words, followup_words):
+    source_word_indices = _word_positions(source_tokens)
+    for word_index, (source_word, followup_word) in enumerate(zip(source_words, followup_words)):
         source_lower = source_word.lower()
         followup_lower = followup_word.lower()
         if source_lower in MALE_WORDS or source_lower in FEMALE_WORDS:
-            expected = CROSS_GENDER_MAP.get(source_lower)
+            token_index = source_word_indices[word_index]
+            expected = _cross_gender_replacement(source_tokens, token_index, source_lower)
             if expected is None or followup_lower != expected:
                 return False
             changed = True
@@ -348,6 +382,8 @@ def gender_swap_with_reason(
 
     if mode == "cross_gender" and _has_gender_restrictive_language(premise, hypothesis):
         return None, "gender_restrictive_language"
+    if mode == "cross_gender" and _has_biological_sex_content(premise, hypothesis):
+        return None, "biological_sex_content"
 
     premise_component = _analyze_component(premise)
     hypothesis_component = _analyze_component(hypothesis)

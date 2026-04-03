@@ -26,6 +26,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PILOT_ROOT = ROOT / "pilot"
 DEFAULT_SST2_CACHE_DIR = PILOT_ROOT / "data" / "sst2"
 DEFAULT_SNLI_CACHE_DIR = PILOT_ROOT / "data" / "snli"
+DEFAULT_AG_NEWS_CACHE_DIR = PILOT_ROOT / "data" / "ag_news"
 FALLBACK_SST2_ARROW = Path(
     "/Users/shazzad/.cache/huggingface/datasets/stanfordnlp___sst2/default/0.0.0/"
     "8d51e7e4887a4caaa95b3fbebbf53c0490b58bbb/sst2-validation.arrow"
@@ -44,20 +45,20 @@ VERSION_CONFIGS = {
     "v1_base": {
         "model_name": "bert-base-cased",
         "learning_rate": 2e-5,
-        "full": {"sa_train_n": 1500, "sa_epochs": 1, "nli_train_n": 2500, "nli_epochs": 1},
-        "reduced": {"sa_train_n": 300, "sa_epochs": 1, "nli_train_n": 500, "nli_epochs": 1},
+        "full": {"sa_train_n": 1500, "sa_epochs": 1, "nli_train_n": 2500, "nli_epochs": 1, "topic_train_n": None, "topic_epochs": 1},
+        "reduced": {"sa_train_n": 300, "sa_epochs": 1, "nli_train_n": 500, "nli_epochs": 1, "topic_train_n": 500, "topic_epochs": 1},
     },
     "v2_retrain": {
         "model_name": "bert-base-cased",
         "learning_rate": 2e-5,
-        "full": {"sa_train_n": 8000, "sa_epochs": 3, "nli_train_n": 11500, "nli_epochs": 3},
-        "reduced": {"sa_train_n": 1000, "sa_epochs": 2, "nli_train_n": 1500, "nli_epochs": 2},
+        "full": {"sa_train_n": 8000, "sa_epochs": 3, "nli_train_n": 11500, "nli_epochs": 3, "topic_train_n": None, "topic_epochs": 3},
+        "reduced": {"sa_train_n": 1000, "sa_epochs": 2, "nli_train_n": 1500, "nli_epochs": 2, "topic_train_n": 1500, "topic_epochs": 2},
     },
     "v3_distilled": {
         "model_name": "distilbert-base-cased",
         "learning_rate": 3e-5,
-        "full": {"sa_train_n": 8000, "sa_epochs": 2, "nli_train_n": 11500, "nli_epochs": 2},
-        "reduced": {"sa_train_n": 1000, "sa_epochs": 1, "nli_train_n": 1500, "nli_epochs": 1},
+        "full": {"sa_train_n": 8000, "sa_epochs": 2, "nli_train_n": 11500, "nli_epochs": 2, "topic_train_n": None, "topic_epochs": 2},
+        "reduced": {"sa_train_n": 1000, "sa_epochs": 1, "nli_train_n": 1500, "nli_epochs": 1, "topic_train_n": 1500, "topic_epochs": 1},
     },
 }
 
@@ -94,6 +95,14 @@ def _load_snli(split: str, limit: int | None = None) -> list[dict]:
         return _load_arrow_rows(FALLBACK_SNLI_VALIDATION_ARROW, limit=limit)
 
 
+def _load_ag_news(split: str, limit: int | None = None) -> list[dict]:
+    DEFAULT_AG_NEWS_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    dataset = load_dataset("ag_news", split=split, cache_dir=str(DEFAULT_AG_NEWS_CACHE_DIR))
+    if limit is not None:
+        dataset = dataset.select(range(min(limit, len(dataset))))
+    return list(dataset)
+
+
 def _prepare_sst2(train_n: int, seed: int) -> tuple[Dataset, Dataset]:
     train_rows = [row for row in _load_glue_sst2("train") if row.get("label") in {0, 1}]
     validation_rows = [row for row in _load_glue_sst2("validation") if row.get("label") in {0, 1}]
@@ -111,6 +120,19 @@ def _prepare_snli(train_n: int, seed: int) -> tuple[Dataset, Dataset]:
     train_dataset = Dataset.from_list(train_rows).shuffle(seed=seed).select(range(min(train_n, len(train_rows))))
     eval_count = min(300, len(validation_rows))
     eval_dataset = Dataset.from_list(validation_rows).shuffle(seed=seed).select(range(eval_count))
+    return train_dataset, eval_dataset
+
+
+def _prepare_ag_news(train_n: int | None, seed: int) -> tuple[Dataset, Dataset]:
+    train_rows = _load_ag_news("train")
+    test_rows = _load_ag_news("test")
+
+    train_dataset = Dataset.from_list(train_rows).shuffle(seed=seed)
+    if train_n is not None:
+        train_dataset = train_dataset.select(range(min(train_n, len(train_rows))))
+
+    eval_count = min(400, len(test_rows))
+    eval_dataset = Dataset.from_list(test_rows).shuffle(seed=seed).select(range(eval_count))
     return train_dataset, eval_dataset
 
 
@@ -136,6 +158,10 @@ def _tokenize_sa(batch: dict[str, list[str]], tokenizer, max_length: int) -> dic
 
 def _tokenize_nli(batch: dict[str, list[str]], tokenizer, max_length: int) -> dict[str, Any]:
     return tokenizer(batch["premise"], batch["hypothesis"], truncation=True, max_length=max_length)
+
+
+def _tokenize_topic(batch: dict[str, list[str]], tokenizer, max_length: int) -> dict[str, Any]:
+    return tokenizer(batch["text"], truncation=True, max_length=max_length)
 
 
 def _save_metadata(output_dir: Path, metadata: dict[str, Any]) -> None:
@@ -225,6 +251,7 @@ def train_version(
 
     sa_train, sa_eval = _prepare_sst2(size_config["sa_train_n"], seed)
     nli_train, nli_eval = _prepare_snli(size_config["nli_train_n"], seed)
+    topic_train, topic_eval = _prepare_ag_news(size_config["topic_train_n"], seed)
 
     sa_metrics = _train_task(
         model_name=config["model_name"],
@@ -251,6 +278,22 @@ def train_version(
         output_dir=version_dir / "nli",
         learning_rate=config["learning_rate"],
         epochs=size_config["nli_epochs"],
+        seed=seed,
+        batch_size=batch_size,
+        eval_batch_size=eval_batch_size,
+        gradient_accumulation_steps=gradient_accumulation_steps,
+        max_length=max_length,
+        device=resolved_device,
+    )
+    topic_metrics = _train_task(
+        model_name=config["model_name"],
+        num_labels=4,
+        train_dataset=topic_train,
+        eval_dataset=topic_eval,
+        tokenize_fn=_tokenize_topic,
+        output_dir=version_dir / "topic",
+        learning_rate=config["learning_rate"],
+        epochs=size_config["topic_epochs"],
         seed=seed,
         batch_size=batch_size,
         eval_batch_size=eval_batch_size,
@@ -285,6 +328,12 @@ def train_version(
                 "epochs": size_config["nli_epochs"],
                 "metrics": nli_metrics,
                 "model_dir": "nli",
+            },
+            "topic": {
+                "train_n": size_config["topic_train_n"],
+                "epochs": size_config["topic_epochs"],
+                "metrics": topic_metrics,
+                "model_dir": "topic",
             },
         },
     )

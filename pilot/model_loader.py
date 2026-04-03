@@ -32,6 +32,14 @@ class PilotModelBundle:
         self.nli_tokenizer = AutoTokenizer.from_pretrained(self.model_dir / "nli", use_fast=True)
         self.sa_model.eval()
         self.nli_model.eval()
+        topic_dir = self.model_dir / "topic"
+        if topic_dir.exists():
+            self.topic_model = AutoModelForSequenceClassification.from_pretrained(topic_dir).to(self.device)
+            self.topic_tokenizer = AutoTokenizer.from_pretrained(topic_dir, use_fast=True)
+            self.topic_model.eval()
+        else:
+            self.topic_model = None
+            self.topic_tokenizer = None
         self.max_length = int(self.metadata.get("max_length", 128))
         if self.device == "mps":
             self.infer_batch_size = 128
@@ -44,12 +52,16 @@ class PilotModelBundle:
         del tokenizer
         if subtask == "NLI":
             return self._predict_nli(payload)
+        if subtask == "TOPIC":
+            return self._predict_topic(str(payload))
         return self._predict_sa(str(payload))
 
     def predict_many(self, payloads, tokenizer=None, subtask: str | None = None) -> list[dict[str, float | int]]:
         del tokenizer
         if subtask == "NLI":
             return self._predict_many_nli(payloads)
+        if subtask == "TOPIC":
+            return self._predict_many_topic([str(payload) for payload in payloads])
         return self._predict_many_sa([str(payload) for payload in payloads])
 
     def _predict_sa(self, text: str) -> dict[str, float | int]:
@@ -57,6 +69,9 @@ class PilotModelBundle:
 
     def _predict_nli(self, payload: dict[str, str]) -> dict[str, float | int]:
         return self._predict_many_nli([payload])[0]
+
+    def _predict_topic(self, text: str) -> dict[str, float | int]:
+        return self._predict_many_topic([text])[0]
 
     def _predict_many_sa(self, texts: list[str]) -> list[dict[str, float | int]]:
         return self._batched_predict(
@@ -72,6 +87,15 @@ class PilotModelBundle:
             model=self.nli_model,
             tokenizer=self.nli_tokenizer,
             tokenizer_args={"text": premises, "text_pair": hypotheses},
+        )
+
+    def _predict_many_topic(self, texts: list[str]) -> list[dict[str, float | int]]:
+        if self.topic_model is None or self.topic_tokenizer is None:
+            raise FileNotFoundError(f"Missing topic model artifacts in {self.model_dir / 'topic'}")
+        return self._batched_predict(
+            model=self.topic_model,
+            tokenizer=self.topic_tokenizer,
+            tokenizer_args={"text": texts},
         )
 
     def _batched_predict(self, *, model, tokenizer, tokenizer_args: dict[str, list[str]]) -> list[dict[str, float | int]]:

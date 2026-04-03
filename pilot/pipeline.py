@@ -32,6 +32,8 @@ DEFAULT_MANUAL_VALIDATION_DIR = ARTIFACT_ROOT / "manual_validation"
 DEFAULT_SST2_CACHE_DIR = PILOT_ROOT / "data" / "sst2"
 DEFAULT_SNLI_CACHE_DIR = PILOT_ROOT / "data" / "snli"
 DEFAULT_IMDB_CACHE_DIR = PILOT_ROOT / "data" / "imdb"
+DEFAULT_MULTINLI_CACHE_DIR = PILOT_ROOT / "data" / "multinli"
+DEFAULT_AG_NEWS_CACHE_DIR = PILOT_ROOT / "data" / "ag_news"
 
 
 class SimpleCasedTokenizer:
@@ -168,6 +170,36 @@ def _load_imdb_test(limit: int | None = None) -> list[dict]:
     )
 
 
+def _load_multinli_split(split: str, limit: int | None = None) -> list[dict]:
+    return _load_dataset_with_fallback(
+        primary_name="nyu-mll/multi_nli",
+        split=split,
+        cache_dir=DEFAULT_MULTINLI_CACHE_DIR,
+        fallback_arrow_path=None,
+        limit=limit,
+    )
+
+
+def _load_ag_news_test(limit: int | None = None) -> list[dict]:
+    return _load_dataset_with_fallback(
+        primary_name="ag_news",
+        split="test",
+        cache_dir=DEFAULT_AG_NEWS_CACHE_DIR,
+        fallback_arrow_path=None,
+        limit=limit,
+    )
+
+
+def _prefix_rows(rows: list[dict], prefix: str) -> list[dict]:
+    prefixed: list[dict] = []
+    for index, row in enumerate(rows):
+        copied = dict(row)
+        original_id = copied.get("input_id", copied.get("id", copied.get("idx", index)))
+        copied["input_id"] = f"{prefix}-{original_id}"
+        prefixed.append(copied)
+    return prefixed
+
+
 def _sanitize_transition(transition: str) -> str:
     return transition.replace("→", "_to_").replace("->", "_to_").replace("/", "_")
 
@@ -253,9 +285,20 @@ def run_training_stage_with_args(args, versions: list[str]) -> None:
 
 
 def run_corpus_stage(args) -> None:
-    sa_source = _load_sst2_validation(limit=args.sa_limit)
-    sa_source_overrides = {"CHR-SA-007": _load_imdb_test(limit=args.sa_limit)}
-    nli_source = _load_snli_validation(limit=args.nli_limit)
+    sst2_rows = _prefix_rows(_load_sst2_validation(limit=args.sa_limit), "sst2")
+    imdb_rows = _prefix_rows(_load_imdb_test(limit=args.sa_limit), "imdb")
+    snli_rows = _prefix_rows(_load_snli_validation(limit=args.nli_limit), "snli")
+    multinli_matched_rows = _prefix_rows(_load_multinli_split("validation_matched", limit=args.nli_limit), "multinli-matched")
+    multinli_mismatched_rows = _prefix_rows(
+        _load_multinli_split("validation_mismatched", limit=args.nli_limit),
+        "multinli-mismatched",
+    )
+    ag_news_rows = _prefix_rows(_load_ag_news_test(limit=args.topic_limit), "agnews")
+
+    sa_source = [*sst2_rows, *imdb_rows]
+    sa_source_overrides = {}
+    nli_source = [*snli_rows, *multinli_matched_rows, *multinli_mismatched_rows]
+    topic_source = ag_news_rows
     tokenizer = SimpleCasedTokenizer()
     generator = CorpusGenerator(
         tokenizer=tokenizer,
@@ -266,6 +309,7 @@ def run_corpus_stage(args) -> None:
         mr_ids=mr_ids,
         sa_source=sa_source,
         nli_source=nli_source,
+        topic_source=topic_source,
         sa_source_overrides=sa_source_overrides,
         output_dir=args.corpus_dir,
         seed=args.seed,
@@ -341,6 +385,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--sa-limit", type=int, default=None)
     parser.add_argument("--nli-limit", type=int, default=None)
+    parser.add_argument("--topic-limit", type=int, default=None)
     parser.add_argument("--model-version")
     parser.add_argument("--model-loader", default="pilot/model_loader.py:load_model_bundle")
     parser.add_argument("--model-loader-map")

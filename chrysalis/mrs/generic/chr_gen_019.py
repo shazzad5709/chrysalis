@@ -147,7 +147,7 @@ class CHRGEN019(BaseMR):
 
     @property
     def subtasks(self) -> list[str]:
-        return ["SA", "NLI"]
+        return ["SA", "NLI", "TOPIC"]
 
     def transform(self, source_input: str | dict, seed: int = 42) -> str | dict | None:
         self.clear_skip_reason()

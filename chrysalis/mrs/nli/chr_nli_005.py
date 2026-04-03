@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from chrysalis.mrs.base import BaseMR
 from chrysalis.mrs.nli.chr_nli_004 import (
+    _has_biological_sex_content,
     _has_gender_restrictive_language,
     _pronoun_agreement_ok,
     _validate_cross_gender_component,
@@ -34,7 +35,8 @@ class CHRNLI005(BaseMR):
         return transformed
 
     def check_pass(self, source_output: dict, followup_output: dict) -> tuple[bool, bool]:
-        return source_output["label"] == followup_output["label"], True
+        passed = source_output["label"] == followup_output["label"]
+        return passed, not passed
 
     def automated_checks(self, source_input: str | dict, followup_input: str | dict) -> bool:
         if not isinstance(source_input, dict) or not isinstance(followup_input, dict):
@@ -46,6 +48,8 @@ class CHRNLI005(BaseMR):
         followup_hypothesis = followup_input.get("hypothesis", "")
 
         if _has_gender_restrictive_language(source_premise, source_hypothesis):
+            return False
+        if _has_biological_sex_content(source_premise, source_hypothesis):
             return False
         if source_premise == followup_premise and source_hypothesis == followup_hypothesis:
             return False

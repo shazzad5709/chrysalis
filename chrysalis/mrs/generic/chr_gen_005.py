@@ -75,7 +75,7 @@ class CHRGEN005(BaseMR):
 
     @property
     def subtasks(self) -> list[str]:
-        return ["SA", "NLI"]
+        return ["SA", "NLI", "TOPIC"]
 
     def verify_airtight(self, source: str | dict, followup: str | dict) -> bool:
         if isinstance(source, dict) and isinstance(followup, dict):
