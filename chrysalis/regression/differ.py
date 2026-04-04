@@ -125,12 +125,13 @@ class RegressionDiffer:
         new_version: str,
         snapshot_dir: str,
         corpus_dir: str,
+        mr_ids: list[str] | None = None,
     ) -> list[RegressionReport]:
         snapshot_root = Path(snapshot_dir)
         corpus_root = Path(corpus_dir)
         reports: list[RegressionReport] = []
-        for record in self.registry_loader.load():
-            mr_id = record["mr_id"]
+        active_mr_ids = mr_ids or [record["mr_id"] for record in self.registry_loader.load()]
+        for mr_id in active_mr_ids:
             report = self.diff(
                 mr_id=mr_id,
                 old_snapshot_path=str(snapshot_root / old_version / f"{mr_id}_snapshot.csv"),

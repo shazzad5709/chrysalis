@@ -100,6 +100,27 @@ def _profile_model_dir(profile: str, version: str) -> Path:
     return MODELS_ROOT / profile / version
 
 
+def _expected_head_dir(profile: str, version: str) -> Path:
+    train_profile = PIPELINE_PROFILES[profile]["train_profile"]
+    if train_profile.startswith("sa_"):
+        head = "sa"
+    elif train_profile.startswith("nli_"):
+        head = "nli"
+    elif train_profile == "topic_agnews":
+        head = "topic"
+    else:
+        raise ValueError(f"Unsupported train profile: {train_profile}")
+    return _profile_model_dir(train_profile, version) / head
+
+
+def _profile_model_ready(profile: str, version: str) -> bool:
+    train_profile = PIPELINE_PROFILES[profile]["train_profile"]
+    version_dir = _profile_model_dir(train_profile, version)
+    metadata_path = version_dir / "metadata.json"
+    head_dir = _expected_head_dir(profile, version)
+    return metadata_path.exists() and head_dir.exists()
+
+
 def _load_model_bundle(loader_spec: str, model_version: str, model_profile: str):
     loader = _resolve_import_spec(loader_spec)
     model_dir = _profile_model_dir(model_profile, model_version)
@@ -329,6 +350,13 @@ def run_training_stage(versions: list[str]) -> None:
 def run_training_stage_with_args(args, versions: list[str]) -> None:
     train_profile = PIPELINE_PROFILES[args.profile]["train_profile"]
     for version in versions:
+        if _profile_model_ready(args.profile, version):
+            print(
+                f"[pipeline] reusing existing trained model for {version} profile={train_profile} "
+                f"at {_profile_model_dir(train_profile, version)}",
+                flush=True,
+            )
+            continue
         script = PILOT_ROOT / "training" / f"train_{version.split('_', 1)[0]}.py"
         if not script.exists():
             raise FileNotFoundError(f"Training script not found: {script}")
@@ -410,12 +438,14 @@ def run_snapshot_stage(args, model_version: str | None = None, model_loader: str
 def run_diff_stage(args, transition: str | None = None, old_version: str | None = None, new_version: str | None = None) -> list[RegressionReport]:
     resolved_transition, resolved_old, resolved_new = _parse_transition(transition or args.transition, old_version or args.old_version, new_version or args.new_version)
     differ = RegressionDiffer()
+    mr_ids = PIPELINE_PROFILES[args.profile]["mrs"]
     reports = differ.diff_transition(
         transition=resolved_transition,
         old_version=resolved_old,
         new_version=resolved_new,
         snapshot_dir=args.snapshot_dir,
         corpus_dir=args.corpus_dir,
+        mr_ids=mr_ids,
     )
 
     report_dir = Path(args.report_dir)

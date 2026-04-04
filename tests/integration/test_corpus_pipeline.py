@@ -1,12 +1,22 @@
 from __future__ import annotations
 
 import csv
+import importlib.util
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 from chrysalis.corpus.generator import CorpusGenerator
 from chrysalis.corpus.validator import CorpusValidator
+from chrysalis.regression.differ import RegressionReport
 from chrysalis.snapshot.engine import SnapshotEngine
+
+
+PIPELINE_PATH = Path(__file__).resolve().parents[2] / "pilot" / "pipeline.py"
+PIPELINE_SPEC = importlib.util.spec_from_file_location("pilot_pipeline", PIPELINE_PATH)
+assert PIPELINE_SPEC is not None and PIPELINE_SPEC.loader is not None
+pilot_pipeline = importlib.util.module_from_spec(PIPELINE_SPEC)
+PIPELINE_SPEC.loader.exec_module(pilot_pipeline)
 
 
 ALL_MR_IDS = [
@@ -204,3 +214,74 @@ def test_corpus_generation_end_to_end(tmp_path):
 
     snapshot_files = sorted((snapshot_dir / "vtest").glob("*_snapshot.csv"))
     assert len(snapshot_files) == len(ALL_MR_IDS)
+
+
+def test_generic_profile_reuses_existing_trained_models(tmp_path, monkeypatch):
+    profile = "gen_sst2"
+    train_profile = pilot_pipeline.PIPELINE_PROFILES[profile]["train_profile"]
+    version_dir = tmp_path / "models" / train_profile / "v1_base"
+    (version_dir / "sa").mkdir(parents=True)
+    (version_dir / "metadata.json").write_text("{}", encoding="utf-8")
+
+    monkeypatch.setattr(pilot_pipeline, "MODELS_ROOT", tmp_path / "models")
+
+    invoked = []
+
+    def fake_run(cmd, check):
+        invoked.append((cmd, check))
+
+    monkeypatch.setattr(pilot_pipeline.subprocess, "run", fake_run)
+
+    args = SimpleNamespace(
+        profile=profile,
+        device="cpu",
+        batch_size=16,
+        eval_batch_size=32,
+        gradient_accumulation_steps=2,
+        max_length=128,
+        seed=42,
+        num_workers=0,
+        full_spec_train=False,
+    )
+    pilot_pipeline.run_training_stage_with_args(args, ["v1_base"])
+    assert invoked == []
+
+
+def test_diff_stage_only_uses_profile_mrs(tmp_path, monkeypatch):
+    captured: dict[str, object] = {}
+
+    def fake_diff_transition(self, *, transition, old_version, new_version, snapshot_dir, corpus_dir, mr_ids=None):
+        captured["mr_ids"] = mr_ids
+        return [
+            RegressionReport(
+                transition=transition,
+                mr_id=mr_ids[0],
+                n_matched=1,
+                pass_rate_old=1.0,
+                pass_rate_new=1.0,
+                matched_pass_rate_delta=0.0,
+                behavioral_regression_flag=False,
+                pipeline_severity="soft-warning",
+                release_blocked=False,
+            )
+        ]
+
+    monkeypatch.setattr(pilot_pipeline.RegressionDiffer, "diff_transition", fake_diff_transition)
+    monkeypatch.setattr(pilot_pipeline.RegressionDiffer, "write_report", lambda self, reports, output_path: None)
+    monkeypatch.setattr(pilot_pipeline.RegressionDiffer, "write_fairness_report", lambda self, reports, output_path: None)
+
+    args = SimpleNamespace(
+        profile="sa_sst2",
+        transition="v1_base->v2_retrain",
+        old_version=None,
+        new_version=None,
+        snapshot_dir=str(tmp_path / "snapshots"),
+        corpus_dir=str(tmp_path / "corpus"),
+        report_dir=str(tmp_path / "reports"),
+        standard_report_path=None,
+        fairness_report_path=None,
+    )
+
+    reports = pilot_pipeline.run_diff_stage(args)
+    assert [report.mr_id for report in reports] == ["CHR-SA-001"]
+    assert captured["mr_ids"] == pilot_pipeline.PIPELINE_PROFILES["sa_sst2"]["mrs"]
