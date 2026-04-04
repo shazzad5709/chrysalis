@@ -7,7 +7,7 @@ import sys
 from typing import Any
 
 try:
-    from datasets import Dataset, load_dataset
+    from datasets import Dataset, concatenate_datasets, load_dataset
 except ImportError as exc:  # pragma: no cover
     raise RuntimeError("The 'datasets' package is required for pilot training.") from exc
 
@@ -28,6 +28,8 @@ ROOT = Path(__file__).resolve().parents[2]
 PILOT_ROOT = ROOT / "pilot"
 DEFAULT_SST2_CACHE_DIR = PILOT_ROOT / "data" / "sst2"
 DEFAULT_SNLI_CACHE_DIR = PILOT_ROOT / "data" / "snli"
+DEFAULT_IMDB_CACHE_DIR = PILOT_ROOT / "data" / "imdb"
+DEFAULT_MULTINLI_CACHE_DIR = PILOT_ROOT / "data" / "multinli"
 DEFAULT_AG_NEWS_CACHE_DIR = PILOT_ROOT / "data" / "ag_news"
 FALLBACK_SST2_ARROW = Path(
     "/Users/shazzad/.cache/huggingface/datasets/stanfordnlp___sst2/default/0.0.0/"
@@ -42,6 +44,14 @@ DEVELOPMENT_NOTE = (
     "Reduced development-size training run for local validation on constrained hardware. "
     "Use the full Section 11.1 sizes for the final submission."
 )
+
+TRAINING_PROFILES = {
+    "sa_sst2": {"subtask": "SA", "model_subdir": "sa", "dataset_name": "SST-2"},
+    "sa_imdb": {"subtask": "SA", "model_subdir": "sa", "dataset_name": "IMDb"},
+    "nli_snli": {"subtask": "NLI", "model_subdir": "nli", "dataset_name": "SNLI"},
+    "nli_multinli": {"subtask": "NLI", "model_subdir": "nli", "dataset_name": "MultiNLI"},
+    "topic_agnews": {"subtask": "TOPIC", "model_subdir": "topic", "dataset_name": "AG News"},
+}
 
 VERSION_CONFIGS = {
     "v1_base": {
@@ -85,16 +95,13 @@ class ProgressPrinterCallback(TrainerCallback):
     def on_log(self, args, state, control, logs=None, **kwargs):
         if not logs:
             return control
-        filtered = []
+        rendered = []
         for key in ("loss", "grad_norm", "learning_rate", "epoch"):
             if key in logs:
                 value = logs[key]
-                if isinstance(value, float):
-                    filtered.append(f"{key}={value:.6f}")
-                else:
-                    filtered.append(f"{key}={value}")
-        if filtered:
-            _log(f"[train:{self.run_name}] step={state.global_step}/{state.max_steps} " + " ".join(filtered))
+                rendered.append(f"{key}={value:.6f}" if isinstance(value, float) else f"{key}={value}")
+        if rendered:
+            _log(f"[train:{self.run_name}] step={state.global_step}/{state.max_steps} " + " ".join(rendered))
         return control
 
     def on_evaluate(self, args, state, control, metrics=None, **kwargs):
@@ -134,6 +141,14 @@ def _load_glue_sst2(split: str, limit: int | None = None) -> list[dict]:
         return _load_arrow_rows(FALLBACK_SST2_ARROW, limit=limit)
 
 
+def _load_imdb(split: str, limit: int | None = None) -> list[dict]:
+    DEFAULT_IMDB_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    dataset = load_dataset("imdb", split=split, cache_dir=str(DEFAULT_IMDB_CACHE_DIR))
+    if limit is not None:
+        dataset = dataset.select(range(min(limit, len(dataset))))
+    return list(dataset)
+
+
 def _load_snli(split: str, limit: int | None = None) -> list[dict]:
     DEFAULT_SNLI_CACHE_DIR.mkdir(parents=True, exist_ok=True)
     try:
@@ -147,6 +162,14 @@ def _load_snli(split: str, limit: int | None = None) -> list[dict]:
         return _load_arrow_rows(FALLBACK_SNLI_VALIDATION_ARROW, limit=limit)
 
 
+def _load_multinli(split: str, limit: int | None = None) -> list[dict]:
+    DEFAULT_MULTINLI_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    dataset = load_dataset("nyu-mll/multi_nli", split=split, cache_dir=str(DEFAULT_MULTINLI_CACHE_DIR))
+    if limit is not None:
+        dataset = dataset.select(range(min(limit, len(dataset))))
+    return list(dataset)
+
+
 def _load_ag_news(split: str, limit: int | None = None) -> list[dict]:
     DEFAULT_AG_NEWS_CACHE_DIR.mkdir(parents=True, exist_ok=True)
     dataset = load_dataset("ag_news", split=split, cache_dir=str(DEFAULT_AG_NEWS_CACHE_DIR))
@@ -158,34 +181,72 @@ def _load_ag_news(split: str, limit: int | None = None) -> list[dict]:
 def _prepare_sst2(train_n: int, seed: int) -> tuple[Dataset, Dataset]:
     train_rows = [row for row in _load_glue_sst2("train") if row.get("label") in {0, 1}]
     validation_rows = [row for row in _load_glue_sst2("validation") if row.get("label") in {0, 1}]
-
     train_dataset = Dataset.from_list(train_rows).shuffle(seed=seed).select(range(min(train_n, len(train_rows))))
-    eval_count = min(200, len(validation_rows))
-    eval_dataset = Dataset.from_list(validation_rows).shuffle(seed=seed).select(range(eval_count))
+    eval_dataset = Dataset.from_list(validation_rows).shuffle(seed=seed).select(range(min(200, len(validation_rows))))
+    return train_dataset, eval_dataset
+
+
+def _prepare_imdb(train_n: int, seed: int) -> tuple[Dataset, Dataset]:
+    train_rows = [row for row in _load_imdb("train") if row.get("label") in {0, 1}]
+    test_rows = [row for row in _load_imdb("test") if row.get("label") in {0, 1}]
+    train_dataset = Dataset.from_list(train_rows).shuffle(seed=seed).select(range(min(train_n, len(train_rows))))
+    eval_dataset = Dataset.from_list(test_rows).shuffle(seed=seed).select(range(min(300, len(test_rows))))
     return train_dataset, eval_dataset
 
 
 def _prepare_snli(train_n: int, seed: int) -> tuple[Dataset, Dataset]:
     train_rows = [row for row in _load_snli("train") if row.get("label") in {0, 1, 2}]
     validation_rows = [row for row in _load_snli("validation") if row.get("label") in {0, 1, 2}]
-
     train_dataset = Dataset.from_list(train_rows).shuffle(seed=seed).select(range(min(train_n, len(train_rows))))
-    eval_count = min(300, len(validation_rows))
-    eval_dataset = Dataset.from_list(validation_rows).shuffle(seed=seed).select(range(eval_count))
+    eval_dataset = Dataset.from_list(validation_rows).shuffle(seed=seed).select(range(min(300, len(validation_rows))))
     return train_dataset, eval_dataset
 
 
-def _prepare_ag_news(train_n: int | None, seed: int) -> tuple[Dataset, Dataset]:
+def _prepare_multinli(train_n: int, seed: int) -> tuple[Dataset, Dataset]:
+    train_rows = [row for row in _load_multinli("train") if row.get("label") in {0, 1, 2}]
+    matched_rows = [row for row in _load_multinli("validation_matched") if row.get("label") in {0, 1, 2}]
+    mismatched_rows = [row for row in _load_multinli("validation_mismatched") if row.get("label") in {0, 1, 2}]
+    train_dataset = Dataset.from_list(train_rows).shuffle(seed=seed).select(range(min(train_n, len(train_rows))))
+    eval_dataset = concatenate_datasets(
+        [
+            Dataset.from_list(matched_rows).shuffle(seed=seed).select(range(min(200, len(matched_rows)))),
+            Dataset.from_list(mismatched_rows).shuffle(seed=seed).select(range(min(200, len(mismatched_rows)))),
+        ]
+    ).shuffle(seed=seed)
+    return train_dataset, eval_dataset
+
+
+def _prepare_ag_news(train_n: int, seed: int) -> tuple[Dataset, Dataset]:
     train_rows = _load_ag_news("train")
     test_rows = _load_ag_news("test")
-
-    train_dataset = Dataset.from_list(train_rows).shuffle(seed=seed)
-    if train_n is not None:
-        train_dataset = train_dataset.select(range(min(train_n, len(train_rows))))
-
-    eval_count = min(400, len(test_rows))
-    eval_dataset = Dataset.from_list(test_rows).shuffle(seed=seed).select(range(eval_count))
+    train_dataset = Dataset.from_list(train_rows).shuffle(seed=seed).select(range(min(train_n, len(train_rows))))
+    eval_dataset = Dataset.from_list(test_rows).shuffle(seed=seed).select(range(min(400, len(test_rows))))
     return train_dataset, eval_dataset
+
+
+def _profile_size_config(version: str, profile: str, full_spec: bool) -> tuple[int, int]:
+    size_config = VERSION_CONFIGS[version]["full" if full_spec else "reduced"]
+    if profile.startswith("sa_"):
+        return int(size_config["sa_train_n"]), int(size_config["sa_epochs"])
+    if profile.startswith("nli_"):
+        return int(size_config["nli_train_n"]), int(size_config["nli_epochs"])
+    if profile == "topic_agnews":
+        return int(size_config["topic_train_n"]), int(size_config["topic_epochs"])
+    raise ValueError(f"Unsupported training profile: {profile}")
+
+
+def _prepare_profile_dataset(profile: str, train_n: int, seed: int) -> tuple[Dataset, Dataset]:
+    if profile == "sa_sst2":
+        return _prepare_sst2(train_n, seed)
+    if profile == "sa_imdb":
+        return _prepare_imdb(train_n, seed)
+    if profile == "nli_snli":
+        return _prepare_snli(train_n, seed)
+    if profile == "nli_multinli":
+        return _prepare_multinli(train_n, seed)
+    if profile == "topic_agnews":
+        return _prepare_ag_news(train_n, seed)
+    raise ValueError(f"Unsupported training profile: {profile}")
 
 
 def _accuracy_metrics(eval_pred) -> dict[str, float]:
@@ -213,12 +274,38 @@ def _tokenize_sa(batch: dict[str, list[str]], tokenizer, max_length: int) -> dic
     return tokenizer(batch["sentence"], truncation=True, max_length=max_length)
 
 
+def _tokenize_imdb(batch: dict[str, list[str]], tokenizer, max_length: int) -> dict[str, Any]:
+    return tokenizer(batch["text"], truncation=True, max_length=max_length)
+
+
 def _tokenize_nli(batch: dict[str, list[str]], tokenizer, max_length: int) -> dict[str, Any]:
     return tokenizer(batch["premise"], batch["hypothesis"], truncation=True, max_length=max_length)
 
 
 def _tokenize_topic(batch: dict[str, list[str]], tokenizer, max_length: int) -> dict[str, Any]:
     return tokenizer(batch["text"], truncation=True, max_length=max_length)
+
+
+def _tokenize_fn_for_profile(profile: str):
+    if profile == "sa_sst2":
+        return _tokenize_sa
+    if profile == "sa_imdb":
+        return _tokenize_imdb
+    if profile in {"nli_snli", "nli_multinli"}:
+        return _tokenize_nli
+    if profile == "topic_agnews":
+        return _tokenize_topic
+    raise ValueError(f"Unsupported training profile: {profile}")
+
+
+def _num_labels_for_profile(profile: str) -> int:
+    if profile.startswith("sa_"):
+        return 2
+    if profile.startswith("nli_"):
+        return 3
+    if profile == "topic_agnews":
+        return 4
+    raise ValueError(f"Unsupported training profile: {profile}")
 
 
 def _save_metadata(output_dir: Path, metadata: dict[str, Any]) -> None:
@@ -246,10 +333,9 @@ def _train_task(
     num_workers: int,
 ) -> dict[str, float]:
     _log(
-        f"[train:{run_name}] preparing tokenizer/model={model_name} "
-        f"labels={num_labels} device={device} batch_size={batch_size} "
-        f"eval_batch_size={eval_batch_size} grad_accum={gradient_accumulation_steps} "
-        f"max_length={max_length} num_workers={num_workers}"
+        f"[train:{run_name}] preparing tokenizer/model={model_name} labels={num_labels} "
+        f"device={device} batch_size={batch_size} eval_batch_size={eval_batch_size} "
+        f"grad_accum={gradient_accumulation_steps} max_length={max_length} num_workers={num_workers}"
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
@@ -304,7 +390,8 @@ def _train_task(
 def train_version(
     *,
     version: str,
-    output_dir: str | Path,
+    profile: str,
+    output_dir: str | Path | None = None,
     seed: int = 42,
     device: str = "auto",
     batch_size: int = 16,
@@ -316,76 +403,37 @@ def train_version(
 ) -> None:
     if version not in VERSION_CONFIGS:
         raise ValueError(f"Unsupported version: {version}")
+    if profile not in TRAINING_PROFILES:
+        raise ValueError(f"Unsupported training profile: {profile}")
 
-    config = VERSION_CONFIGS[version]
-    size_config = config["full" if full_spec else "reduced"]
+    profile_spec = TRAINING_PROFILES[profile]
     resolved_device = _resolve_device(device)
     resolved_num_workers = _default_num_workers() if num_workers is None else max(0, num_workers)
-    version_dir = Path(output_dir)
+    version_dir = Path(output_dir) if output_dir is not None else PILOT_ROOT / "models" / profile / version
     version_dir.mkdir(parents=True, exist_ok=True)
 
+    train_n, epochs = _profile_size_config(version, profile, full_spec)
+    train_dataset, eval_dataset = _prepare_profile_dataset(profile, train_n, seed)
+    model_subdir = profile_spec["model_subdir"]
+
     _log(
-        f"[train:{version}] starting version training full_spec={full_spec} device={resolved_device} "
+        f"[train:{version}] starting profile={profile} dataset={profile_spec['dataset_name']} "
+        f"subtask={profile_spec['subtask']} full_spec={full_spec} device={resolved_device} "
         f"output_dir={version_dir} batch_size={batch_size} eval_batch_size={eval_batch_size} "
         f"grad_accum={gradient_accumulation_steps} num_workers={resolved_num_workers}"
     )
+    _log(f"[train:{version}] dataset sizes: train={len(train_dataset)} eval={len(eval_dataset)}")
 
-    sa_train, sa_eval = _prepare_sst2(size_config["sa_train_n"], seed)
-    nli_train, nli_eval = _prepare_snli(size_config["nli_train_n"], seed)
-    topic_train, topic_eval = _prepare_ag_news(size_config["topic_train_n"], seed)
-    _log(
-        f"[train:{version}] dataset sizes: "
-        f"sa_train={len(sa_train)} sa_eval={len(sa_eval)} "
-        f"nli_train={len(nli_train)} nli_eval={len(nli_eval)} "
-        f"topic_train={len(topic_train)} topic_eval={len(topic_eval)}"
-    )
-
-    sa_metrics = _train_task(
-        run_name=f"{version}/sa",
-        model_name=config["model_name"],
-        num_labels=2,
-        train_dataset=sa_train,
-        eval_dataset=sa_eval,
-        tokenize_fn=_tokenize_sa,
-        output_dir=version_dir / "sa",
-        learning_rate=config["learning_rate"],
-        epochs=size_config["sa_epochs"],
-        seed=seed,
-        batch_size=batch_size,
-        eval_batch_size=eval_batch_size,
-        gradient_accumulation_steps=gradient_accumulation_steps,
-        max_length=max_length,
-        device=resolved_device,
-        num_workers=resolved_num_workers,
-    )
-    nli_metrics = _train_task(
-        run_name=f"{version}/nli",
-        model_name=config["model_name"],
-        num_labels=3,
-        train_dataset=nli_train,
-        eval_dataset=nli_eval,
-        tokenize_fn=_tokenize_nli,
-        output_dir=version_dir / "nli",
-        learning_rate=config["learning_rate"],
-        epochs=size_config["nli_epochs"],
-        seed=seed,
-        batch_size=batch_size,
-        eval_batch_size=eval_batch_size,
-        gradient_accumulation_steps=gradient_accumulation_steps,
-        max_length=max_length,
-        device=resolved_device,
-        num_workers=resolved_num_workers,
-    )
-    topic_metrics = _train_task(
-        run_name=f"{version}/topic",
-        model_name=config["model_name"],
-        num_labels=4,
-        train_dataset=topic_train,
-        eval_dataset=topic_eval,
-        tokenize_fn=_tokenize_topic,
-        output_dir=version_dir / "topic",
-        learning_rate=config["learning_rate"],
-        epochs=size_config["topic_epochs"],
+    metrics = _train_task(
+        run_name=f"{version}/{profile}",
+        model_name=VERSION_CONFIGS[version]["model_name"],
+        num_labels=_num_labels_for_profile(profile),
+        train_dataset=train_dataset,
+        eval_dataset=eval_dataset,
+        tokenize_fn=_tokenize_fn_for_profile(profile),
+        output_dir=version_dir / model_subdir,
+        learning_rate=VERSION_CONFIGS[version]["learning_rate"],
+        epochs=epochs,
         seed=seed,
         batch_size=batch_size,
         eval_batch_size=eval_batch_size,
@@ -399,10 +447,13 @@ def train_version(
         version_dir,
         {
             "version": version,
+            "profile": profile,
+            "dataset_name": profile_spec["dataset_name"],
+            "subtask": profile_spec["subtask"],
             "development_note": None if full_spec else DEVELOPMENT_NOTE,
             "full_spec": full_spec,
-            "model_name": config["model_name"],
-            "learning_rate": config["learning_rate"],
+            "model_name": VERSION_CONFIGS[version]["model_name"],
+            "learning_rate": VERSION_CONFIGS[version]["learning_rate"],
             "weight_decay": 0.01,
             "batch_size": batch_size,
             "eval_batch_size": eval_batch_size,
@@ -411,24 +462,10 @@ def train_version(
             "max_length": max_length,
             "seed": seed,
             "device": resolved_device,
-            "sa": {
-                "train_n": size_config["sa_train_n"],
-                "epochs": size_config["sa_epochs"],
-                "metrics": sa_metrics,
-                "model_dir": "sa",
-            },
-            "nli": {
-                "train_n": size_config["nli_train_n"],
-                "epochs": size_config["nli_epochs"],
-                "metrics": nli_metrics,
-                "model_dir": "nli",
-            },
-            "topic": {
-                "train_n": size_config["topic_train_n"],
-                "epochs": size_config["topic_epochs"],
-                "metrics": topic_metrics,
-                "model_dir": "topic",
-            },
+            "train_n": train_n,
+            "epochs": epochs,
+            "metrics": metrics,
+            "model_dir": model_subdir,
         },
     )
     _log(f"[train:{version}] metadata saved to {version_dir / 'metadata.json'}")
@@ -439,7 +476,8 @@ def build_training_parser(version: str):
     import argparse
 
     parser = argparse.ArgumentParser(description=f"Train {version} pilot models.")
-    parser.add_argument("--output-dir", default=str(PILOT_ROOT / "models" / version))
+    parser.add_argument("--profile", required=True, choices=sorted(TRAINING_PROFILES))
+    parser.add_argument("--output-dir", default=None)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", default="auto", choices=["auto", "cuda", "cpu"])
     parser.add_argument("--batch-size", type=int, default=16)
@@ -456,6 +494,7 @@ def run_cli(version: str) -> None:
     args = parser.parse_args()
     train_version(
         version=version,
+        profile=args.profile,
         output_dir=args.output_dir,
         seed=args.seed,
         device=args.device,

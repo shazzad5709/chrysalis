@@ -28,21 +28,9 @@ class PilotModelBundle:
 
         self.metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         self.device = _resolve_device()
-
-        self.sa_model = AutoModelForSequenceClassification.from_pretrained(self.model_dir / "sa").to(self.device)
-        self.nli_model = AutoModelForSequenceClassification.from_pretrained(self.model_dir / "nli").to(self.device)
-        self.sa_tokenizer = AutoTokenizer.from_pretrained(self.model_dir / "sa", use_fast=True)
-        self.nli_tokenizer = AutoTokenizer.from_pretrained(self.model_dir / "nli", use_fast=True)
-        self.sa_model.eval()
-        self.nli_model.eval()
-        topic_dir = self.model_dir / "topic"
-        if topic_dir.exists():
-            self.topic_model = AutoModelForSequenceClassification.from_pretrained(topic_dir).to(self.device)
-            self.topic_tokenizer = AutoTokenizer.from_pretrained(topic_dir, use_fast=True)
-            self.topic_model.eval()
-        else:
-            self.topic_model = None
-            self.topic_tokenizer = None
+        self.sa_model, self.sa_tokenizer = self._maybe_load_head("sa")
+        self.nli_model, self.nli_tokenizer = self._maybe_load_head("nli")
+        self.topic_model, self.topic_tokenizer = self._maybe_load_head("topic")
         self.max_length = int(self.metadata.get("max_length", 128))
         if self.device == "mps":
             self.infer_batch_size = 128
@@ -50,6 +38,15 @@ class PilotModelBundle:
             self.infer_batch_size = 32
         else:
             self.infer_batch_size = 8
+
+    def _maybe_load_head(self, head_name: str):
+        head_dir = self.model_dir / head_name
+        if not head_dir.exists():
+            return None, None
+        model = AutoModelForSequenceClassification.from_pretrained(head_dir).to(self.device)
+        tokenizer = AutoTokenizer.from_pretrained(head_dir, use_fast=True)
+        model.eval()
+        return model, tokenizer
 
     def predict(self, payload, tokenizer=None, subtask: str | None = None) -> dict[str, float | int]:
         del tokenizer
@@ -77,6 +74,8 @@ class PilotModelBundle:
         return self._predict_many_topic([text])[0]
 
     def _predict_many_sa(self, texts: list[str]) -> list[dict[str, float | int]]:
+        if self.sa_model is None or self.sa_tokenizer is None:
+            raise FileNotFoundError(f"Missing SA model artifacts in {self.model_dir / 'sa'}")
         return self._batched_predict(
             model=self.sa_model,
             tokenizer=self.sa_tokenizer,
@@ -84,6 +83,8 @@ class PilotModelBundle:
         )
 
     def _predict_many_nli(self, payloads: list[dict[str, str]]) -> list[dict[str, float | int]]:
+        if self.nli_model is None or self.nli_tokenizer is None:
+            raise FileNotFoundError(f"Missing NLI model artifacts in {self.model_dir / 'nli'}")
         premises = [payload.get("premise", "") for payload in payloads]
         hypotheses = [payload.get("hypothesis", "") for payload in payloads]
         return self._batched_predict(

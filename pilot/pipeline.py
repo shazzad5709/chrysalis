@@ -6,7 +6,6 @@ import logging
 from pathlib import Path
 import subprocess
 import sys
-from typing import Any
 
 try:
     from datasets import load_dataset
@@ -25,15 +24,28 @@ logger = logging.getLogger(__name__)
 ROOT = Path(__file__).resolve().parents[1]
 PILOT_ROOT = ROOT / "pilot"
 ARTIFACT_ROOT = PILOT_ROOT / "artifacts"
-DEFAULT_CORPUS_DIR = ARTIFACT_ROOT / "corpus"
-DEFAULT_SNAPSHOT_DIR = ARTIFACT_ROOT / "snapshots"
-DEFAULT_REPORT_DIR = ARTIFACT_ROOT / "regression_reports"
-DEFAULT_MANUAL_VALIDATION_DIR = ARTIFACT_ROOT / "manual_validation"
+MODELS_ROOT = PILOT_ROOT / "models"
 DEFAULT_SST2_CACHE_DIR = PILOT_ROOT / "data" / "sst2"
 DEFAULT_SNLI_CACHE_DIR = PILOT_ROOT / "data" / "snli"
 DEFAULT_IMDB_CACHE_DIR = PILOT_ROOT / "data" / "imdb"
 DEFAULT_MULTINLI_CACHE_DIR = PILOT_ROOT / "data" / "multinli"
 DEFAULT_AG_NEWS_CACHE_DIR = PILOT_ROOT / "data" / "ag_news"
+
+SA_MRS = ["CHR-SA-001", "CHR-SA-007", "CHR-SA-008", "CHR-SA-010"]
+NLI_MRS = ["CHR-NLI-004", "CHR-NLI-005", "CHR-NLI-006"]
+GENERIC_MRS = ["CHR-GEN-005", "CHR-GEN-018", "CHR-GEN-019"]
+
+PIPELINE_PROFILES = {
+    "sa_sst2": {"mrs": SA_MRS, "train_profile": "sa_sst2", "model_profile": "sa_sst2"},
+    "sa_imdb": {"mrs": SA_MRS, "train_profile": "sa_imdb", "model_profile": "sa_imdb"},
+    "nli_snli": {"mrs": NLI_MRS, "train_profile": "nli_snli", "model_profile": "nli_snli"},
+    "nli_multinli": {"mrs": NLI_MRS, "train_profile": "nli_multinli", "model_profile": "nli_multinli"},
+    "gen_sst2": {"mrs": GENERIC_MRS, "train_profile": "sa_sst2", "model_profile": "sa_sst2"},
+    "gen_imdb": {"mrs": GENERIC_MRS, "train_profile": "sa_imdb", "model_profile": "sa_imdb"},
+    "gen_snli": {"mrs": GENERIC_MRS, "train_profile": "nli_snli", "model_profile": "nli_snli"},
+    "gen_multinli": {"mrs": GENERIC_MRS, "train_profile": "nli_multinli", "model_profile": "nli_multinli"},
+    "gen_agnews": {"mrs": GENERIC_MRS, "train_profile": "topic_agnews", "model_profile": "topic_agnews"},
+}
 
 
 class SimpleCasedTokenizer:
@@ -64,9 +76,33 @@ def _resolve_import_spec(spec: str):
     return getattr(module, attr_name)
 
 
-def _load_model_bundle(loader_spec: str, model_version: str):
+def _profile_artifact_root(profile: str) -> Path:
+    return ARTIFACT_ROOT / profile
+
+
+def _profile_corpus_dir(profile: str) -> Path:
+    return _profile_artifact_root(profile) / "corpus"
+
+
+def _profile_snapshot_dir(profile: str) -> Path:
+    return _profile_artifact_root(profile) / "snapshots"
+
+
+def _profile_report_dir(profile: str) -> Path:
+    return _profile_artifact_root(profile) / "regression_reports"
+
+
+def _profile_manual_validation_dir(profile: str) -> Path:
+    return _profile_artifact_root(profile) / "manual_validation"
+
+
+def _profile_model_dir(profile: str, version: str) -> Path:
+    return MODELS_ROOT / profile / version
+
+
+def _load_model_bundle(loader_spec: str, model_version: str, model_profile: str):
     loader = _resolve_import_spec(loader_spec)
-    model_dir = PILOT_ROOT / "models" / model_version
+    model_dir = _profile_model_dir(model_profile, model_version)
     try:
         bundle = loader(model_version=model_version, model_dir=model_dir)
     except TypeError:
@@ -142,20 +178,6 @@ def _load_sst2_validation(limit: int | None = None) -> list[dict]:
         )
 
 
-def _load_snli_validation(limit: int | None = None) -> list[dict]:
-    fallback = Path(
-        "/Users/shazzad/.cache/huggingface/datasets/snli/plain_text/0.0.0/"
-        "cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/snli-validation.arrow"
-    )
-    return _load_dataset_with_fallback(
-        primary_name="snli",
-        split="validation",
-        cache_dir=DEFAULT_SNLI_CACHE_DIR,
-        fallback_arrow_path=fallback,
-        limit=limit,
-    )
-
-
 def _load_imdb_test(limit: int | None = None) -> list[dict]:
     fallback = Path(
         "/Users/shazzad/.cache/huggingface/datasets/imdb/plain_text/0.0.0/"
@@ -165,6 +187,20 @@ def _load_imdb_test(limit: int | None = None) -> list[dict]:
         primary_name="imdb",
         split="test",
         cache_dir=DEFAULT_IMDB_CACHE_DIR,
+        fallback_arrow_path=fallback,
+        limit=limit,
+    )
+
+
+def _load_snli_validation(limit: int | None = None) -> list[dict]:
+    fallback = Path(
+        "/Users/shazzad/.cache/huggingface/datasets/snli/plain_text/0.0.0/"
+        "cdb5c3d5eed6ead6e5a341c8e56e669bb666725b/snli-validation.arrow"
+    )
+    return _load_dataset_with_fallback(
+        primary_name="snli",
+        split="validation",
+        cache_dir=DEFAULT_SNLI_CACHE_DIR,
         fallback_arrow_path=fallback,
         limit=limit,
     )
@@ -198,6 +234,38 @@ def _prefix_rows(rows: list[dict], prefix: str) -> list[dict]:
         copied["input_id"] = f"{prefix}-{original_id}"
         prefixed.append(copied)
     return prefixed
+
+
+def _load_profile_sources(profile: str, args) -> tuple[list[dict], list[dict], list[dict]]:
+    if profile in {"sa_sst2", "gen_sst2"}:
+        rows = _prefix_rows(_load_sst2_validation(limit=args.sa_limit), "sst2")
+        logger.info("Loaded SST-2 source rows=%s for profile=%s", len(rows), profile)
+        return rows, [], []
+    if profile in {"sa_imdb", "gen_imdb"}:
+        rows = _prefix_rows(_load_imdb_test(limit=args.sa_limit), "imdb")
+        logger.info("Loaded IMDb source rows=%s for profile=%s", len(rows), profile)
+        return rows, [], []
+    if profile in {"nli_snli", "gen_snli"}:
+        rows = _prefix_rows(_load_snli_validation(limit=args.nli_limit), "snli")
+        logger.info("Loaded SNLI source rows=%s for profile=%s", len(rows), profile)
+        return [], rows, []
+    if profile in {"nli_multinli", "gen_multinli"}:
+        matched = _prefix_rows(_load_multinli_split("validation_matched", limit=args.nli_limit), "multinli-matched")
+        mismatched = _prefix_rows(_load_multinli_split("validation_mismatched", limit=args.nli_limit), "multinli-mismatched")
+        rows = [*matched, *mismatched]
+        logger.info(
+            "Loaded MultiNLI source rows=%s matched=%s mismatched=%s for profile=%s",
+            len(rows),
+            len(matched),
+            len(mismatched),
+            profile,
+        )
+        return [], rows, []
+    if profile == "gen_agnews":
+        rows = _prefix_rows(_load_ag_news_test(limit=args.topic_limit), "agnews")
+        logger.info("Loaded AG News source rows=%s for profile=%s", len(rows), profile)
+        return [], [], rows
+    raise ValueError(f"Unsupported pipeline profile: {profile}")
 
 
 def _sanitize_transition(transition: str) -> str:
@@ -255,17 +323,23 @@ def _format_summary_table(reports: list[RegressionReport]) -> str:
 
 
 def run_training_stage(versions: list[str]) -> None:
-    raise RuntimeError("run_training_stage(args, versions=...) should be used.")
+    raise RuntimeError("run_training_stage_with_args(args, versions=...) should be used.")
 
 
 def run_training_stage_with_args(args, versions: list[str]) -> None:
+    train_profile = PIPELINE_PROFILES[args.profile]["train_profile"]
     for version in versions:
         script = PILOT_ROOT / "training" / f"train_{version.split('_', 1)[0]}.py"
         if not script.exists():
             raise FileNotFoundError(f"Training script not found: {script}")
+        output_dir = _profile_model_dir(train_profile, version)
         cmd = [
             sys.executable,
             str(script),
+            "--profile",
+            train_profile,
+            "--output-dir",
+            str(output_dir),
             "--device",
             args.device,
             "--batch-size",
@@ -283,50 +357,24 @@ def run_training_stage_with_args(args, versions: list[str]) -> None:
             cmd.extend(["--num-workers", str(args.num_workers)])
         if args.full_spec_train:
             cmd.append("--full-spec")
-        print(f"[pipeline] launching training for {version}: {' '.join(cmd)}", flush=True)
+        print(f"[pipeline] launching training for {version} profile={train_profile}: {' '.join(cmd)}", flush=True)
         subprocess.run(cmd, check=True)
-        print(f"[pipeline] completed training for {version}", flush=True)
+        print(f"[pipeline] completed training for {version} profile={train_profile}", flush=True)
 
 
 def run_corpus_stage(args) -> None:
-    logger.info("Loading SA datasets: SST-2 validation and IMDb test")
-    sst2_rows = _prefix_rows(_load_sst2_validation(limit=args.sa_limit), "sst2")
-    imdb_rows = _prefix_rows(_load_imdb_test(limit=args.sa_limit), "imdb")
-    logger.info("Loading NLI datasets: SNLI validation and MultiNLI validation splits")
-    snli_rows = _prefix_rows(_load_snli_validation(limit=args.nli_limit), "snli")
-    multinli_matched_rows = _prefix_rows(_load_multinli_split("validation_matched", limit=args.nli_limit), "multinli-matched")
-    multinli_mismatched_rows = _prefix_rows(
-        _load_multinli_split("validation_mismatched", limit=args.nli_limit),
-        "multinli-mismatched",
-    )
-    logger.info("Loading TOPIC dataset: AG News test")
-    ag_news_rows = _prefix_rows(_load_ag_news_test(limit=args.topic_limit), "agnews")
-
-    sa_source = [*sst2_rows, *imdb_rows]
-    sa_source_overrides = {}
-    nli_source = [*snli_rows, *multinli_matched_rows, *multinli_mismatched_rows]
-    topic_source = ag_news_rows
-    logger.info(
-        "Loaded source pools: sst2=%s imdb=%s snli=%s multinli_matched=%s multinli_mismatched=%s ag_news=%s",
-        len(sst2_rows),
-        len(imdb_rows),
-        len(snli_rows),
-        len(multinli_matched_rows),
-        len(multinli_mismatched_rows),
-        len(ag_news_rows),
-    )
+    sa_source, nli_source, topic_source = _load_profile_sources(args.profile, args)
+    mr_ids = PIPELINE_PROFILES[args.profile]["mrs"]
     tokenizer = SimpleCasedTokenizer()
     generator = CorpusGenerator(
         tokenizer=tokenizer,
         manual_validation_dir=Path(args.manual_validation_dir),
     )
-    mr_ids = [record["mr_id"] for record in generator.registry_loader.load()]
     generator.generate(
         mr_ids=mr_ids,
         sa_source=sa_source,
         nli_source=nli_source,
         topic_source=topic_source,
-        sa_source_overrides=sa_source_overrides,
         output_dir=args.corpus_dir,
         seed=args.seed,
     )
@@ -340,8 +388,15 @@ def run_snapshot_stage(args, model_version: str | None = None, model_loader: str
     if not resolved_loader:
         raise ValueError("--model-loader is required for snapshot stage.")
 
-    logger.info("Loading model bundle for snapshot stage: model_version=%s loader=%s", resolved_model_version, resolved_loader)
-    model, tokenizer = _load_model_bundle(resolved_loader, resolved_model_version)
+    model_profile = PIPELINE_PROFILES[args.profile]["model_profile"]
+    logger.info(
+        "Loading model bundle for snapshot stage: model_version=%s profile=%s model_profile=%s loader=%s",
+        resolved_model_version,
+        args.profile,
+        model_profile,
+        resolved_loader,
+    )
+    model, tokenizer = _load_model_bundle(resolved_loader, resolved_model_version, model_profile)
     engine = SnapshotEngine()
     engine.run(
         model=model,
@@ -376,17 +431,11 @@ def run_diff_stage(args, transition: str | None = None, old_version: str | None 
 
 
 def run_all_stage(args) -> None:
-    loader_map = _load_loader_map(args.model_loader_map)
-    required_versions = ["v1_base", "v2_retrain", "v3_distilled"]
-    missing = [version for version in required_versions if version not in loader_map]
-    if missing:
-        raise ValueError(f"--model-loader-map must provide loaders for: {', '.join(missing)}")
-
     run_training_stage_with_args(args, ["v1_base"])
     run_corpus_stage(args)
     run_training_stage_with_args(args, ["v2_retrain", "v3_distilled"])
-    for version in required_versions:
-        run_snapshot_stage(args, model_version=version, model_loader=loader_map[version])
+    for version in ["v1_base", "v2_retrain", "v3_distilled"]:
+        run_snapshot_stage(args, model_version=version)
 
     all_reports: list[RegressionReport] = []
     all_reports.extend(run_diff_stage(args, transition="v1_base→v2_retrain", old_version="v1_base", new_version="v2_retrain"))
@@ -399,6 +448,7 @@ def run_all_stage(args) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the Chrysalis pilot pipeline.")
     parser.add_argument("--stage", required=True, choices=["all", "train", "corpus", "snapshot", "diff"])
+    parser.add_argument("--profile", required=True, choices=sorted(PIPELINE_PROFILES))
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--sa-limit", type=int, default=None)
     parser.add_argument("--nli-limit", type=int, default=None)
@@ -409,10 +459,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--transition")
     parser.add_argument("--old-version")
     parser.add_argument("--new-version")
-    parser.add_argument("--corpus-dir", default=str(DEFAULT_CORPUS_DIR))
-    parser.add_argument("--snapshot-dir", default=str(DEFAULT_SNAPSHOT_DIR))
-    parser.add_argument("--report-dir", default=str(DEFAULT_REPORT_DIR))
-    parser.add_argument("--manual-validation-dir", default=str(DEFAULT_MANUAL_VALIDATION_DIR))
+    parser.add_argument("--corpus-dir", default=None)
+    parser.add_argument("--snapshot-dir", default=None)
+    parser.add_argument("--report-dir", default=None)
+    parser.add_argument("--manual-validation-dir", default=None)
     parser.add_argument("--standard-report-path")
     parser.add_argument("--fairness-report-path")
     parser.add_argument("--device", default="auto", choices=["auto", "cuda", "cpu"])
@@ -425,9 +475,21 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _hydrate_default_dirs(args) -> None:
+    if args.corpus_dir is None:
+        args.corpus_dir = str(_profile_corpus_dir(args.profile))
+    if args.snapshot_dir is None:
+        args.snapshot_dir = str(_profile_snapshot_dir(args.profile))
+    if args.report_dir is None:
+        args.report_dir = str(_profile_report_dir(args.profile))
+    if args.manual_validation_dir is None:
+        args.manual_validation_dir = str(_profile_manual_validation_dir(args.profile))
+
+
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = build_parser().parse_args()
+    _hydrate_default_dirs(args)
 
     if args.stage == "train":
         run_training_stage_with_args(args, ["v1_base", "v2_retrain", "v3_distilled"])
