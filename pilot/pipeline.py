@@ -281,24 +281,38 @@ def run_training_stage_with_args(args, versions: list[str]) -> None:
         ]
         if args.full_spec_train:
             cmd.append("--full-spec")
+        print(f"[pipeline] launching training for {version}: {' '.join(cmd)}", flush=True)
         subprocess.run(cmd, check=True)
+        print(f"[pipeline] completed training for {version}", flush=True)
 
 
 def run_corpus_stage(args) -> None:
+    logger.info("Loading SA datasets: SST-2 validation and IMDb test")
     sst2_rows = _prefix_rows(_load_sst2_validation(limit=args.sa_limit), "sst2")
     imdb_rows = _prefix_rows(_load_imdb_test(limit=args.sa_limit), "imdb")
+    logger.info("Loading NLI datasets: SNLI validation and MultiNLI validation splits")
     snli_rows = _prefix_rows(_load_snli_validation(limit=args.nli_limit), "snli")
     multinli_matched_rows = _prefix_rows(_load_multinli_split("validation_matched", limit=args.nli_limit), "multinli-matched")
     multinli_mismatched_rows = _prefix_rows(
         _load_multinli_split("validation_mismatched", limit=args.nli_limit),
         "multinli-mismatched",
     )
+    logger.info("Loading TOPIC dataset: AG News test")
     ag_news_rows = _prefix_rows(_load_ag_news_test(limit=args.topic_limit), "agnews")
 
     sa_source = [*sst2_rows, *imdb_rows]
     sa_source_overrides = {}
     nli_source = [*snli_rows, *multinli_matched_rows, *multinli_mismatched_rows]
     topic_source = ag_news_rows
+    logger.info(
+        "Loaded source pools: sst2=%s imdb=%s snli=%s multinli_matched=%s multinli_mismatched=%s ag_news=%s",
+        len(sst2_rows),
+        len(imdb_rows),
+        len(snli_rows),
+        len(multinli_matched_rows),
+        len(multinli_mismatched_rows),
+        len(ag_news_rows),
+    )
     tokenizer = SimpleCasedTokenizer()
     generator = CorpusGenerator(
         tokenizer=tokenizer,
@@ -324,6 +338,7 @@ def run_snapshot_stage(args, model_version: str | None = None, model_loader: str
     if not resolved_loader:
         raise ValueError("--model-loader is required for snapshot stage.")
 
+    logger.info("Loading model bundle for snapshot stage: model_version=%s loader=%s", resolved_model_version, resolved_loader)
     model, tokenizer = _load_model_bundle(resolved_loader, resolved_model_version)
     engine = SnapshotEngine()
     engine.run(

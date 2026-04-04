@@ -12,6 +12,7 @@ MANUAL_VALIDATION_DIR="$ARTIFACT_ROOT/manual_validation"
 LOG_FILE="$ARTIFACT_ROOT/fullscale_pilot_run.log"
 
 KEEP_EXISTING="${KEEP_EXISTING:-0}"
+export PYTHONUNBUFFERED=1
 
 mkdir -p "$ARTIFACT_ROOT" "$CORPUS_DIR" "$SNAPSHOT_DIR" "$REPORT_DIR" "$MANUAL_VALIDATION_DIR"
 exec > >(tee -a "$LOG_FILE") 2>&1
@@ -21,7 +22,7 @@ log() {
 }
 
 run_python() {
-  uv run python "$@"
+  uv run python -u "$@"
 }
 
 log "Starting full-scale Chrysalis pilot"

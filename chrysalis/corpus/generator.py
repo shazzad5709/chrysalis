@@ -16,6 +16,7 @@ from chrysalis.mrs.base import BaseMR
 from chrysalis.registry.registry import RegistryLoader
 
 logger = logging.getLogger(__name__)
+GENERATION_PROGRESS_EVERY = 1000
 
 CORPUS_FIELDNAMES = [
     "mr_id",
@@ -171,8 +172,18 @@ class CorpusGenerator:
         manifest: dict[str, str] = {}
         rng = random.Random(seed)
 
+        logger.info(
+            "Corpus generation starting: mr_count=%s sa_examples=%s nli_examples=%s topic_examples=%s output_dir=%s",
+            len(mr_ids),
+            len(sa_examples),
+            len(nli_examples),
+            len(topic_examples),
+            output_path,
+        )
+
         for mr_id in mr_ids:
             mr = self._get_mr_instance(mr_id)
+            logger.info("Generating corpus for %s with subtasks=%s", mr_id, ",".join(mr.subtasks))
             if mr_id == "CHR-GEN-018" and self.tokenizer is not None:
                 tokenizer_ok = getattr(mr, "check_tokenizer_casing")(self.tokenizer)
                 if not tokenizer_ok:
@@ -237,11 +248,20 @@ class CorpusGenerator:
             self._write_corpus_csv(corpus_file, records)
             manifest[corpus_file.name] = _sha256_for_file(corpus_file)
             self._write_manual_validation_artifacts(mr_id, records, rng)
+            logger.info(
+                "Finished %s: attempts=%s skips=%s kept=%s corpus=%s",
+                mr_id,
+                attempts,
+                skips,
+                len(records),
+                corpus_file,
+            )
 
         self._write_rejection_log(output_path / "rejection_log.csv", rejection_rows)
         manifest_path = output_path / "corpus_manifest.json"
         with manifest_path.open("w", encoding="utf-8") as handle:
             json.dump(manifest, handle, indent=2, sort_keys=True)
+        logger.info("Corpus generation complete: manifest=%s rejections=%s", manifest_path, len(rejection_rows))
 
     def _generate_for_subtask(
         self,
@@ -255,6 +275,8 @@ class CorpusGenerator:
         rejections: list[dict[str, str]] = []
         attempts = 0
         skips = 0
+
+        logger.info("  %s/%s start: source_examples=%s", mr_id, subtask, len(examples))
 
         for example in examples:
             attempts += 1
@@ -303,6 +325,26 @@ class CorpusGenerator:
                 else:
                     rejections.append(self._rejection_row(mr_id, example["input_id"], subtask, "", record_or_reason, example))
 
+            if attempts % GENERATION_PROGRESS_EVERY == 0:
+                logger.info(
+                    "  %s/%s progress: processed=%s kept=%s skipped=%s rejected=%s",
+                    mr_id,
+                    subtask,
+                    attempts,
+                    len(records),
+                    skips,
+                    len(rejections),
+                )
+
+        logger.info(
+            "  %s/%s done: processed=%s kept=%s skipped=%s rejected=%s",
+            mr_id,
+            subtask,
+            attempts,
+            len(records),
+            skips,
+            len(rejections),
+        )
         return records, rejections, attempts, skips
 
     def _build_corpus_record(

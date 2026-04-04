@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 from typing import Any
 
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+logger = logging.getLogger(__name__)
 
 
 def _resolve_device() -> str:
@@ -101,8 +104,17 @@ class PilotModelBundle:
     def _batched_predict(self, *, model, tokenizer, tokenizer_args: dict[str, list[str]]) -> list[dict[str, float | int]]:
         results: list[dict[str, float | int]] = []
         total = len(next(iter(tokenizer_args.values()), []))
+        batch_total = max(1, (total + self.infer_batch_size - 1) // self.infer_batch_size)
         for start in range(0, total, self.infer_batch_size):
             end = min(total, start + self.infer_batch_size)
+            batch_number = start // self.infer_batch_size + 1
+            logger.info(
+                "    Inference batch %s/%s size=%s device=%s",
+                batch_number,
+                batch_total,
+                end - start,
+                self.device,
+            )
             batch_kwargs = {key: value[start:end] for key, value in tokenizer_args.items()}
             encoded = tokenizer(
                 batch_kwargs["text"],

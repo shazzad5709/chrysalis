@@ -6,11 +6,14 @@ import hashlib
 import importlib
 import inspect
 import json
+import logging
 from pathlib import Path
 
 from chrysalis.corpus.schemas import CorpusRecord, SnapshotRecord
 from chrysalis.mrs.base import BaseMR
 from chrysalis.registry.registry import RegistryLoader
+
+logger = logging.getLogger(__name__)
 
 SNAPSHOT_FIELDNAMES = [
     "model_version",
@@ -55,6 +58,7 @@ class SnapshotEngine:
         output_path = Path(output_dir) / model_version
         output_path.mkdir(parents=True, exist_ok=True)
         self.verify_corpus_hashes(corpus_path)
+        logger.info("Snapshot run starting: model_version=%s corpus_dir=%s output_dir=%s", model_version, corpus_path, output_path)
 
         manifest_path = corpus_path / "corpus_manifest.json"
         with manifest_path.open("r", encoding="utf-8") as handle:
@@ -65,15 +69,18 @@ class SnapshotEngine:
                 continue
             snapshot_path = output_path / corpus_name.replace("_corpus.csv", "_snapshot.csv")
             if snapshot_path.exists():
+                logger.info("Skipping existing snapshot %s", snapshot_path)
                 continue
             corpus_file = corpus_path / corpus_name
             records = self._read_corpus_records(corpus_file)
             if not records:
                 self._write_snapshot(snapshot_path, [])
+                logger.info("Wrote empty snapshot for %s", corpus_name)
                 continue
 
             mr_id = records[0].mr_id
             mr = self._get_mr_instance(mr_id)
+            logger.info("Snapshotting %s: records=%s output=%s", mr_id, len(records), snapshot_path)
             snapshots: list[SnapshotRecord] = []
             source_predictions, followup_predictions = self._predict_record_sets(model, tokenizer, records)
             for record, source_pred, followup_pred in zip(records, source_predictions, followup_predictions, strict=False):
@@ -107,6 +114,7 @@ class SnapshotEngine:
                 )
 
             self._write_snapshot(snapshot_path, snapshots)
+            logger.info("Finished snapshot %s: rows=%s", snapshot_path.name, len(snapshots))
 
     def verify_corpus_hashes(self, corpus_dir: str | Path) -> bool:
         corpus_path = Path(corpus_dir)
@@ -114,11 +122,13 @@ class SnapshotEngine:
         with manifest_path.open("r", encoding="utf-8") as handle:
             manifest = json.load(handle)
 
+        logger.info("Verifying corpus hashes for %s files", len(manifest))
         for filename, expected_hash in manifest.items():
             actual_hash = _sha256_for_file(corpus_path / filename)
             if actual_hash != expected_hash:
                 msg = f"Corpus hash mismatch for {filename}"
                 raise ValueError(msg)
+        logger.info("Corpus hash verification passed")
         return True
 
     def _predict_record_sets(self, model, tokenizer, records: list[CorpusRecord]) -> tuple[list[dict[str, float | int]], list[dict[str, float | int]]]:
@@ -129,6 +139,7 @@ class SnapshotEngine:
             indices = [index for index, record in enumerate(records) if record.subtask == subtask]
             if not indices:
                 continue
+            logger.info("  Inference subtask=%s rows=%s", subtask, len(indices))
             source_payloads = [self._record_payload(records[index].source_text, subtask) for index in indices]
             followup_payloads = [SnapshotEngine._record_payload(records[index].followup_text, subtask) for index in indices]
             uncached_source_payloads = []
@@ -143,12 +154,19 @@ class SnapshotEngine:
                 uncached_source_payloads.append(payload)
 
             if uncached_source_payloads:
+                logger.info(
+                    "  Predicting uncached source payloads for subtask=%s count=%s cached=%s",
+                    subtask,
+                    len(uncached_source_payloads),
+                    len(indices) - len(uncached_source_payloads),
+                )
                 source_batch = self._predict_many(model, tokenizer, subtask, uncached_source_payloads)
                 for index, prediction in zip(uncached_source_indices, source_batch, strict=False):
                     source_predictions[index] = prediction
                     cache_key = (subtask, records[index].source_text)
                     self._source_prediction_cache[cache_key] = prediction
 
+            logger.info("  Predicting followup payloads for subtask=%s count=%s", subtask, len(followup_payloads))
             followup_batch = self._predict_many(model, tokenizer, subtask, followup_payloads)
             for index, prediction in zip(indices, followup_batch, strict=False):
                 followup_predictions[index] = prediction

@@ -15,6 +15,7 @@ from transformers import (
     AutoTokenizer,
     DataCollatorWithPadding,
     Trainer,
+    TrainerCallback,
     TrainingArguments,
 )
 
@@ -61,6 +62,56 @@ VERSION_CONFIGS = {
         "reduced": {"sa_train_n": 1000, "sa_epochs": 1, "nli_train_n": 1500, "nli_epochs": 1, "topic_train_n": 1500, "topic_epochs": 1},
     },
 }
+
+
+def _log(message: str) -> None:
+    print(message, flush=True)
+
+
+class ProgressPrinterCallback(TrainerCallback):
+    def __init__(self, *, run_name: str, train_size: int, eval_size: int) -> None:
+        self.run_name = run_name
+        self.train_size = train_size
+        self.eval_size = eval_size
+
+    def on_train_begin(self, args, state, control, **kwargs):
+        _log(
+            f"[train:{self.run_name}] starting: train_examples={self.train_size} "
+            f"eval_examples={self.eval_size} epochs={args.num_train_epochs} max_steps={state.max_steps}"
+        )
+        return control
+
+    def on_log(self, args, state, control, logs=None, **kwargs):
+        if not logs:
+            return control
+        filtered = []
+        for key in ("loss", "grad_norm", "learning_rate", "epoch"):
+            if key in logs:
+                value = logs[key]
+                if isinstance(value, float):
+                    filtered.append(f"{key}={value:.6f}")
+                else:
+                    filtered.append(f"{key}={value}")
+        if filtered:
+            _log(f"[train:{self.run_name}] step={state.global_step}/{state.max_steps} " + " ".join(filtered))
+        return control
+
+    def on_evaluate(self, args, state, control, metrics=None, **kwargs):
+        if metrics:
+            rendered = " ".join(
+                f"{key}={value:.6f}" if isinstance(value, float) else f"{key}={value}"
+                for key, value in sorted(metrics.items())
+            )
+            _log(f"[train:{self.run_name}] evaluation {rendered}")
+        return control
+
+    def on_save(self, args, state, control, **kwargs):
+        _log(f"[train:{self.run_name}] checkpoint saved at step={state.global_step}")
+        return control
+
+    def on_train_end(self, args, state, control, **kwargs):
+        _log(f"[train:{self.run_name}] finished at step={state.global_step}")
+        return control
 
 
 def _load_arrow_rows(path: Path, limit: int | None = None) -> list[dict]:
@@ -171,6 +222,7 @@ def _save_metadata(output_dir: Path, metadata: dict[str, Any]) -> None:
 
 def _train_task(
     *,
+    run_name: str,
     model_name: str,
     num_labels: int,
     train_dataset: Dataset,
@@ -186,8 +238,14 @@ def _train_task(
     max_length: int,
     device: str,
 ) -> dict[str, float]:
+    _log(
+        f"[train:{run_name}] preparing tokenizer/model={model_name} "
+        f"labels={num_labels} device={device} batch_size={batch_size} "
+        f"eval_batch_size={eval_batch_size} grad_accum={gradient_accumulation_steps} max_length={max_length}"
+    )
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+    _log(f"[train:{run_name}] tokenizing train_size={len(train_dataset)} eval_size={len(eval_dataset)}")
     tokenized_train = train_dataset.map(lambda batch: tokenize_fn(batch, tokenizer, max_length), batched=True)
     tokenized_eval = eval_dataset.map(lambda batch: tokenize_fn(batch, tokenizer, max_length), batched=True)
 
@@ -207,8 +265,10 @@ def _train_task(
         report_to="none",
         load_best_model_at_end=False,
         save_total_limit=1,
+        logging_first_step=True,
         seed=seed,
         dataloader_num_workers=0,
+        disable_tqdm=True,
         fp16=_device_fp16(device),
         use_cpu=device != "cuda",
     )
@@ -221,10 +281,15 @@ def _train_task(
         data_collator=data_collator,
         compute_metrics=_accuracy_metrics,
     )
+    trainer.add_callback(ProgressPrinterCallback(run_name=run_name, train_size=len(train_dataset), eval_size=len(eval_dataset)))
+    _log(f"[train:{run_name}] entering trainer.train()")
     trainer.train()
+    _log(f"[train:{run_name}] running final evaluation")
     metrics = trainer.evaluate()
+    _log(f"[train:{run_name}] saving model to {output_dir}")
     trainer.save_model(str(output_dir))
     tokenizer.save_pretrained(str(output_dir))
+    _log(f"[train:{run_name}] saved model/tokenizer")
     return {key: float(value) for key, value in metrics.items() if isinstance(value, (int, float))}
 
 
@@ -249,11 +314,23 @@ def train_version(
     version_dir = Path(output_dir)
     version_dir.mkdir(parents=True, exist_ok=True)
 
+    _log(
+        f"[train:{version}] starting version training full_spec={full_spec} device={resolved_device} "
+        f"output_dir={version_dir}"
+    )
+
     sa_train, sa_eval = _prepare_sst2(size_config["sa_train_n"], seed)
     nli_train, nli_eval = _prepare_snli(size_config["nli_train_n"], seed)
     topic_train, topic_eval = _prepare_ag_news(size_config["topic_train_n"], seed)
+    _log(
+        f"[train:{version}] dataset sizes: "
+        f"sa_train={len(sa_train)} sa_eval={len(sa_eval)} "
+        f"nli_train={len(nli_train)} nli_eval={len(nli_eval)} "
+        f"topic_train={len(topic_train)} topic_eval={len(topic_eval)}"
+    )
 
     sa_metrics = _train_task(
+        run_name=f"{version}/sa",
         model_name=config["model_name"],
         num_labels=2,
         train_dataset=sa_train,
@@ -270,6 +347,7 @@ def train_version(
         device=resolved_device,
     )
     nli_metrics = _train_task(
+        run_name=f"{version}/nli",
         model_name=config["model_name"],
         num_labels=3,
         train_dataset=nli_train,
@@ -286,6 +364,7 @@ def train_version(
         device=resolved_device,
     )
     topic_metrics = _train_task(
+        run_name=f"{version}/topic",
         model_name=config["model_name"],
         num_labels=4,
         train_dataset=topic_train,
@@ -337,7 +416,8 @@ def train_version(
             },
         },
     )
-    print(f"Saved {version} to {version_dir}")
+    _log(f"[train:{version}] metadata saved to {version_dir / 'metadata.json'}")
+    _log(f"[train:{version}] complete")
 
 
 def build_training_parser(version: str):
