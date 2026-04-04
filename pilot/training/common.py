@@ -47,19 +47,19 @@ VERSION_CONFIGS = {
     "v1_base": {
         "model_name": "bert-base-cased",
         "learning_rate": 2e-5,
-        "full": {"sa_train_n": 1500, "sa_epochs": 1, "nli_train_n": 2500, "nli_epochs": 1, "topic_train_n": None, "topic_epochs": 1},
+        "full": {"sa_train_n": 1500, "sa_epochs": 1, "nli_train_n": 2500, "nli_epochs": 1, "topic_train_n": 2500, "topic_epochs": 1},
         "reduced": {"sa_train_n": 300, "sa_epochs": 1, "nli_train_n": 500, "nli_epochs": 1, "topic_train_n": 500, "topic_epochs": 1},
     },
     "v2_retrain": {
         "model_name": "bert-base-cased",
         "learning_rate": 2e-5,
-        "full": {"sa_train_n": 8000, "sa_epochs": 3, "nli_train_n": 11500, "nli_epochs": 3, "topic_train_n": None, "topic_epochs": 3},
+        "full": {"sa_train_n": 8000, "sa_epochs": 3, "nli_train_n": 11500, "nli_epochs": 3, "topic_train_n": 11500, "topic_epochs": 3},
         "reduced": {"sa_train_n": 1000, "sa_epochs": 2, "nli_train_n": 1500, "nli_epochs": 2, "topic_train_n": 1500, "topic_epochs": 2},
     },
     "v3_distilled": {
         "model_name": "distilbert-base-cased",
         "learning_rate": 3e-5,
-        "full": {"sa_train_n": 8000, "sa_epochs": 2, "nli_train_n": 11500, "nli_epochs": 2, "topic_train_n": None, "topic_epochs": 2},
+        "full": {"sa_train_n": 8000, "sa_epochs": 2, "nli_train_n": 11500, "nli_epochs": 2, "topic_train_n": 11500, "topic_epochs": 2},
         "reduced": {"sa_train_n": 1000, "sa_epochs": 1, "nli_train_n": 1500, "nli_epochs": 1, "topic_train_n": 1500, "topic_epochs": 1},
     },
 }
