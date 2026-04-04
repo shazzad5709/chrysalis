@@ -307,9 +307,9 @@ def train_version(
     output_dir: str | Path,
     seed: int = 42,
     device: str = "auto",
-    batch_size: int = 4,
-    eval_batch_size: int = 8,
-    gradient_accumulation_steps: int = 4,
+    batch_size: int = 16,
+    eval_batch_size: int = 32,
+    gradient_accumulation_steps: int = 2,
     max_length: int = 128,
     num_workers: int | None = None,
     full_spec: bool = False,
@@ -442,8 +442,8 @@ def build_training_parser(version: str):
     parser.add_argument("--output-dir", default=str(PILOT_ROOT / "models" / version))
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", default="auto", choices=["auto", "cuda", "cpu"])
-    parser.add_argument("--batch-size", type=int, default=8)
-    parser.add_argument("--eval-batch-size", type=int, default=16)
+    parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--eval-batch-size", type=int, default=32)
     parser.add_argument("--gradient-accumulation-steps", type=int, default=2)
     parser.add_argument("--max-length", type=int, default=128)
     parser.add_argument("--num-workers", type=int, default=None)
