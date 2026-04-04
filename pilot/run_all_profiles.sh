@@ -6,6 +6,9 @@ cd "$ROOT_DIR"
 
 export PYTHONUNBUFFERED=1
 
+ARTIFACT_ROOT="$ROOT_DIR/pilot/artifacts"
+MASTER_LOG_FILE="$ARTIFACT_ROOT/run_all_profiles.log"
+
 ALL_PROFILES=(
   "sa_sst2"
   "sa_imdb"
@@ -26,6 +29,9 @@ NUM_WORKERS="${NUM_WORKERS:-4}"
 KEEP_EXISTING="${KEEP_EXISTING:-0}"
 PROFILE_LIST="${PROFILE_LIST:-}"
 
+mkdir -p "$ARTIFACT_ROOT"
+exec > >(tee -a "$MASTER_LOG_FILE") 2>&1
+
 log() {
   printf '\n[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*"
 }
@@ -44,6 +50,7 @@ resolve_profiles() {
 
 log "Starting all-profile Chrysalis run"
 log "Training config: device=$DEVICE batch_size=$BATCH_SIZE eval_batch_size=$EVAL_BATCH_SIZE grad_acc=$GRAD_ACC num_workers=$NUM_WORKERS"
+log "Master log: $MASTER_LOG_FILE"
 
 mapfile -t profiles < <(resolve_profiles)
 
