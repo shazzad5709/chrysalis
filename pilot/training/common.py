@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import sys
 from typing import Any
@@ -203,6 +204,11 @@ def _resolve_device(device: str) -> str:
     return device
 
 
+def _default_num_workers() -> int:
+    cpu_count = os.cpu_count() or 2
+    return max(2, min(4, cpu_count // 2))
+
+
 def _tokenize_sa(batch: dict[str, list[str]], tokenizer, max_length: int) -> dict[str, Any]:
     return tokenizer(batch["sentence"], truncation=True, max_length=max_length)
 
@@ -237,11 +243,13 @@ def _train_task(
     gradient_accumulation_steps: int,
     max_length: int,
     device: str,
+    num_workers: int,
 ) -> dict[str, float]:
     _log(
         f"[train:{run_name}] preparing tokenizer/model={model_name} "
         f"labels={num_labels} device={device} batch_size={batch_size} "
-        f"eval_batch_size={eval_batch_size} grad_accum={gradient_accumulation_steps} max_length={max_length}"
+        f"eval_batch_size={eval_batch_size} grad_accum={gradient_accumulation_steps} "
+        f"max_length={max_length} num_workers={num_workers}"
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
@@ -267,7 +275,7 @@ def _train_task(
         save_total_limit=1,
         logging_first_step=True,
         seed=seed,
-        dataloader_num_workers=0,
+        dataloader_num_workers=num_workers,
         disable_tqdm=True,
         fp16=_device_fp16(device),
         use_cpu=device != "cuda",
@@ -303,6 +311,7 @@ def train_version(
     eval_batch_size: int = 8,
     gradient_accumulation_steps: int = 4,
     max_length: int = 128,
+    num_workers: int | None = None,
     full_spec: bool = False,
 ) -> None:
     if version not in VERSION_CONFIGS:
@@ -311,12 +320,14 @@ def train_version(
     config = VERSION_CONFIGS[version]
     size_config = config["full" if full_spec else "reduced"]
     resolved_device = _resolve_device(device)
+    resolved_num_workers = _default_num_workers() if num_workers is None else max(0, num_workers)
     version_dir = Path(output_dir)
     version_dir.mkdir(parents=True, exist_ok=True)
 
     _log(
         f"[train:{version}] starting version training full_spec={full_spec} device={resolved_device} "
-        f"output_dir={version_dir}"
+        f"output_dir={version_dir} batch_size={batch_size} eval_batch_size={eval_batch_size} "
+        f"grad_accum={gradient_accumulation_steps} num_workers={resolved_num_workers}"
     )
 
     sa_train, sa_eval = _prepare_sst2(size_config["sa_train_n"], seed)
@@ -345,6 +356,7 @@ def train_version(
         gradient_accumulation_steps=gradient_accumulation_steps,
         max_length=max_length,
         device=resolved_device,
+        num_workers=resolved_num_workers,
     )
     nli_metrics = _train_task(
         run_name=f"{version}/nli",
@@ -362,6 +374,7 @@ def train_version(
         gradient_accumulation_steps=gradient_accumulation_steps,
         max_length=max_length,
         device=resolved_device,
+        num_workers=resolved_num_workers,
     )
     topic_metrics = _train_task(
         run_name=f"{version}/topic",
@@ -379,6 +392,7 @@ def train_version(
         gradient_accumulation_steps=gradient_accumulation_steps,
         max_length=max_length,
         device=resolved_device,
+        num_workers=resolved_num_workers,
     )
 
     _save_metadata(
@@ -393,6 +407,7 @@ def train_version(
             "batch_size": batch_size,
             "eval_batch_size": eval_batch_size,
             "gradient_accumulation_steps": gradient_accumulation_steps,
+            "num_workers": resolved_num_workers,
             "max_length": max_length,
             "seed": seed,
             "device": resolved_device,
@@ -427,10 +442,11 @@ def build_training_parser(version: str):
     parser.add_argument("--output-dir", default=str(PILOT_ROOT / "models" / version))
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", default="auto", choices=["auto", "cuda", "cpu"])
-    parser.add_argument("--batch-size", type=int, default=4)
-    parser.add_argument("--eval-batch-size", type=int, default=8)
-    parser.add_argument("--gradient-accumulation-steps", type=int, default=4)
+    parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument("--eval-batch-size", type=int, default=16)
+    parser.add_argument("--gradient-accumulation-steps", type=int, default=2)
     parser.add_argument("--max-length", type=int, default=128)
+    parser.add_argument("--num-workers", type=int, default=None)
     parser.add_argument("--full-spec", action="store_true", help="Use the full Section 11.1 training sizes.")
     return parser
 
@@ -447,6 +463,7 @@ def run_cli(version: str) -> None:
         eval_batch_size=args.eval_batch_size,
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         max_length=args.max_length,
+        num_workers=args.num_workers,
         full_spec=args.full_spec,
     )
 

@@ -279,6 +279,8 @@ def run_training_stage_with_args(args, versions: list[str]) -> None:
             "--seed",
             str(args.seed),
         ]
+        if args.num_workers is not None:
+            cmd.extend(["--num-workers", str(args.num_workers)])
         if args.full_spec_train:
             cmd.append("--full-spec")
         print(f"[pipeline] launching training for {version}: {' '.join(cmd)}", flush=True)
@@ -414,10 +416,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--standard-report-path")
     parser.add_argument("--fairness-report-path")
     parser.add_argument("--device", default="auto", choices=["auto", "cuda", "cpu"])
-    parser.add_argument("--batch-size", type=int, default=4)
-    parser.add_argument("--eval-batch-size", type=int, default=8)
-    parser.add_argument("--gradient-accumulation-steps", type=int, default=4)
+    parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument("--eval-batch-size", type=int, default=16)
+    parser.add_argument("--gradient-accumulation-steps", type=int, default=2)
     parser.add_argument("--max-length", type=int, default=128)
+    parser.add_argument("--num-workers", type=int, default=None)
     parser.add_argument("--full-spec-train", action="store_true")
     return parser
 
