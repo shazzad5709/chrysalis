@@ -8,6 +8,8 @@ __pycache__/
 .venv/
 venv/
 
+.zed/
+
 pilot/data/
 pilot/models/
 pilot/artifacts/corpus/
