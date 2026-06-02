@@ -1,0 +1,11 @@
+version: 1
+seed: 42
+regression_threshold: -0.05
+profiles:
+  pr-fast:
+    mr_ids:
+      - CHR-GEN-005
+      - CHR-GEN-018
+    max_records_per_mr: null
+    fail_on_severity:
+      - hard-fail

@@ -1,0 +1,3 @@
+# Minimal runtime dependencies for the bundled user-study scenario.
+# The study runs the local alteron package directly from this repository.
+PyYAML>=6.0
