@@ -4,7 +4,7 @@ import random
 import re
 from typing import Any
 
-from chrysalis.mrs.base import BaseMR
+from alteron.mrs.base import BaseMR
 
 GENDERED_LEXICON = {
     "male_nouns": [

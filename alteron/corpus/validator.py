@@ -3,8 +3,8 @@ from __future__ import annotations
 import importlib
 import inspect
 
-from chrysalis.mrs.base import BaseMR
-from chrysalis.registry.registry import RegistryLoader
+from alteron.mrs.base import BaseMR
+from alteron.registry.registry import RegistryLoader
 
 
 class CorpusValidator:

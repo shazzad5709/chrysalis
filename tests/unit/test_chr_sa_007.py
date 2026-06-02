@@ -1,6 +1,6 @@
 import pytest
 
-from chrysalis.mrs.sa.chr_sa_007 import CHRSA007
+from alteron.mrs.sa.chr_sa_007 import CHRSA007
 
 
 MR = CHRSA007()

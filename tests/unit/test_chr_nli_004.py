@@ -1,6 +1,6 @@
 import pytest
 
-from chrysalis.mrs.nli.chr_nli_004 import CHRNLI004, gender_swap
+from alteron.mrs.nli.chr_nli_004 import CHRNLI004, gender_swap
 
 
 MR = CHRNLI004()

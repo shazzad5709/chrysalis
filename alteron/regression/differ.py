@@ -4,9 +4,9 @@ import csv
 from dataclasses import dataclass
 from pathlib import Path
 
-from chrysalis.config import REGRESSION_THRESHOLD
-from chrysalis.corpus.schemas import CorpusRecord, SnapshotRecord
-from chrysalis.registry.registry import RegistryLoader
+from alteron.config import REGRESSION_THRESHOLD
+from alteron.corpus.schemas import CorpusRecord, SnapshotRecord
+from alteron.registry.registry import RegistryLoader
 
 
 def _serialize_optional(value: object | None) -> str:
@@ -23,6 +23,10 @@ def _parse_bool(value: object) -> bool:
 class RegressionReport:
     transition: str
     mr_id: str
+    n_total: int
+    source_accuracy_old: float
+    source_accuracy_new: float
+    source_accuracy_delta: float
     n_matched: int
     pass_rate_old: float
     pass_rate_new: float
@@ -35,6 +39,10 @@ class RegressionReport:
         return {
             "transition": self.transition,
             "mr_id": self.mr_id,
+            "n_total": str(self.n_total),
+            "source_accuracy_old": str(self.source_accuracy_old),
+            "source_accuracy_new": str(self.source_accuracy_new),
+            "source_accuracy_delta": str(self.source_accuracy_delta),
             "n_matched": str(self.n_matched),
             "pass_rate_old": str(self.pass_rate_old),
             "pass_rate_new": str(self.pass_rate_new),
@@ -49,6 +57,10 @@ class RegressionReport:
         return cls(
             transition=row["transition"],
             mr_id=row["mr_id"],
+            n_total=int(row.get("n_total", "0")),
+            source_accuracy_old=float(row.get("source_accuracy_old", "0.0")),
+            source_accuracy_new=float(row.get("source_accuracy_new", "0.0")),
+            source_accuracy_delta=float(row.get("source_accuracy_delta", "0.0")),
             n_matched=int(row["n_matched"]),
             pass_rate_old=float(row["pass_rate_old"]),
             pass_rate_new=float(row["pass_rate_new"]),
@@ -62,6 +74,10 @@ class RegressionReport:
 REPORT_FIELDNAMES = [
     "transition",
     "mr_id",
+    "n_total",
+    "source_accuracy_old",
+    "source_accuracy_new",
+    "source_accuracy_delta",
     "n_matched",
     "pass_rate_old",
     "pass_rate_new",
@@ -73,8 +89,9 @@ REPORT_FIELDNAMES = [
 
 
 class RegressionDiffer:
-    def __init__(self, registry_loader: RegistryLoader | None = None) -> None:
+    def __init__(self, registry_loader: RegistryLoader | None = None, regression_threshold: float = REGRESSION_THRESHOLD) -> None:
         self.registry_loader = registry_loader or RegistryLoader()
+        self.regression_threshold = regression_threshold
 
     def diff(self, mr_id: str, old_snapshot_path: str, new_snapshot_path: str, ground_truth_path: str) -> RegressionReport:
         old_rows = self._load_snapshot(Path(old_snapshot_path))
@@ -85,8 +102,24 @@ class RegressionDiffer:
         new_by_key = {self._record_key(row.input_id, row.variant): row for row in new_rows}
         truth_by_key = {self._record_key(row.input_id, row.variant): row for row in ground_truth_rows}
 
+        comparable_keys = sorted(set(old_by_key) & set(new_by_key) & set(truth_by_key))
+        n_total = len(comparable_keys)
+        old_correct_count = sum(
+            1
+            for key in comparable_keys
+            if old_by_key[key].source_pred_label == truth_by_key[key].source_label
+        )
+        new_correct_count = sum(
+            1
+            for key in comparable_keys
+            if new_by_key[key].source_pred_label == truth_by_key[key].source_label
+        )
+        source_accuracy_old = old_correct_count / n_total if n_total else 0.0
+        source_accuracy_new = new_correct_count / n_total if n_total else 0.0
+        source_accuracy_delta = source_accuracy_new - source_accuracy_old
+
         matched_keys = []
-        for key in sorted(set(old_by_key) & set(new_by_key) & set(truth_by_key)):
+        for key in comparable_keys:
             truth = truth_by_key[key]
             old_snapshot = old_by_key[key]
             new_snapshot = new_by_key[key]
@@ -102,13 +135,17 @@ class RegressionDiffer:
         pass_rate_old = old_pass_count / n_matched if n_matched else 0.0
         pass_rate_new = new_pass_count / n_matched if n_matched else 0.0
         delta = pass_rate_new - pass_rate_old
-        behavioral_regression_flag = delta < REGRESSION_THRESHOLD
+        behavioral_regression_flag = delta < self.regression_threshold
 
         registry_record = self.registry_loader.get_mr(mr_id)
         severity = registry_record["pipeline_severity"]
         return RegressionReport(
             transition=f"{Path(old_snapshot_path).parent.name}→{Path(new_snapshot_path).parent.name}",
             mr_id=mr_id,
+            n_total=n_total,
+            source_accuracy_old=source_accuracy_old,
+            source_accuracy_new=source_accuracy_new,
+            source_accuracy_delta=source_accuracy_delta,
             n_matched=n_matched,
             pass_rate_old=pass_rate_old,
             pass_rate_new=pass_rate_new,

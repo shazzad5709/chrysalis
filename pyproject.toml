@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "chrysalis"
+name = "alteron"
 version = "1.0.0"
 description = "Behavioral regression testing for NLP classifiers using metamorphic testing."
 readme = "README.md"
@@ -20,13 +20,17 @@ dependencies = [
     "pyyaml>=6.0",
 ]
 
+[project.scripts]
+alteron = "alteron.cli:main"
+alteron-ci = "alteron.ci.runner:main"
+
 [dependency-groups]
 dev = [
     "pytest>=7.4.0",
 ]
 
 [tool.setuptools.packages.find]
-include = ["chrysalis*"]
+include = ["alteron*"]
 
 [tool.setuptools.package-data]
-chrysalis = ["registry/mr_registry.yaml", "ci/github_actions_template.yml"]
+alteron = ["registry/mr_registry.yaml", "ci/github_actions_template.yml", "ci/profiles.yml"]

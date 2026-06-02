@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 import pytest
 
-import chrysalis.mrs.nli.chr_nli_006 as mr_module
-from chrysalis.mrs.nli.chr_nli_006 import CHRNLI006
+import alteron.mrs.nli.chr_nli_006 as mr_module
+from alteron.mrs.nli.chr_nli_006 import CHRNLI006
 
 
 @dataclass

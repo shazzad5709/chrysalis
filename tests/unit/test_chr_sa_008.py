@@ -1,7 +1,7 @@
 import pytest
 
-from chrysalis.config import INTENSIFIER_POOL
-from chrysalis.mrs.sa.chr_sa_008 import CHRSA008
+from alteron.config import INTENSIFIER_POOL
+from alteron.mrs.sa.chr_sa_008 import CHRSA008
 
 
 MR = CHRSA008()

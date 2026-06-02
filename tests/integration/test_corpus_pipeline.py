@@ -6,10 +6,10 @@ import json
 from pathlib import Path
 from types import SimpleNamespace
 
-from chrysalis.corpus.generator import CorpusGenerator
-from chrysalis.corpus.validator import CorpusValidator
-from chrysalis.regression.differ import RegressionReport
-from chrysalis.snapshot.engine import SnapshotEngine
+from alteron.corpus.generator import CorpusGenerator
+from alteron.corpus.validator import CorpusValidator
+from alteron.regression.differ import RegressionReport
+from alteron.snapshot.engine import SnapshotEngine
 
 
 PIPELINE_PATH = Path(__file__).resolve().parents[2] / "pilot" / "pipeline.py"
@@ -256,6 +256,10 @@ def test_diff_stage_only_uses_profile_mrs(tmp_path, monkeypatch):
             RegressionReport(
                 transition=transition,
                 mr_id=mr_ids[0],
+                n_total=1,
+                source_accuracy_old=1.0,
+                source_accuracy_new=1.0,
+                source_accuracy_delta=0.0,
                 n_matched=1,
                 pass_rate_old=1.0,
                 pass_rate_new=1.0,

@@ -13,7 +13,7 @@ import torch
 from datasets import load_dataset
 from transformers import AutoConfig, AutoModelForSequenceClassification, AutoTokenizer
 
-from chrysalis.config import SEED
+from alteron.config import SEED
 
 logger = logging.getLogger(__name__)
 

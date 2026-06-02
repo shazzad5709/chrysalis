@@ -1,0 +1,15 @@
+version: 1
+seed: 42
+regression_threshold: -0.05
+profiles:
+  pr-fast:
+    mr_ids: all
+    max_records_per_mr: 100
+    fail_on_severity:
+      - hard-fail
+
+  release-full:
+    mr_ids: all
+    max_records_per_mr: null
+    fail_on_severity:
+      - hard-fail

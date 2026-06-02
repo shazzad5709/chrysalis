@@ -6,8 +6,8 @@ from typing import Any
 
 import spacy
 
-from chrysalis.config import INTENSIFIER_POOL
-from chrysalis.mrs.base import BaseMR
+from alteron.config import INTENSIFIER_POOL
+from alteron.mrs.base import BaseMR
 
 WORD_TOKEN_PATTERN = re.compile(r"\b\w+\b")
 NEGATION_SCOPE_WORDS = {"not", "n't", "never", "no", "barely", "hardly", "scarcely"}

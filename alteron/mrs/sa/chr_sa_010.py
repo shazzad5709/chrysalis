@@ -5,7 +5,7 @@ from typing import Any
 
 import spacy
 
-from chrysalis.mrs.base import BaseMR
+from alteron.mrs.base import BaseMR
 
 TARGET_TAGS = {"NN", "NNS", "NNP", "NNPS", "JJ", "JJR", "JJS"}
 WORD_TOKEN_PATTERN = re.compile(r"\b\w+\b")

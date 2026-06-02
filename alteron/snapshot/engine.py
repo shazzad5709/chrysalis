@@ -9,9 +9,9 @@ import json
 import logging
 from pathlib import Path
 
-from chrysalis.corpus.schemas import CorpusRecord, SnapshotRecord
-from chrysalis.mrs.base import BaseMR
-from chrysalis.registry.registry import RegistryLoader
+from alteron.corpus.schemas import CorpusRecord, SnapshotRecord
+from alteron.mrs.base import BaseMR
+from alteron.registry.registry import RegistryLoader
 
 logger = logging.getLogger(__name__)
 

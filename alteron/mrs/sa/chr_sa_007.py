@@ -5,8 +5,8 @@ from typing import Any
 
 import spacy
 
-from chrysalis.config import ABBREVIATION_SAFELIST
-from chrysalis.mrs.base import BaseMR
+from alteron.config import ABBREVIATION_SAFELIST
+from alteron.mrs.base import BaseMR
 
 WORD_TOKEN_PATTERN = re.compile(r"\b\w+\b")
 INITIALS_PATTERN = re.compile(ABBREVIATION_SAFELIST["initials_pattern"])

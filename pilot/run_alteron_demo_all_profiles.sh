@@ -7,7 +7,7 @@ cd "$ROOT_DIR"
 export PYTHONUNBUFFERED=1
 
 ARTIFACT_ROOT="$ROOT_DIR/pilot/artifacts"
-MASTER_LOG_FILE="$ARTIFACT_ROOT/run_chrysalis_demo_all_profiles.log"
+MASTER_LOG_FILE="$ARTIFACT_ROOT/run_alteron_demo_all_profiles.log"
 
 ALL_PROFILES=(
   "sa_sst2"
@@ -60,12 +60,12 @@ run_profile_demo() {
   local snapshot_dir="$profile_artifact_root/snapshots"
   local report_dir="$profile_artifact_root/regression_reports"
   local manual_validation_dir="$profile_artifact_root/manual_validation"
-  local profile_log_file="$profile_artifact_root/chrysalis_demo.log"
+  local profile_log_file="$profile_artifact_root/alteron_demo.log"
 
   mkdir -p "$profile_artifact_root" "$corpus_dir" "$snapshot_dir" "$report_dir" "$manual_validation_dir"
 
   {
-    log "Starting Chrysalis demonstration for profile=$profile"
+    log "Starting Alteron demonstration for profile=$profile"
     log "Artifact root: $profile_artifact_root"
     log "Model versions: $V1_VERSION, $V2_VERSION, $V3_VERSION, $V4_VERSION"
 
@@ -148,12 +148,12 @@ run_profile_demo() {
       --corpus-dir "$corpus_dir" \
       --report-dir "$report_dir"
 
-    log "Completed Chrysalis demonstration for profile=$profile"
+    log "Completed Alteron demonstration for profile=$profile"
     log "Detailed profile log: $profile_log_file"
   } 2>&1 | tee -a "$profile_log_file"
 }
 
-log "Starting all-profile Chrysalis demonstration run"
+log "Starting all-profile Alteron demonstration run"
 log "Master log: $MASTER_LOG_FILE"
 log "Configured versions: v1=$V1_VERSION v2=$V2_VERSION v3=$V3_VERSION v4=$V4_VERSION"
 log "Loaders: default=$DEFAULT_MODEL_LOADER v4=$V4_MODEL_LOADER"
@@ -164,4 +164,4 @@ for profile in "${profiles[@]}"; do
   run_profile_demo "$profile"
 done
 
-log "All requested Chrysalis demonstration profiles completed"
+log "All requested Alteron demonstration profiles completed"

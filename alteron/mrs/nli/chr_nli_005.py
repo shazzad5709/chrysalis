@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from chrysalis.mrs.base import BaseMR
-from chrysalis.mrs.nli.chr_nli_004 import (
+from alteron.mrs.base import BaseMR
+from alteron.mrs.nli.chr_nli_004 import (
     _has_biological_sex_content,
     _has_gender_restrictive_language,
     _pronoun_agreement_ok,

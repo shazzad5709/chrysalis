@@ -10,10 +10,10 @@ from pathlib import Path
 import random
 from typing import Iterable
 
-from chrysalis.corpus.schemas import CorpusRecord
-from chrysalis.corpus.validator import CorpusValidator
-from chrysalis.mrs.base import BaseMR
-from chrysalis.registry.registry import RegistryLoader
+from alteron.corpus.schemas import CorpusRecord
+from alteron.corpus.validator import CorpusValidator
+from alteron.mrs.base import BaseMR
+from alteron.registry.registry import RegistryLoader
 
 logger = logging.getLogger(__name__)
 GENERATION_PROGRESS_EVERY = 1000

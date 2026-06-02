@@ -1,6 +1,6 @@
 import pytest
 
-from chrysalis.mrs.generic.chr_gen_005 import CHRGEN005
+from alteron.mrs.generic.chr_gen_005 import CHRGEN005
 
 
 MR = CHRGEN005()

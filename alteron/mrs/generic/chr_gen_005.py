@@ -4,8 +4,8 @@ import random
 import re
 from typing import Any
 
-from chrysalis.config import SCORE_TOLERANCE_AIRTIGHT
-from chrysalis.mrs.base import BaseMR
+from alteron.config import SCORE_TOLERANCE_AIRTIGHT
+from alteron.mrs.base import BaseMR
 
 TRAILING_PUNCTUATION = ".,!?;:\"'()"
 URL_EMAIL_PATTERN = re.compile(r"(@|https?://|www\.)", re.IGNORECASE)

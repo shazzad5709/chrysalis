@@ -1,0 +1,108 @@
+name: Alteron Behavioral Regression Check
+
+"on":
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: "CI profile to run: pr-fast or release-full"
+        required: true
+        default: pr-fast
+      candidate_model_url:
+        description: "Optional URL to a zipped candidate model artifact"
+        required: false
+        default: ""
+      baseline_version:
+        description: "Stable baseline snapshot version"
+        required: true
+        default: v3_distilled
+      candidate_version:
+        description: "Candidate model version label"
+        required: true
+        default: candidate
+      corpus_dir:
+        description: "Frozen corpus directory"
+        required: true
+        default: artifacts/corpus
+      baseline_snapshot_dir:
+        description: "Directory containing baseline *_snapshot.csv files"
+        required: true
+        default: artifacts/snapshots/v3_distilled
+      candidate_model_dir:
+        description: "Local candidate model directory after download/materialization"
+        required: true
+        default: models/candidate
+      model_loader:
+        description: "Import spec for the project model loader"
+        required: true
+        default: your_project.model_loader:load_model_bundle
+      regression_threshold:
+        description: "Behavioral regression threshold for matched pass-rate delta"
+        required: false
+        default: "-0.05"
+  pull_request:
+
+jobs:
+  alteron-regression:
+    runs-on: ubuntu-latest
+    env:
+      PYTHON_VERSION: "3.11"
+      CI_PROFILE: ${{ github.event.inputs.profile || 'pr-fast' }}
+      CANDIDATE_MODEL_URL: ${{ github.event.inputs.candidate_model_url || '' }}
+      BASELINE_VERSION: ${{ github.event.inputs.baseline_version || 'v3_distilled' }}
+      CANDIDATE_VERSION: ${{ github.event.inputs.candidate_version || 'candidate' }}
+      CORPUS_DIR: ${{ github.event.inputs.corpus_dir || 'artifacts/corpus' }}
+      BASELINE_SNAPSHOT_DIR: ${{ github.event.inputs.baseline_snapshot_dir || 'artifacts/snapshots/v3_distilled' }}
+      CANDIDATE_MODEL_DIR: ${{ github.event.inputs.candidate_model_dir || 'models/candidate' }}
+      MODEL_LOADER: ${{ github.event.inputs.model_loader || 'your_project.model_loader:load_model_bundle' }}
+      REGRESSION_THRESHOLD: ${{ github.event.inputs.regression_threshold || '-0.05' }}
+      CI_OUTPUT_DIR: artifacts/alteron_ci
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: uv sync --dev
+
+      - name: Install spaCy model and NLTK words
+        run: |
+          uv run python -m spacy download en_core_web_sm
+          uv run python -c "import nltk; nltk.download('words')"
+
+      - name: Download candidate model artifact
+        if: ${{ env.CANDIDATE_MODEL_URL != '' }}
+        run: |
+          mkdir -p "${CANDIDATE_MODEL_DIR}"
+          curl -L "${CANDIDATE_MODEL_URL}" -o candidate_model.zip
+          unzip -q candidate_model.zip -d "${CANDIDATE_MODEL_DIR}"
+
+      - name: Run Alteron CI profile
+        run: |
+          uv run python -m alteron.ci.runner \
+            --profile "${CI_PROFILE}" \
+            --candidate-model-dir "${CANDIDATE_MODEL_DIR}" \
+            --candidate-version "${CANDIDATE_VERSION}" \
+            --baseline-snapshot-dir "${BASELINE_SNAPSHOT_DIR}" \
+            --baseline-version "${BASELINE_VERSION}" \
+            --corpus-dir "${CORPUS_DIR}" \
+            --output-dir "${CI_OUTPUT_DIR}" \
+            --model-loader "${MODEL_LOADER}" \
+            --regression-threshold "${REGRESSION_THRESHOLD}" \
+            --force
+
+      - name: Upload Alteron CI artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alteron-ci-${{ env.CI_PROFILE }}-${{ env.CANDIDATE_VERSION }}
+          path: ${{ env.CI_OUTPUT_DIR }}

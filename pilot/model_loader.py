@@ -43,12 +43,16 @@ class PilotModelBundle:
         head_dir = self.model_dir / head_name
         if not head_dir.exists():
             return None, None
-        model = AutoModelForSequenceClassification.from_pretrained(head_dir).to(self.device)
+        model = AutoModelForSequenceClassification.from_pretrained(head_dir).to(
+            self.device
+        )
         tokenizer = AutoTokenizer.from_pretrained(head_dir, use_fast=True)
         model.eval()
         return model, tokenizer
 
-    def predict(self, payload, tokenizer=None, subtask: str | None = None) -> dict[str, float | int]:
+    def predict(
+        self, payload, tokenizer=None, subtask: str | None = None
+    ) -> dict[str, float | int]:
         del tokenizer
         if subtask == "NLI":
             return self._predict_nli(payload)
@@ -56,7 +60,9 @@ class PilotModelBundle:
             return self._predict_topic(str(payload))
         return self._predict_sa(str(payload))
 
-    def predict_many(self, payloads, tokenizer=None, subtask: str | None = None) -> list[dict[str, float | int]]:
+    def predict_many(
+        self, payloads, tokenizer=None, subtask: str | None = None
+    ) -> list[dict[str, float | int]]:
         del tokenizer
         if subtask == "NLI":
             return self._predict_many_nli(payloads)
@@ -75,16 +81,22 @@ class PilotModelBundle:
 
     def _predict_many_sa(self, texts: list[str]) -> list[dict[str, float | int]]:
         if self.sa_model is None or self.sa_tokenizer is None:
-            raise FileNotFoundError(f"Missing SA model artifacts in {self.model_dir / 'sa'}")
+            raise FileNotFoundError(
+                f"Missing SA model artifacts in {self.model_dir / 'sa'}"
+            )
         return self._batched_predict(
             model=self.sa_model,
             tokenizer=self.sa_tokenizer,
             tokenizer_args={"text": texts},
         )
 
-    def _predict_many_nli(self, payloads: list[dict[str, str]]) -> list[dict[str, float | int]]:
+    def _predict_many_nli(
+        self, payloads: list[dict[str, str]]
+    ) -> list[dict[str, float | int]]:
         if self.nli_model is None or self.nli_tokenizer is None:
-            raise FileNotFoundError(f"Missing NLI model artifacts in {self.model_dir / 'nli'}")
+            raise FileNotFoundError(
+                f"Missing NLI model artifacts in {self.model_dir / 'nli'}"
+            )
         premises = [payload.get("premise", "") for payload in payloads]
         hypotheses = [payload.get("hypothesis", "") for payload in payloads]
         return self._batched_predict(
@@ -95,17 +107,23 @@ class PilotModelBundle:
 
     def _predict_many_topic(self, texts: list[str]) -> list[dict[str, float | int]]:
         if self.topic_model is None or self.topic_tokenizer is None:
-            raise FileNotFoundError(f"Missing topic model artifacts in {self.model_dir / 'topic'}")
+            raise FileNotFoundError(
+                f"Missing topic model artifacts in {self.model_dir / 'topic'}"
+            )
         return self._batched_predict(
             model=self.topic_model,
             tokenizer=self.topic_tokenizer,
             tokenizer_args={"text": texts},
         )
 
-    def _batched_predict(self, *, model, tokenizer, tokenizer_args: dict[str, list[str]]) -> list[dict[str, float | int]]:
+    def _batched_predict(
+        self, *, model, tokenizer, tokenizer_args: dict[str, list[str]]
+    ) -> list[dict[str, float | int]]:
         results: list[dict[str, float | int]] = []
         total = len(next(iter(tokenizer_args.values()), []))
-        batch_total = max(1, (total + self.infer_batch_size - 1) // self.infer_batch_size)
+        batch_total = max(
+            1, (total + self.infer_batch_size - 1) // self.infer_batch_size
+        )
         for start in range(0, total, self.infer_batch_size):
             end = min(total, start + self.infer_batch_size)
             batch_number = start // self.infer_batch_size + 1
@@ -116,7 +134,9 @@ class PilotModelBundle:
                 end - start,
                 self.device,
             )
-            batch_kwargs = {key: value[start:end] for key, value in tokenizer_args.items()}
+            batch_kwargs = {
+                key: value[start:end] for key, value in tokenizer_args.items()
+            }
             encoded = tokenizer(
                 batch_kwargs["text"],
                 batch_kwargs.get("text_pair"),
@@ -137,10 +157,14 @@ class PilotModelBundle:
         return results
 
 
-def load_model_bundle(model_version: str | None = None, model_dir: str | Path | None = None) -> tuple[Any, Any]:
+def load_model_bundle(
+    model_version: str | None = None, model_dir: str | Path | None = None
+) -> tuple[Any, Any]:
     if model_dir is None:
         if model_version is None:
             raise ValueError("Provide either model_dir or model_version.")
-        model_dir = Path(__file__).resolve().parents[1] / "pilot" / "models" / model_version
+        model_dir = (
+            Path(__file__).resolve().parents[1] / "pilot" / "models" / model_version
+        )
     bundle = PilotModelBundle(model_dir)
     return bundle, None

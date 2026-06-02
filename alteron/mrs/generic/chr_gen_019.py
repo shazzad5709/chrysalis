@@ -7,8 +7,8 @@ from collections import deque
 
 from nltk.corpus import words
 
-from chrysalis.config import SCORE_TOLERANCE_NEARFORMAL
-from chrysalis.mrs.base import BaseMR
+from alteron.config import SCORE_TOLERANCE_NEARFORMAL
+from alteron.mrs.base import BaseMR
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 import pytest
 
-from chrysalis.mrs.generic.chr_gen_018 import CHRGEN018
+from alteron.mrs.generic.chr_gen_018 import CHRGEN018
 
 
 class FakeTokenizer:

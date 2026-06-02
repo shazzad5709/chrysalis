@@ -1,6 +1,6 @@
 import pytest
 
-from chrysalis.mrs.generic.chr_gen_019 import CHRGEN019, _clean_token, word_set
+from alteron.mrs.generic.chr_gen_019 import CHRGEN019, _clean_token, word_set
 
 
 MR = CHRGEN019()

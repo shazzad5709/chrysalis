@@ -48,7 +48,7 @@ resolve_profiles() {
   printf '%s\n' "${ALL_PROFILES[@]}"
 }
 
-log "Starting all-profile Chrysalis run"
+log "Starting all-profile Alteron run"
 log "Training config: device=$DEVICE batch_size=$BATCH_SIZE eval_batch_size=$EVAL_BATCH_SIZE grad_acc=$GRAD_ACC num_workers=$NUM_WORKERS"
 log "Master log: $MASTER_LOG_FILE"
 

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import logging
 
-from chrysalis.config import SCORE_TOLERANCE_AIRTIGHT
-from chrysalis.mrs.base import BaseMR
+from alteron.config import SCORE_TOLERANCE_AIRTIGHT
+from alteron.mrs.base import BaseMR
 
 logger = logging.getLogger(__name__)
 

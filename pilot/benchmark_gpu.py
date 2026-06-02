@@ -196,7 +196,7 @@ def _child_main(args) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Benchmark the largest safe CUDA batch size for the Chrysalis pilot.")
+    parser = argparse.ArgumentParser(description="Benchmark the largest safe CUDA batch size for the Alteron pilot.")
     parser.add_argument("--device", default="cuda", choices=["cuda", "cpu"])
     parser.add_argument("--models", nargs="+", default=["bert", "distilbert"], choices=sorted(MODEL_SPECS))
     parser.add_argument("--train-batch-sizes", default="4,6,8,10,12,14,16")

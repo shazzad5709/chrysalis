@@ -31,7 +31,7 @@ run_python() {
   uv run python -u "$@"
 }
 
-log "Starting full-scale Chrysalis pilot"
+log "Starting full-scale Alteron pilot"
 log "Pipeline profile: $PROFILE"
 log "Repository root: $ROOT_DIR"
 log "Training config: device=$DEVICE batch_size=$BATCH_SIZE eval_batch_size=$EVAL_BATCH_SIZE grad_acc=$GRAD_ACC num_workers=$NUM_WORKERS"
@@ -86,5 +86,5 @@ done
 log "Running full test suite"
 uv run pytest tests/ -v --tb=short
 
-log "Full-scale Chrysalis pilot completed"
+log "Full-scale Alteron pilot completed"
 log "Detailed log written to $LOG_FILE"

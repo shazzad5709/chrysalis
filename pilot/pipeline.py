@@ -14,10 +14,10 @@ except ImportError:  # pragma: no cover
 
 import pyarrow.ipc as ipc
 
-from chrysalis.config import SEED
-from chrysalis.corpus.generator import CorpusGenerator
-from chrysalis.regression.differ import RegressionDiffer, RegressionReport
-from chrysalis.snapshot.engine import SnapshotEngine
+from alteron.config import SEED
+from alteron.corpus.generator import CorpusGenerator
+from alteron.regression.differ import RegressionDiffer, RegressionReport
+from alteron.snapshot.engine import SnapshotEngine
 
 logger = logging.getLogger(__name__)
 
@@ -317,11 +317,28 @@ def _default_report_paths(report_dir: Path, transition: str) -> tuple[Path, Path
 
 
 def _format_summary_table(reports: list[RegressionReport]) -> str:
-    headers = ["MR ID", "transition", "n_matched", "pass_rate_old", "pass_rate_new", "delta", "flag", "severity"]
+    headers = [
+        "MR ID",
+        "transition",
+        "n_total",
+        "acc_old",
+        "acc_new",
+        "acc_delta",
+        "n_matched",
+        "mr_old",
+        "mr_new",
+        "mr_delta",
+        "flag",
+        "severity",
+    ]
     rows = [
         [
             report.mr_id,
             report.transition,
+            str(report.n_total),
+            f"{report.source_accuracy_old:.3f}",
+            f"{report.source_accuracy_new:.3f}",
+            f"{report.source_accuracy_delta:.3f}",
             str(report.n_matched),
             f"{report.pass_rate_old:.3f}",
             f"{report.pass_rate_new:.3f}",
@@ -476,7 +493,7 @@ def run_all_stage(args) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run the Chrysalis pilot pipeline.")
+    parser = argparse.ArgumentParser(description="Run the Alteron pilot pipeline.")
     parser.add_argument("--stage", required=True, choices=["all", "train", "corpus", "snapshot", "diff"])
     parser.add_argument("--profile", required=True, choices=sorted(PIPELINE_PROFILES))
     parser.add_argument("--seed", type=int, default=SEED)
