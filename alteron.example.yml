@@ -1,0 +1,44 @@
+seed: 42
+regression_threshold: -0.05
+
+corpus:
+  mr_ids:
+    - CHR-SA-001
+    - CHR-GEN-005
+    - CHR-GEN-018
+  sa_source: path/to/sa_data.csv
+  nli_source: path/to/nli_data.csv
+  topic_source: path/to/topic_data.csv
+  output_dir: artifacts/corpus
+  manual_validation_dir: artifacts/manual_validation
+  tokenizer_loader: path/to/model_loader.py:load_tokenizer
+
+snapshot:
+  model_loader: path/to/model_loader.py:load_model_bundle
+  model_dir: path/to/accepted_model
+  model_version: v1_base
+  corpus_dir: artifacts/corpus
+  output_dir: artifacts/snapshots
+
+run:
+  candidate_model_dir: path/to/candidate_model
+  candidate_version: v2_candidate
+  baseline_snapshot_dir: artifacts/snapshots/v1_base
+  baseline_version: v1_base
+  corpus_dir: artifacts/corpus
+  output_dir: artifacts/ci_run
+  model_loader: path/to/model_loader.py:load_model_bundle
+
+profiles:
+  pr-fast:
+    mr_ids:
+      - CHR-GEN-005
+      - CHR-GEN-018
+    max_records_per_mr: 100
+    fail_on_severity:
+      - hard-fail
+
+  release-full:
+    mr_ids: all
+    fail_on_severity:
+      - hard-fail
