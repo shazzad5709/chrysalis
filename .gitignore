@@ -12,7 +12,9 @@ venv/
 
 pilot/data/
 pilot/models/
-pilot/artifacts/corpus/
-pilot/artifacts/snapshots/
-pilot/artifacts/regression_reports/
+pilot/artifacts/
 pilot/artifacts/manual_validation/manual_validation_viewer.ipynb
+experimental_setup/
+alteron-user-study.zip
+alteron-user-study/alteron/
+alteron-user-study/user-study/study_output/
